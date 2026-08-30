@@ -4,19 +4,7 @@
 
 ...
 
-# <Nome do Projeto>
-
-## Visão
-
-### 1. Introdução
-
-### 2. Posicionamento
-
-#### 2.1 Declaração de Problema
-
-...
-
-# <Nome do Projeto>
+# (Nome do Projeto)
 
 ## Visão
 
