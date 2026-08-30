@@ -59,7 +59,7 @@ porque (não como) elas devem ser implementadas -->
 <!-- OBS: coluna de lancamento planejado removida, porque provavelmente não 
 aplicavel, mas caso necessario pode entrar como ultima coluna -->
 
-### 5. Outros requisitos de produto (não-funcionais)
+### 5. Outros requisitos de produto
 
 <!-- em alto nível, listar os padrões aplicáveis, hardware, e requisitos de
 plataforma, requisitos de performance, e ambientais --->
