@@ -21,6 +21,7 @@
 ## Visão
 
 ### 1. Introdução
+<!-- Descrever elementos da solução nessa seção -->
 
 ### 2. Posicionamento
 
@@ -63,13 +64,14 @@
 <!-- evitar design, manter descrições em nível geral. capacidades necessárias e
 porque (não como) elas devem ser implementadas -->
 
-| Necessidade | Prioridade | Features | Lançamento planejado |
-| :---------- | :--------- | :------- | :------------------- |
-|             |            |          |                      |
+| Necessidade | Prioridade | Features |
+| :---------- | :--------- | :------- |
+|             |            |          | 
 
-<!-- Descreva o ambiente de trabalho do Product Owner / Gerente de Projeto (dispositivos utilizados, sistemas operacionais, se o trabalho é individual ou em equipe). --><!-- Descreva o ambiente de trabalho do Product Owner / Gerente de Projeto (dispositivos utilizados, sistemas operacionais, se o trabalho é individual ou em equipe). -->
+<!-- OBS: coluna de lancamento planejado removida, porque provavelmente não 
+aplicavel, mas caso necessario pode entrar como ultima coluna -->
 
-### 5. Outros requisitos de produto
+### 5. Outros requisitos de produto (não-funcionais)
 
 <!-- em alto nível, listar os padrões aplicáveis, hardware, e requisitos de
 plataforma, requisitos de performance, e ambientais --->
@@ -81,8 +83,11 @@ se mudarem, vão alterar este documento (exemplo, ferramenta x nao disponivel)--
 <!-- definir a prioridade desses outros requisitos de software; incluir, se util,
 atributos como estabilidade, beneficio, esforço e risco -->
 
-| Requisito | Prioridade | Lançamento planejado |
-| :-------- | :--------- | :------------------- |
-|           |            |                      |
+| Requisito | Prioridade |
+| :-------- | :--------- |
+|           |            |
+
+<!-- OBS: coluna de lancamento planejado removida, porque provavelmente não 
+aplicavel, mas caso necessario pode entrar como ultima coluna -->
 
 <!-- fonte: OpenUP, adaptações talvez necessárias -->
