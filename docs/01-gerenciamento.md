@@ -1,6 +1,6 @@
-| `<Nome do Projeto>`             |                  |
-| :------------------------------ | :--------------- |
-| **Documento de Visão e Escopo** | Data: dd/mm/2026 |
+| `<Nome do Projeto>`            |                  |
+| :----------------------------- | :--------------- |
+| **Documento de Gerenciamento** | Data: dd/mm/2026 |
 
 ...
 
@@ -18,7 +18,7 @@
 
 <!-- placeholder -->
 
-- **Backlog**: 
+- **Backlog**:
 - ...
 
 ### 3. Cartões de Gerenciamento
@@ -26,10 +26,10 @@
 #### 3.1 Modelo de Cartão
 
 - **Título:** [Título breve da tarefa relacionada ao cartão]
-- **Descrição:** [Descrição das ações da tarefa, dos artefatos 
+- **Descrição:** [Descrição das ações da tarefa, dos artefatos
   produzidos, e referência (quando aplicável) a histórias de usuário
   e outros requisitos mapeados.]
-- **Critérios de Aceitação:** [Lista de subtarefas que, quando totalmente completas, 
+- **Critérios de Aceitação:** [Lista de subtarefas que, quando totalmente completas,
   satisfazem o critério para mover o cartão para "In Review"]
   - [x] [Critério atingido]
   - [ ] [Critério ainda não atingido]
