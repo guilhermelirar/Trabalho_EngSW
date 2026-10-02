@@ -1,6 +1,7 @@
 | `<Nome do Projeto>`            |                  |
 | :----------------------------- | :--------------- |
 | **Documento de Gerenciamento** | Data: dd/mm/2026 |
+| Primeira reunião oficial | Data: 25/09/2026 |
 
 ...
 
@@ -9,7 +10,13 @@
 ## Gerenciamento
 
 ### 1. Metodologia de Gerenciamento
+O projeto será desenvolvido utilizando uma abordagem iterativa e incremental, conforme estabelecido no trabalho da disciplina.
 
+Para o gerenciamento das atividades, será utilizado um quadro Kanban, no qual as tarefas serão organizadas em cartões e acompanhadas conforme seu andamento.
+
+O grupo pretende realizar uma reunião por semana, com o dia definido semanalmente, para acompanhar o desenvolvimento do projeto, atualizar os integrantes sobre o andamento das atividades e discutir as próximas ações.
+
+As responsabilidades principais foram inicialmente divididas entre os integrantes, mas as atividades poderão ser realizadas em conjunto quando necessário.
 ### 2. Estrutura do quadro Kanban
 
 <!-- imagem -->
