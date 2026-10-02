@@ -19,3 +19,12 @@ a gestão de requisitos por meio de histórias de usuário.
   - projeto físico de banco de dados (`07-proj-banco-de-dados.md`)
   - descrição da infraestrutura de implantação (`08-infraestutura.md`)
   - (+ diagramas UML ou diversos)
+
+- `/app`: estrutura da aplicação Flask
+  - `models/`: representação dos modelos do banco de dados em classes
+  - `services/`: módulos da lógica de negócios da aplicação
+  - `routes/`: lógica de comunicação (HTTP request/response) e recebimento de dados do usuário
+  - `templates/: arquivos html para páginas da aplicação (interface de usuário)
+  - `static/`: arquivos estáticos (imagens e css que podem ser usadas no site)
+ 
+- `requirements.txt`: arquivo com dependências necessárias para executar a aplicação
