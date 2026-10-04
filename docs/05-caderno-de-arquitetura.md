@@ -1,8 +1,8 @@
-| Sistema de Gestão de Backlog |                  |
+| Backlog Manager |                  |
 | :--------------------------- | :--------------- |
 | **Caderno de Arquitetura**   | Data: dd/mm/2026 |
 
-# Sistema de Gestão de Backlog
+#BACKLOG MANAGER
 
 # Caderno de Arquitetura
 
@@ -47,8 +47,6 @@ As seguintes definições foram estabelecidas inicialmente pelo grupo:
 * As funcionalidades do sistema serão organizadas a partir das histórias de usuário definidas pelo grupo.
 * O sistema deverá trabalhar com projetos, Product Backlogs, Sprint Backlogs, histórias de usuário, épicos, critérios de aceitação, Story Points, MoSCoW e RICE.
 * O projeto contará com integração entre a interface, o backend e o banco de dados.
-
-As tecnologias, frameworks, bibliotecas e demais dependências específicas **ainda não foram definidas na reunião**.
 
 Pretendemos trabalhar com **usuário único, sem diferenciar as pessoas**.
 
@@ -128,6 +126,22 @@ Com base nas funcionalidades já definidas, deverão ser considerados mecanismos
 
 As tecnologias e mecanismos específicos a serem utilizados ainda não foram definidos na reunião.
 
+### 6.1 Ferramentas usadas
+
+Para o desenvolvimento do backend do sistema, foram definidas inicialmente as seguintes dependências Python:
+
+* **Flask 3.1.3:** microframework web utilizado para o desenvolvimento do backend da aplicação.
+* **Flask-SQLAlchemy 3.1.1:** extensão que integra o Flask ao SQLAlchemy, facilitando a utilização do ORM e o gerenciamento da camada de persistência.
+* **SQLAlchemy 2.0.54:** toolkit de banco de dados para Python, permitindo trabalhar com os dados por meio de consultas SQL ou utilizando orientação a objetos. A biblioteca também permite que a aplicação seja configurada para diferentes sistemas de banco de dados por meio da definição da URI de conexão.
+* **Werkzeug 3.1.8:** biblioteca utilizada pelo Flask que fornece funcionalidades relacionadas à segurança, incluindo recursos para geração e verificação de hashes de senhas.
+
+A configuração do banco de dados poderá ser definida posteriormente de acordo com a escolha do sistema de gerenciamento de banco de dados. Dessa forma, a aplicação poderá utilizar diferentes bancos de dados alterando sua configuração de conexão.
+
+A configuração do ambiente de testes também poderá utilizar um banco de dados separado do banco principal, permitindo a realização dos testes sem interferir nos dados da aplicação.
+
+> **Observação:** as versões e dependências apresentadas correspondem à proposta inicial discutida pelo grupo e poderão ser ajustadas durante o desenvolvimento do projeto.
+
+
 ## 7. Abstrações relativas à arquitetura
 
 As principais abstrações identificadas a partir das funcionalidades definidas são:
@@ -173,6 +187,32 @@ Deverá existir integração entre a interface, o backend e o banco de dados par
 
 ## 9. Impacto de frameworks na arquitetura
 
-Os frameworks, bibliotecas e demais tecnologias que serão utilizados no desenvolvimento **ainda não foram definidos**.
+Para o desenvolvimento do sistema, foram definidas inicialmente ferramentas e bibliotecas Python para a implementação do backend. Essas tecnologias influenciam principalmente a estrutura do backend, a camada de persistência e o tratamento de funcionalidades relacionadas à segurança.
 
-Consequentemente, seus impactos sobre a arquitetura também permanecem **em definição**.
+### Flask
+
+O **Flask 3.1.3** será utilizado como microframework web para o desenvolvimento do backend da aplicação. Sua utilização estabelece o Flask como base para a implementação dos serviços web do sistema.
+
+### Flask-SQLAlchemy
+
+O **Flask-SQLAlchemy 3.1.1** será utilizado para integrar o Flask ao SQLAlchemy, facilitando o gerenciamento da camada de persistência e a utilização do ORM na aplicação.
+
+### SQLAlchemy
+
+O **SQLAlchemy 2.0.54** será utilizado como toolkit de banco de dados para Python. A biblioteca permite trabalhar com o banco de dados por meio de consultas SQL ou utilizando orientação a objetos.
+
+Sua utilização também permite que a aplicação seja configurada para diferentes sistemas de gerenciamento de banco de dados por meio da definição da configuração de conexão. Dessa forma, a escolha definitiva do banco de dados poderá ser realizada posteriormente sem que a camada de acesso aos dados precise ser completamente modificada.
+
+Além disso, a possibilidade de utilizar uma configuração específica para testes permite que o sistema utilize um banco de dados separado durante a execução dos testes.
+
+### Werkzeug
+
+O **Werkzeug 3.1.8** será utilizado como biblioteca relacionada ao Flask e fornece funcionalidades de segurança que podem ser utilizadas pelo sistema, incluindo recursos para geração e comparação de hashes de senhas.
+
+### Impacto geral na arquitetura
+
+A utilização dessas ferramentas estabelece inicialmente uma arquitetura de backend baseada em **Flask**, com o gerenciamento da persistência realizado por meio de **Flask-SQLAlchemy e SQLAlchemy**.
+
+A escolha dessas tecnologias também permite manter a camada de acesso aos dados relativamente independente do sistema de banco de dados utilizado, enquanto o Werkzeug fornece recursos que podem ser utilizados nas funcionalidades relacionadas à autenticação e segurança.
+
+As versões das dependências correspondem à definição inicial apresentada pelo grupo e poderão ser atualizadas durante o desenvolvimento caso seja necessário.
