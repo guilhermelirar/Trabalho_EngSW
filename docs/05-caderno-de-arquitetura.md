@@ -2,7 +2,7 @@
 | :------------------------- | :-------------- |
 | **Caderno de Arquitetura** | Data: 8/10/2026 |
 
-# Backlog Manager
+# BACKLOG MANAGER
 
 # Caderno de Arquitetura
 
@@ -133,6 +133,21 @@ Com base nas funcionalidades definidas, deverão ser considerados mecanismos rel
 - **Gerenciamento das histórias de usuário**;
 - **Cálculo da pontuação RICE**.
 
+### 6.1 Ferramentas usadas
+
+Para o desenvolvimento do backend do sistema, foram definidas inicialmente as seguintes dependências Python:
+
+- **Flask 3.1.3:** microframework web utilizado para o desenvolvimento do backend da aplicação.
+- **Flask-SQLAlchemy 3.1.1:** extensão que integra o Flask ao SQLAlchemy, facilitando a utilização do ORM e o gerenciamento da camada de persistência.
+- **SQLAlchemy 2.0.54:** toolkit de banco de dados para Python, permitindo trabalhar com os dados por meio de consultas SQL ou utilizando orientação a objetos. A biblioteca também permite que a aplicação seja configurada para diferentes sistemas de banco de dados por meio da definição da URI de conexão.
+- **Werkzeug 3.1.8:** biblioteca utilizada pelo Flask que fornece funcionalidades relacionadas à segurança, incluindo recursos para geração e verificação de hashes de senhas.
+
+A configuração do banco de dados poderá ser definida posteriormente de acordo com a escolha do sistema de gerenciamento de banco de dados. Dessa forma, a aplicação poderá utilizar diferentes bancos de dados alterando sua configuração de conexão.
+
+A configuração do ambiente de testes também poderá utilizar um banco de dados separado do banco principal, permitindo a realização dos testes sem interferir nos dados da aplicação.
+
+> **Observação:** as versões e dependências apresentadas correspondem à proposta inicial discutida pelo grupo e poderão ser ajustadas durante o desenvolvimento do projeto.
+
 ## 7. Abstrações relativas à arquitetura
 
 As principais abstrações identificadas a partir das funcionalidades definidas são:
@@ -193,7 +208,8 @@ Por ser um micro-framework não opinativo, o Flask não impõe arquitetura de pa
 Ao ultilizar SQLAlchemy, foi assumido o compromisso da inversão
 no fluxo da criação de tabelas, que passam a ter sua estrutura
 definida por meio de objetos Python. Para isso, é necessário escolher
-os tipos de dados do SQLAlchemy correspondentes aos tipos de tabela no SQL. Isso isola o backend de códigos SQL específicos, permitindo
+os tipos de dados do SQLAlchemy correspondentes aos tipos de tabela no SQL.
+Isso isola o backend de códigos SQL específicos, permitindo
 portabilidade de independência de sistema de gerenciamento de banco de dados.
 
 A utilização do ORM SQLAlchemy exige também atenção na estratégia de
@@ -201,4 +217,14 @@ carregamento das relações (eager vs. lazy loading). O impacto
 arquitetural é a necessidade de otimizar consultas específicas na camada
 de Services para evitar o problema de múltiplas consultas redundantes ao
 banco na renderização de painéis complexos e listagens do backlog.
-Dessa forma, não elimina a possibilidade de ser necessário escrever queries SQL personalizadas, para atender a requisitos de performance.
+Dessa forma, não elimina a possibilidade de ser necessário escrever queries SQL personalizadas,
+para atender a requisitos de performance.
+
+Além disso, a possibilidade de utilizar uma configuração específica para testes permite que o sistema utilize
+um banco de dados separado durante a execução dos testes.
+
+### Impacto geral na arquitetura
+
+A utilização dessas ferramentas estabelece inicialmente uma arquitetura de backend baseada em **Flask**, com o gerenciamento da persistência realizado por meio de **Flask-SQLAlchemy e SQLAlchemy**. A escolha dessas tecnologias também permite manter a camada de acesso aos dados relativamente independente do sistema de banco de dados utilizado, enquanto o Werkzeug fornece recursos que podem ser utilizados nas funcionalidades relacionadas à autenticação e segurança.
+
+As versões das dependências correspondem à definição inicial apresentada pelo grupo e poderão ser atualizadas durante o desenvolvimento caso seja necessário.
