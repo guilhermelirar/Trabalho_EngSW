@@ -48,3 +48,7 @@ def register_user(name: str | None, email: str | None, plain_password: str | Non
     except IntegrityError:
         db.session.rollback()
         raise UserCreationException("Email já em uso")
+
+def get_user_by_id(user_id):
+    """Wrapper para query de usuário, retorna usuário ou None"""
+    return User.query.get(user_id)

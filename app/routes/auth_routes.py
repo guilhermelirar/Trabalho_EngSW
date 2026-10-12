@@ -3,12 +3,11 @@
 # Criar usuário e login
 
 from flask import Blueprint, Request, Response, render_template, request, flash, redirect, url_for
-from app.services.ServiceErrors import ServiceException, UserCreationException
+from services.ServiceErrors import ServiceException, UserCreationException
 from services import AuthService as auth_srv
 auth_bp = Blueprint('auth', __name__)
 
 # LOGIN
-
 @auth_bp.route('/login', methods=['GET'])
 def get_login():
     return render_template('login.html')
