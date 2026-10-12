@@ -2,11 +2,11 @@
 # Criação e login de contas
 from pydoc import plain
 
-from services.ServiceErrors import UserCreationException
+from services.ServiceErrors import LoginException, UserCreationException
 from models.User import User
 from models import db
 import re
-from werkzeug.security import generate_password_hash
+from werkzeug.security import generate_password_hash, check_password_hash
 from sqlalchemy.exc import IntegrityError
 
 def validate_email(email: str) -> None:
@@ -52,3 +52,18 @@ def register_user(name: str | None, email: str | None, plain_password: str | Non
 def get_user_by_id(user_id):
     """Wrapper para query de usuário, retorna usuário ou None"""
     return User.query.get(user_id)
+
+def authenticate_user(email: str, password: str) -> User:
+  """
+  Tenta autenticar usuário comparando senha e email.
+  Retorna User em caso de sucesso ou LoginException em caso de
+  falha de autenticação (ex: senha incorreta, usuário não existente)
+  """
+
+  user: User | None = User.query.filter_by(email=email).first()
+
+  # Email ou senha incorretos
+  if user is None or not check_password_hash(user.password_hash, password):
+      raise LoginException()
+
+  return user
