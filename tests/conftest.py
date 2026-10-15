@@ -11,7 +11,8 @@ def app():
     _app.config.update({
         "TESTING": True,
         "SQLALCHEMY_DATABASE_URI": "sqlite:///:memory:",
-        "WTF_CSRF_ENABLED": False
+        "WTF_CSRF_ENABLED": False,
+        "SECRET_KEY": "dev_test_secret_key"
     })
 
     with _app.app_context():
