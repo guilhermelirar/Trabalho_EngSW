@@ -24,3 +24,22 @@ def test_post_register_error_handles_status_400(client: FlaskClient):
     # Segunda tentativa deve dar erro 400 
     response = client.post('/register', data=valid_user_data())
     assert response.status_code == 400
+
+def test_post_login_error_handles_status_401(client: FlaskClient):
+    # US-002 Fail: tenta logar com email não cadastrado
+    user = valid_user_data() 
+    response = client.post('/login', data={'email': user['email'], 
+                                'password': user['password']})
+
+    assert response.status_code == 401 # Unauthorized
+
+def test_post_login_error_handles_incorrect_password(client: FlaskClient):
+    # US-002 Fail: tenta logar com email não cadastrado
+    data = valid_user_data()
+    client.post('/register', data=data) 
+    response =client.post('/login', data={
+        'email': data['email'], 
+        'password': f"{data['password']}x"
+    })
+
+    assert response.status_code == 401 # Unauthorized
