@@ -2,9 +2,9 @@
 # Criação e login de contas
 from pydoc import plain
 
-from services.ServiceErrors import LoginException, UserCreationException
-from models.User import User
-from models import db
+from app.services.ServiceErrors import LoginException, UserCreationException
+from app.models.User import User
+from app.models import db
 import re
 from werkzeug.security import generate_password_hash, check_password_hash
 from sqlalchemy.exc import IntegrityError

@@ -1,6 +1,6 @@
 # Modelo para Usuário do sistema
 from flask_login import UserMixin
-from models import db
+from app.models import db
 
 class User(db.Model, UserMixin):
     __tablename__ = 'usuarios'

@@ -2,10 +2,11 @@
 # Rotas para interação com serviços de autenticação
 # Criar usuário e login
 
-from flask import Blueprint, Request, Response, render_template, request, flash, redirect, url_for
+from flask import Blueprint, render_template,\
+        request, flash, redirect, url_for
 from flask_login import login_user
-from services.ServiceErrors import LoginException, ServiceException, UserCreationException
-from services import AuthService as auth_srv
+from app.services.ServiceErrors import LoginException, UserCreationException
+from app.services import AuthService as auth_srv
 auth_bp = Blueprint('auth', __name__)
 
 # LOGIN
