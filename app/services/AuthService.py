@@ -12,11 +12,11 @@ def validate_email(email: str) -> None:
     Valida se email tem menos de 100 caracteres e segue formato padrão usuario@email
     """
     EMAIL_MAX_LEN = 100
-    EMAIL_REGEX = r'/^[\w-\.]+@([\w-]+\.)+[\w-]{2,}$/'
+    EMAIL_REGEX = r'^[\w\.-]+@([\w-]+\.)+[\w-]{2,}$'
     if not len(email) < EMAIL_MAX_LEN or not re.match(EMAIL_REGEX, email):
         raise UserCreationException("Email em formato inválido")
 
-def register_user(name: str | None, email: str | None, plain_password: str | None) -> None:
+def register_user(name: str | None, email: str | None, plain_password: str | None) -> User:
     """
     Valida dados do usuário passados como argumento e tenta criar um
     objeto de User e salvá-lo no banco de dados. Em caso de erro irá
@@ -46,6 +46,8 @@ def register_user(name: str | None, email: str | None, plain_password: str | Non
     except IntegrityError:
         db.session.rollback()
         raise UserCreationException("Email já em uso")
+
+    return new_user
 
 def get_user_by_id(user_id):
     """Wrapper para query de usuário, retorna usuário ou None"""
