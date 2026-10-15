@@ -8,20 +8,30 @@ import pytest
 from app.services.AuthService import *
 from app.services.exceptions import UserCreationException
 
-def test_register_user_success(app: Flask):
-    """
-    Criação de usuário com email e senha válidos (US-002)
-    """
-    with app.app_context():
-        email = "alice@sub.domain.com"
-        password = "password123"
-        user = register_user(name="alice", 
-                             email=email, 
-                             plain_password=password)
-        assert user.id is not None
-        assert user.email == email
-        assert user.password_hash != password # senha é criptografada
+VALID_EMAIL = "alice@sub.domain.com"
+VALID_PWORD = "password123"
 
+def test_register_user_success(app: Flask):
+    # (US-002 Success) Criação de usuário com email e senha válidos
+    with app.app_context():
+        user = register_user(name="alice", 
+                             email=VALID_EMAIL, 
+                             plain_password=VALID_PWORD)
+        assert user.id is not None
+        assert user.email == VALID_EMAIL
+        assert user.password_hash != VALID_PWORD # senha é criptografada
+
+def test_register_duplicate_email_raises_exception(app: Flask):
+    # (US-002 Fail) Email já existente gera erro de criação de usuário
+    with app.app_context():
+        register_user(name="alice", 
+                      email=VALID_EMAIL, 
+                      plain_password=VALID_PWORD)
+        with pytest.raises(UserCreationException) as exc_info:
+            register_user(name="bob", email=VALID_EMAIL, 
+                          plain_password=VALID_PWORD)
+
+        assert "E-mail já cadastrado" in exc_info.value.message
         
 
 

@@ -45,7 +45,7 @@ def register_user(name: str | None, email: str | None, plain_password: str | Non
         db.session.commit()
     except IntegrityError:
         db.session.rollback()
-        raise UserCreationException("Email já em uso")
+        raise UserCreationException("E-mail já em cadastrado")
 
     return new_user
 
