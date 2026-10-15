@@ -141,6 +141,7 @@ Para o desenvolvimento do backend do sistema, foram definidas inicialmente as se
 - **Flask-SQLAlchemy 3.1.1:** extensão que integra o Flask ao SQLAlchemy, facilitando a utilização do ORM e o gerenciamento da camada de persistência.
 - **SQLAlchemy 2.0.54:** toolkit de banco de dados para Python, permitindo trabalhar com os dados por meio de consultas SQL ou utilizando orientação a objetos. A biblioteca também permite que a aplicação seja configurada para diferentes sistemas de banco de dados por meio da definição da URI de conexão.
 - **Werkzeug 3.1.8:** biblioteca utilizada pelo Flask que fornece funcionalidades relacionadas à segurança, incluindo recursos para geração e verificação de hashes de senhas.
+- **Pytest**: biblioteca para testes automatizados, para dar suporte a testes unitários e garantir a corretude do sistema ao longo dos incrementos
 
 A configuração do banco de dados poderá ser definida posteriormente de acordo com a escolha do sistema de gerenciamento de banco de dados. Dessa forma, a aplicação poderá utilizar diferentes bancos de dados alterando sua configuração de conexão.
 
