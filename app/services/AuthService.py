@@ -14,7 +14,7 @@ def validate_email(email: str) -> None:
     EMAIL_MAX_LEN = 100
     EMAIL_REGEX = r'^[\w\.-]+@([\w-]+\.)+[\w-]{2,}$'
     if not len(email) < EMAIL_MAX_LEN or not re.match(EMAIL_REGEX, email):
-        raise UserCreationException("Email em formato inválido")
+        raise UserCreationException("E-mail em formato inválido")
 
 def register_user(name: str | None, email: str | None, plain_password: str | None) -> User:
     """
@@ -45,7 +45,7 @@ def register_user(name: str | None, email: str | None, plain_password: str | Non
         db.session.commit()
     except IntegrityError:
         db.session.rollback()
-        raise UserCreationException("E-mail já em cadastrado")
+        raise UserCreationException("E-mail já cadastrado")
 
     return new_user
 

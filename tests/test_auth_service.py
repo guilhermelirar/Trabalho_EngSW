@@ -33,5 +33,12 @@ def test_register_duplicate_email_raises_exception(app: Flask):
 
         assert "E-mail já cadastrado" in exc_info.value.message
         
+def test_register_user_invalid_email(app: Flask):
+    with app.app_context(), pytest.raises(UserCreationException, 
+                                          match="E-mail em formato inválido"):
+        register_user(name="alice", 
+                      email="invalid email", 
+                      plain_password=VALID_PWORD)
 
+        
 
