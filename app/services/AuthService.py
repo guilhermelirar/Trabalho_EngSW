@@ -1,8 +1,6 @@
 # app/services/AuthService.py
 # Criação e login de contas
-from pydoc import plain
-
-from app.services.ServiceErrors import LoginException, UserCreationException
+from app.services.exceptions import LoginException, UserCreationException
 from app.models.User import User
 from app.models import db
 import re
