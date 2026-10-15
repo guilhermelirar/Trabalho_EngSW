@@ -25,4 +25,4 @@ class UserCreationException(ServiceException):
 class LoginException(ServiceException):
     """Usuário (email) ou senha incorretos"""
     def __init__(self):
-        super().__init__("Email ou senha incorretos", 401)
+        super().__init__("E-mail ou senha incorretos", 401)

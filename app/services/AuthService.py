@@ -54,16 +54,16 @@ def get_user_by_id(user_id):
     return User.query.get(user_id)
 
 def authenticate_user(email: str, password: str) -> User:
-  """
-  Tenta autenticar usuário comparando senha e email.
-  Retorna User em caso de sucesso ou LoginException em caso de
-  falha de autenticação (ex: senha incorreta, usuário não existente)
-  """
+    """
+    Tenta autenticar usuário comparando senha e email.
+    Retorna User em caso de sucesso ou LoginException em caso de
+    falha de autenticação (ex: senha incorreta, usuário não existente)
+    """
 
-  user: User | None = User.query.filter_by(email=email).first()
+    user: User | None = User.query.filter_by(email=email).first()
 
-  # Email ou senha incorretos
-  if user is None or not check_password_hash(user.password_hash, password):
-      raise LoginException()
+    # Email ou senha incorretos
+    if user is None or not check_password_hash(user.password_hash, password):
+        raise LoginException()
 
-  return user
+    return user
