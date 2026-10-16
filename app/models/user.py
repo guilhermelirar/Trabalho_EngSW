@@ -9,3 +9,6 @@ class User(db.Model, UserMixin):
     name = db.Column(db.String(100))
     email = db.Column(db.String(100), unique=True)
     password_hash = db.Column(db.String(255), nullable=False)
+
+    # relacionamentos
+    projects = db.relationship('Project', backref='owner', lazy=True)
