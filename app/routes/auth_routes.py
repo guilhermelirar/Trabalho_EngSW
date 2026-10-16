@@ -32,7 +32,7 @@ def login():
         # caminho de sucesso
         user = auth_srv.authenticate_user(email, password)
         login_user(user)
-        return redirect(url_for('dashboard'))
+        return redirect(url_for('projects.projects_list'))
 
     except LoginException as error:
         # usuário ou senha incorretos
