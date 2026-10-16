@@ -2,7 +2,6 @@
 import pytest
 from app.app import create_app # importar factory do app
 from app.app import db
-from app.models.user import User
 from app.services.auth_service import register_user
 
 @pytest.fixture
