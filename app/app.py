@@ -16,6 +16,7 @@ def create_app():
     # Configuração de banco de dados de desenvolvimento
     app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///banco.db'
     app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
+    app.config['SECRET_KEY'] = 'backlog-manager-123'
 
     # Iniciando extensões
     db.init_app(app)
