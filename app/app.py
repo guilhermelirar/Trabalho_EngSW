@@ -2,7 +2,7 @@ from flask import Flask, render_template
 from flask_login import LoginManager
 from app.routes.auth_routes import auth_bp
 from app.routes.project_routes import projects_bp
-from app.services.AuthService import get_user_by_id
+from app.services.auth_service import get_user_by_id
 from app.models import db
 
 def create_app():

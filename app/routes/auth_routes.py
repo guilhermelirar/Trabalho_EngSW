@@ -6,7 +6,7 @@ from flask import Blueprint, render_template,\
         request, flash, redirect, url_for
 from flask_login import login_user
 from app.services.exceptions import LoginException, UserCreationException
-from app.services import AuthService as auth_srv
+import app.services.auth_service as auth_srv
 auth_bp = Blueprint('auth', __name__)
 
 # LOGIN
