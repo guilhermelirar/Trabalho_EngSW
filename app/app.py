@@ -1,0 +1,41 @@
+from flask import Flask, render_template
+from flask_login import LoginManager
+from app.routes.auth_routes import auth_bp
+from app.services.AuthService import get_user_by_id
+from app.models import db
+
+def create_app():
+    """
+    Função que cria a instância Flask de acordo com
+    a configuração especificada.
+    """
+    app = Flask(__name__)
+    login_manager = LoginManager()
+
+    # Configuração de banco de dados de desenvolvimento
+    app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///banco.db'
+    app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
+
+    # Iniciando extensões
+    db.init_app(app)
+    login_manager.init_app(app)
+    login_manager.login_view = 'auth.login' # type: ignore
+
+    with app.app_context():
+        db.create_all()
+
+    # Registrando as rotas
+    app.register_blueprint(auth_bp)
+
+    @login_manager.user_loader
+    def login_user_loader(user_id):
+        return get_user_by_id(user_id)
+
+    return app
+
+if __name__ == "__main__":
+    app = create_app()
+
+    @app.route("/")
+    def hello_world():
+        return render_template("login.html")
