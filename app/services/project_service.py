@@ -17,6 +17,11 @@ def validate_user_id(user_id: int):
     return user
 
 def create_project(user_id: int, name: str) -> Project:
+    """
+    Criar projeto de nome 'name' associado a um usuário com id 'user_id'.
+    Retorna o projeto em caso de sucesso, ou lança exceção ProjectDomainException
+    em caso de erro de validação
+    """
     validate_user_id(user_id)
     name = name.strip()
     
@@ -35,7 +40,25 @@ def create_project(user_id: int, name: str) -> Project:
     return project
 
 def get_projects_by_user(user_id: int) -> Sequence[Project]:
+    """
+    Retorna iterável Sequence[Project] com a lista de projetos 
+    associados ao usuário de id 'user_id'
+    """
     validate_user_id(user_id)
     query = select(Project).where(Project.owner_id == user_id)
     return db.session.scalars(query).all()
 
+def delete_project(project_id: int, owner_id: int):
+    """
+    Deleta um projeto de id 'project_id' associado a um 
+    dono 'owner_id'. Em caso de não encontrado, irá levantar
+    uma exceção ProjectDomainException
+    """
+    project = db.session.get(Project, project_id) 
+   
+    if project and project.owner_id == owner_id:
+        db.session.delete(project)
+        db.session.commit()
+        return
+
+    raise ProjectDomainException("Projeto não encontrado", status_code=404)
