@@ -28,7 +28,7 @@ def create_app():
 
     # Registrando as rotas
     app.register_blueprint(auth_bp)
-    app.register_blueprint(projects_bp)
+    app.register_blueprint(projects_bp, url_prefix = '/projects', strict_slashes=False)
 
     @login_manager.user_loader
     def login_user_loader(user_id):
