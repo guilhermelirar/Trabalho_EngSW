@@ -68,13 +68,12 @@ def test_project_read_handles_permission(app: Flask):
 
 
 def test_project_read_details_success(app: Flask):
-    def test_project_read_handles_permission(app: Flask):
-        # US-005 projeto encontrado e com detalhes
-        with app.app_context():
-            user_id = get_valid_user_id()
-            project_id = create_project(user_id, "Project").id
+    # US-005 projeto encontrado e com detalhes
+    with app.app_context():
+        user_id = get_valid_user_id()
+        project_id = create_project(user_id, "Project").id
 
-            project = get_project_by_id(project_id, user_id)
-            assert project.id == project_id
-            assert project.name == Project
-            assert not project.backlog  # backlog não criado
+        project = get_project_by_id(project_id, user_id)
+        assert project.id == project_id
+        assert project.name == "Project"
+        assert not project.backlog  # backlog não criado
