@@ -19,4 +19,4 @@ def test_project_routes_succes(authenticated_client: FlaskClient):
 def test_route_create_project_success(authenticated_client: FlaskClient):
     # US-005 Success: criar um projeto e ser redirecionado para a tela dele
     response = authenticated_client.post("/projects", data={"name": "Projeto 1"})
-    assert response.status_code == 201  # Resource created
+    assert response.status_code == 302  # Resource created -> Redirect

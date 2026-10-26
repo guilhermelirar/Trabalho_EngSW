@@ -4,9 +4,11 @@
 from collections.abc import Sequence
 
 from sqlalchemy import select
+from sqlalchemy.orm import joinedload
 
 from app.models import db
 from app.models.project import Project
+from app.models.project_backlog import ProjectBacklog
 from app.services.auth_service import get_user_by_id
 from app.services.exceptions import ProjectDomainException
 
@@ -55,15 +57,9 @@ def get_projects_by_user(user_id: int) -> Sequence[Project]:
     query = select(Project).where(Project.owner_id == user_id)
     return db.session.scalars(query).all()
 
-
-def get_project_by_id(project_id: int, user_id: int) -> Sequence[Project]:
-    validate_user_id(user_id)
-    query = select(Project).where(Project.owner_id == user_id, Project.id == project_id)
-    return db.session.scalars(query).all()
-
-
 def delete_project(project_id: int, owner_id: int):
     """
+    (US005 DELETE)
     Deleta um projeto de id 'project_id' associado a um
     dono 'owner_id'. Em caso de não encontrado, irá levantar
     uma exceção ProjectDomainException
@@ -74,5 +70,22 @@ def delete_project(project_id: int, owner_id: int):
         db.session.delete(project)
         db.session.commit()
         return
+
+    raise ProjectDomainException("Projeto não encontrado", status_code=404)
+
+
+def get_project_by_id(project_id: int, owner_id: int):
+    """
+    (US005 READ)
+    Obtém projeto com campos nome, descrição, e lista de histórias
+    de usuário (project backlog)
+    """
+    project = Project.query.options(
+        joinedload(Project.backlog).joinedload(ProjectBacklog.user_stories),
+        joinedload(Project.backlog).joinedload(ProjectBacklog.sprints)
+    ).filter_by(id=project_id, owner_id=owner_id).first()
+
+    if project:
+        return project
 
     raise ProjectDomainException("Projeto não encontrado", status_code=404)
