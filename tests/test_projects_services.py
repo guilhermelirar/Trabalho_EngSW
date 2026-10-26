@@ -77,3 +77,16 @@ def test_project_read_details_success(app: Flask):
         assert project.id == project_id
         assert project.name == "Project"
         assert not project.backlog  # backlog não criado
+
+def test_update_project_success(app: Flask):
+    # US-005 projeto encontrado e com detalhes
+    with app.app_context():
+        user_id = get_valid_user_id()
+        project_id = create_project(user_id, "Project").id
+
+        just_updated = update_project(project_id, user_id, name="Updated Project")
+        get_updated = get_project_by_id(project_id, user_id)
+
+        assert just_updated.name == "Updated Project"
+        assert just_updated.id == get_updated.id
+        assert just_updated.name == get_updated.name

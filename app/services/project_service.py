@@ -20,6 +20,20 @@ def validate_user_id(user_id: int):
     return user
 
 
+def validate_project_name(name: str | None):
+    if not name:
+        raise ProjectDomainException("O nome do projeto não pode ser vazio.")
+
+    clean_name = name.strip()
+
+    if len(clean_name) > 100:
+        raise ProjectDomainException(
+            "O nome do projeto não pode conter mais de 100 caracteres."
+        )
+
+    return clean_name
+
+
 def create_project(user_id: int, name: str | None) -> Project:
     """
     Criar projeto de nome 'name' associado a um usuário com id 'user_id'.
@@ -27,20 +41,10 @@ def create_project(user_id: int, name: str | None) -> Project:
     em caso de erro de validação
     """
     validate_user_id(user_id)
-
-    if name is not None:
-        name = name.strip()
-
-    if not name:
-        raise ProjectDomainException("O nome do projeto não pode ser vazio.")
-
-    if len(name) > 100:
-        raise ProjectDomainException(
-            "O nome do projeto não pode conter mais de 100 caracteres."
-        )
+    clean_name = validate_project_name(name)
 
     project = Project()
-    project.name = name
+    project.name = clean_name
     project.owner_id = user_id
 
     db.session.add(project)
@@ -56,6 +60,7 @@ def get_projects_by_user(user_id: int) -> Sequence[Project]:
     validate_user_id(user_id)
     query = select(Project).where(Project.owner_id == user_id)
     return db.session.scalars(query).all()
+
 
 def delete_project(project_id: int, owner_id: int):
     """
@@ -80,12 +85,33 @@ def get_project_by_id(project_id: int, owner_id: int):
     Obtém projeto com campos nome, descrição, e lista de histórias
     de usuário (project backlog)
     """
-    project = Project.query.options(
-        joinedload(Project.backlog).joinedload(ProjectBacklog.user_stories),
-        joinedload(Project.backlog).joinedload(ProjectBacklog.sprints)
-    ).filter_by(id=project_id, owner_id=owner_id).first()
+    project = (
+        Project.query.options(
+            joinedload(Project.backlog).joinedload(ProjectBacklog.user_stories),
+            joinedload(Project.backlog).joinedload(ProjectBacklog.sprints),
+        )
+        .filter_by(id=project_id, owner_id=owner_id)
+        .first()
+    )
 
     if project:
+        return project
+
+    raise ProjectDomainException("Projeto não encontrado", status_code=404)
+
+
+def update_project(project_id: int, owner_id: int, name: str) -> Project:
+    """
+    (US005 Update)
+    Atualiza campos do projeto (nome)
+    """
+    new_name = validate_project_name(name)
+    project = db.session.get(Project, project_id)
+
+    # Se existe e é do usuário, atualizar e retornar
+    if project and project.owner_id == owner_id:
+        project.name = new_name
+        db.session.commit()
         return project
 
     raise ProjectDomainException("Projeto não encontrado", status_code=404)
