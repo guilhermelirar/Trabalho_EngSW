@@ -117,3 +117,30 @@ def update_project(project_id: int, owner_id: int, name: str) -> Project:
         return project
 
     raise ProjectDomainException("Projeto não encontrado", status_code=404)
+
+def create_product_backlog(project_id: int, user_id: int):
+    """
+    [US-006 Gerenciar Product Backlog]
+    Cria um product backlog associado a um projeto caso o projeto não tenha.
+    Levanta exceção ProjectDomainException em caso de projeto não encontrado,
+    ou caso o projeto já tenha um backlog associado.
+    """
+    project: Project = get_project_by_id(project_id, user_id)
+    if project.backlog:
+        raise ProjectDomainException("Backlog já existe para este projeto")
+
+    project.backlog = ProjectBacklog()
+    db.session.commit()
+    return project.backlog
+
+def delete_product_backlog(user_id: int, project_id: int):
+    """
+    [US-006 Gerenciar Product Backlog]
+    Deleta um backlog de produto e todas suas sprints e histórias
+    de usuário em cascata, caso exista. Levanta ProjectDomainException
+    caso o projeto não tenha um product backlog.
+    """
+    project: Project = get_project_by_id(project_id, user_id)
+    if project.backlog:
+        db.session.delete(project.backlog)
+        db.session.commit()

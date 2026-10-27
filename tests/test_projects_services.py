@@ -1,5 +1,6 @@
 import pytest
 from flask import Flask
+from typing_extensions import get_protocol_members
 
 from app.services.auth_service import register_user
 from app.services.project_service import *
@@ -78,6 +79,7 @@ def test_project_read_details_success(app: Flask):
         assert project.name == "Project"
         assert not project.backlog  # backlog não criado
 
+
 def test_update_project_success(app: Flask):
     # US-005 projeto encontrado e com detalhes
     with app.app_context():
@@ -90,3 +92,33 @@ def test_update_project_success(app: Flask):
         assert just_updated.name == "Updated Project"
         assert just_updated.id == get_updated.id
         assert just_updated.name == get_updated.name
+
+
+def test_create_backlog_success(app: Flask):
+    # US-006 criação de product backlog
+    with (
+        app.app_context(),
+        pytest.raises(
+            ProjectDomainException, match="Backlog já existe para este projeto"
+        ),
+    ):
+        user_id = get_valid_user_id()
+        project_id = create_project(user_id, "Project").id
+        backlog = create_product_backlog(project_id, user_id)
+
+        assert backlog is not None
+        create_product_backlog(project_id, user_id)  # Criando quando já existe
+
+
+def test_delete_backlog_success(app: Flask):
+    # US-006 deletar product backlog
+    with app.app_context():
+        user_id = get_valid_user_id()
+        project = create_project(user_id, "Project")
+
+        db.session.refresh(project)
+
+        delete_product_backlog(project.id, user_id)  # não deve lançar erro
+        create_product_backlog(project.id, user_id)  # cria um backlog
+        delete_product_backlog(project.id, user_id)  # deleta
+        assert project.backlog is None
