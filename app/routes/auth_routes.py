@@ -24,8 +24,12 @@ def login():
     email = request.form.get('email')
     password = request.form.get('password')
 
-    if not email or not password:
-        flash("Formulário inválido", "danger")
+    if not email:
+        flash("e-mail inválido", "danger")
+        return render_template('login.html', email=email), 400
+
+    if not password:
+        flash("senha inválida", "danger")
         return render_template('login.html', email=email), 400
 
     try:
@@ -59,6 +63,7 @@ def register():
 
     # tenta criar usuário
     try:
+        print(f"Tentando criar usuário: name={name}, email={email}, password={plain_password}")
         auth_srv.register_user(name, email, plain_password)
         flash(f"Conta criada com sucesso! Faça login para continuar", "success")
         return redirect(url_for('auth.login'))

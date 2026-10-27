@@ -20,9 +20,11 @@ class ServiceException(Exception):
 
 class UserCreationException(ServiceException):
     """Erro em criação de novos usuários"""
+    print("UserCreationException: Erro em criação de novos usuários")
     pass
 
 class LoginException(ServiceException):
     """Usuário (email) ou senha incorretos"""
+    print("LoginException: Usuário (email) ou senha incorretos")
     def __init__(self):
         super().__init__("E-mail ou senha incorretos", 401)
