@@ -1,0 +1,124 @@
+/* ============================================
+   components.css — cartão, campos, botão, links
+   ============================================ */
+
+/* ---------- Cartão ---------- */
+.cartao {
+    width: 100%;
+    max-width: 380px;
+    padding: 1.6rem 1.8rem 1.4rem;
+    background: var(--branco);
+    border: 5px solid var(--azul-claro);
+    border-radius: var(--raio-cartao);
+    text-align: center;
+}
+
+.cartao__titulo {
+    font-size: 1.7rem;
+    font-weight: 700;
+    margin-bottom: 0.8rem;
+}
+
+.texto-centro {
+    margin-bottom: 1rem;
+}
+
+/* ---------- Formulário ---------- */
+.formulario {
+    display: flex;
+    flex-direction: column;
+    gap: 0.7rem;
+    text-align: left;
+}
+
+.campo {
+    display: flex;
+    flex-direction: column;
+    gap: 0.3rem;
+}
+
+.campo__rotulo {
+    font-size: 0.95rem;
+    font-weight: 700;
+}
+
+.campo__input {
+    width: 100%;
+    height: 2.2rem;
+    padding: 0 0.9rem;
+    font: inherit;
+    color: var(--marrom-texto);
+    background: var(--azul-claro);
+    border: 2px solid transparent;
+    border-radius: var(--raio-campo);
+    outline: none;
+    transition: border-color 0.15s, background 0.15s;
+}
+
+.campo__input:focus-visible {
+    background: var(--branco);
+    border-color: var(--azul-principal);
+}
+
+/* ---------- Botão ---------- */
+.botao {
+    align-self: center;
+    margin-top: 0.6rem;
+    padding: 0.35rem 2.6rem;
+    font: inherit;
+    font-weight: 700;
+    color: var(--branco);
+    background: var(--azul-principal);
+    border: none;
+    border-radius: 999px;
+    cursor: pointer;
+    transition: background 0.15s;
+}
+
+.botao:hover {
+    background: var(--azul-escuro);
+}
+
+.botao:focus-visible {
+    outline: 3px solid var(--azul-claro);
+    outline-offset: 2px;
+}
+
+/* ---------- Links ---------- */
+.link {
+    display: block;
+    margin-top: 0.8rem;
+    font-size: 0.85rem;
+    color: var(--ciano-link);
+    text-decoration: none;
+}
+
+.link:hover {
+    text-decoration: underline;
+}
+
+/* ---------- Mensagens (flash) ---------- */
+.mensagens {
+    list-style: none;
+    margin-bottom: 0.8rem;
+}
+
+.mensagem {
+    padding: 0.5rem 0.8rem;
+    font-size: 0.85rem;
+    border-radius: var(--raio-campo);
+}
+
+.mensagem + .mensagem {
+    margin-top: 0.4rem;
+}
+
+.mensagem--erro {
+    background: var(--erro-fundo);
+    color: var(--erro-texto);
+}
+
+.mensagem--sucesso {
+    background: var(--sucesso-fundo);
+    color: var(--sucesso-texto);
+}

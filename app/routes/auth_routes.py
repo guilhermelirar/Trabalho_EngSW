@@ -51,7 +51,7 @@ def register():
     password: str
     """
     if request.method == 'GET':
-        return render_template('register.html')
+        return render_template('cadastro.html')
 
     name = request.form.get('name')
     email = request.form.get('email')
@@ -66,4 +66,4 @@ def register():
     except UserCreationException as error:
         # dados inválidos
         flash(error.message, "danger")
-        return render_template('register.html', name=name, email=email), 400
+        return render_template('cadastro.html', name=name, email=email), 400

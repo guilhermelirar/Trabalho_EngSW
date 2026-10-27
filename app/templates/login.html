@@ -1,1 +1,34 @@
-<h1>Login</h1>
+{% extends "base.html" %}
+
+{% block titulo %}Login | Backlog Manager{% endblock %}
+
+{% block css %}
+<link rel="stylesheet" href="{{ url_for('static', filename='css/login.css') }}">
+{% endblock %}
+
+{% block conteudo %}
+<div class="cartao cartao--login">
+    <h1 class="cartao__titulo">Fazer Login</h1>
+
+    {% include "_mensagens.html" %}
+
+    <form method="post" class="formulario" novalidate>
+        <label class="campo">
+            <span class="campo__rotulo">Email:</span>
+            <input type="email" name="email" class="campo__input"
+                   autocomplete="email" required>
+        </label>
+
+        <label class="campo">
+            <span class="campo__rotulo">Senha:</span>
+            <input type="password" name="senha" class="campo__input"
+                   autocomplete="current-password" required>
+        </label>
+
+        <button type="submit" class="botao">Entrar</button>
+    </form>
+
+    <a href="#" class="link">Esqueci a senha</a>
+    <a href="{{ url_for('auth.register') }}" class="link">Ainda não tem uma conta? Cadastre-se</a>
+</div>
+{% endblock %}

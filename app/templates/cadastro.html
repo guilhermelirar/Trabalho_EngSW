@@ -1,0 +1,53 @@
+{% extends "base.html" %}
+
+{% block titulo %}Cadastro | Backlog Manager{% endblock %}
+
+{% block css %}
+<link rel="stylesheet" href="{{ url_for('static', filename='css/cadastro.css') }}">
+{% endblock %}
+
+{% block conteudo %}
+<div class="cartao cartao--cadastro">
+    <h1 class="cartao__titulo">Fazer Cadastro</h1>
+
+    <div class="avatar" aria-hidden="true">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"
+             stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+            <circle cx="12" cy="8" r="4"/>
+            <path d="M4 21c0-4.4 3.6-7 8-7s8 2.6 8 7"/>
+        </svg>
+    </div>
+
+    {% include "_mensagens.html" %}
+
+    <form method="post" class="formulario" novalidate>
+        <label class="campo">
+            <span class="campo__rotulo">Nome:</span>
+            <input type="text" name="nome" class="campo__input"
+                   autocomplete="name" required>
+        </label>
+
+        <label class="campo">
+            <span class="campo__rotulo">Email:</span>
+            <input type="email" name="email" class="campo__input"
+                   autocomplete="email" required>
+        </label>
+
+        <label class="campo">
+            <span class="campo__rotulo">Cargo:</span>
+            <input type="text" name="cargo" class="campo__input"
+                   autocomplete="organization-title" required>
+        </label>
+
+        <label class="campo">
+            <span class="campo__rotulo">Senha:</span>
+            <input type="password" name="senha" class="campo__input"
+                   autocomplete="new-password" minlength="8" required>
+        </label>
+
+        <button type="submit" class="botao">Criar Conta</button>
+    </form>
+
+    <a href="{{ url_for('auth.login') }}" class="link">Já possui uma conta? Faça login</a>
+</div>
+{% endblock %}
