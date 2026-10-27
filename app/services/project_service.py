@@ -36,6 +36,7 @@ def validate_project_name(name: str | None):
 
 def create_project(user_id: int, name: str | None) -> Project:
     """
+    (US005 Create)
     Criar projeto de nome 'name' associado a um usuário com id 'user_id'.
     Retorna o projeto em caso de sucesso, ou lança exceção ProjectDomainException
     em caso de erro de validação
@@ -54,6 +55,7 @@ def create_project(user_id: int, name: str | None) -> Project:
 
 def get_projects_by_user(user_id: int) -> Sequence[Project]:
     """
+    (US005 Read)
     Retorna iterável Sequence[Project] com a lista de projetos
     associados ao usuário de id 'user_id'
     """
