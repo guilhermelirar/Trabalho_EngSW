@@ -1,10 +1,4 @@
-from sqlalchemy.orm import relationship
-from sqlalchemy.orm.base import Mapped
-
 from app.models import db
-from app.models.project import Project
-from app.models.sprint import SprintBacklog
-from app.models.user_story import UserStory
 
 
 class ProjectBacklog(db.Model):
@@ -18,18 +12,19 @@ class ProjectBacklog(db.Model):
         unique=True,
     )
 
-    project: Mapped["Project"] = relationship("Project", back_populates="backlog")
-
-    sprints: Mapped["SprintBacklog"] = relationship(
+    project = db.relationship("Project", back_populates="backlog")
+    sprints = db.relationship(
         "SprintBacklog",
         back_populates="project_backlog",
         cascade="all, delete-orphan",
-        uselist=False,
     )
-
-    user_stories: Mapped["UserStory"] = relationship(
+    epics = db.relationship(
+        "Epic",
+        back_populates="project_backlog",
+        cascade="all, delete-orphan",
+    )
+    user_stories = db.relationship(
         "UserStory",
         back_populates="project_backlog",
         cascade="all, delete-orphan",
-        uselist=False,
     )

@@ -1,7 +1,4 @@
 # app/models/project.py
-from sqlalchemy.orm import relationship
-from sqlalchemy.orm.base import Mapped
-
 from app.models import db
 
 
@@ -10,11 +7,12 @@ class Project(db.Model):
 
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.Text, nullable=False)
+    description = db.Column(db.Text)
     owner_id = db.Column(
         "user_id", db.Integer, db.ForeignKey("users.id"), nullable=False
     )
 
-    backlog = relationship(
+    backlog = db.relationship(
         "ProjectBacklog",
         back_populates="project",
         uselist=False,

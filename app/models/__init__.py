@@ -7,4 +7,6 @@ from app.models.user import User
 from app.models.project import Project
 from app.models.project_backlog import ProjectBacklog
 from app.models.sprint import Sprint, SprintBacklog
+from app.models.epic import Epic
 from app.models.user_story import UserStory
+from app.models.acceptance_criteria import AcceptanceCriteria
