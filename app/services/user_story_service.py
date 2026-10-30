@@ -1,3 +1,5 @@
+from collections import UserString
+
 from app.models import db
 from app.models.user_story import UserStory
 from app.services import project_service
@@ -39,6 +41,21 @@ def create_user_story(project_id: int, user_id: int, data: dict) -> UserStory:
     return user_story
 
 
+def get_user_story(story_id: int, project_id: int, user_id: int):
+    story = db.session.get(UserStory, story_id)
+    project = project_service.get_project_by_id(project_id, user_id)
+
+    if not project:
+        raise ProjectDomainException("Projeto não encontrado", status_code=404)
+
+    if not story or story.project_backlog_id != project.backlog.id:
+        raise UserStoryDomainException(
+            "História de usuário não encontrada", status_code=404
+        )
+
+    return story
+
+
 def update_user_story(story_id: int, user_id: int, new_data: dict) -> UserStory:
     """
     Edita campos de uma história de usuário existente.
@@ -66,3 +83,12 @@ def update_user_story(story_id: int, user_id: int, new_data: dict) -> UserStory:
 
     db.session.commit()
     return story
+
+
+def delete_user_story(story_id: int, project_id: int, user_id: int):
+    """
+    Deleta uma história de usuário se encontrar
+    """
+    story = get_user_story(story_id, project_id, user_id)
+    db.session.delete(story)
+    db.session.commit()
