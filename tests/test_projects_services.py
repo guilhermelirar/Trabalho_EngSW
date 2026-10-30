@@ -40,7 +40,7 @@ def test_project_delete_success(app: Flask):
     with app.app_context():
         user_id = get_valid_user_id()
 
-        project_id = create_project(user_id, f"Project").id
+        project_id = create_project(user_id, "Project").id
         delete_project(project_id, user_id)
 
         assert get_projects_by_user(user_id) == []
