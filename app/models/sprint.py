@@ -16,5 +16,5 @@ class SprintBacklog(db.Model):
     )
     sprint_number = db.Column(db.Integer, nullable=False)
 
-
-Sprint = SprintBacklog
+    user_stories = db.relationship('UserStory', back_populates='sprint_backlog')
+    project_backlog = db.relationship('ProjectBacklog', back_populates='sprints')

@@ -121,4 +121,4 @@ def test_delete_backlog_success(app: Flask):
         delete_product_backlog(project.id, user_id)  # não deve lançar erro
         create_product_backlog(project.id, user_id)  # cria um backlog
         delete_product_backlog(project.id, user_id)  # deleta
-        assert project.backlog is not None
+        assert project.backlog is None

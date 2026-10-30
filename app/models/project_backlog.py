@@ -1,11 +1,5 @@
-from sqlalchemy.orm import relationship
-from sqlalchemy.orm.base import Mapped
-
+from sqlalchemy.orm import Mapped, relationship
 from app.models import db
-from app.models.project import Project
-from app.models.sprint import SprintBacklog
-from app.models.user_story import UserStory
-
 
 class ProjectBacklog(db.Model):
     __tablename__ = "project_backlogs"
@@ -20,16 +14,15 @@ class ProjectBacklog(db.Model):
 
     project: Mapped["Project"] = relationship("Project", back_populates="backlog")
 
-    sprints: Mapped["SprintBacklog"] = relationship(
+    # Usando o list nativo (sem importar typing.List):
+    sprints: Mapped[list["SprintBacklog"]] = relationship(
         "SprintBacklog",
         back_populates="project_backlog",
         cascade="all, delete-orphan",
-        uselist=False,
     )
 
-    user_stories: Mapped["UserStory"] = relationship(
+    user_stories: Mapped[list["UserStory"]] = relationship(
         "UserStory",
         back_populates="project_backlog",
         cascade="all, delete-orphan",
-        uselist=False,
     )
