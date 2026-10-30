@@ -14,16 +14,22 @@ class ProjectBacklog(db.Model):
         unique=True,
     )
 
-    project: Mapped["Project"] = relationship("Project", back_populates="backlog")
+    project = relationship("Project", back_populates="backlog")
 
-    sprints: Mapped[list["SprintBacklog"]] = relationship(
+    sprints= relationship(
         "SprintBacklog",
         back_populates="project_backlog",
         cascade="all, delete-orphan",
     )
 
-    user_stories: Mapped[list["UserStory"]] = relationship(
+    user_stories = relationship(
         "UserStory",
         back_populates="project_backlog",
         cascade="all, delete-orphan",
     )
+
+    epics = db.relationship(
+            "Epic",
+            back_populates="project_backlog",
+            cascade="all, delete-orphan",
+        )
