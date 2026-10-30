@@ -30,3 +30,6 @@ class LoginException(ServiceException):
 class ProjectDomainException(ServiceException):
     """Erro em criação de projeto"""
     pass
+
+class UserStoryDomainException(ServiceException):
+    "Erros no gerenciamento de user story"
