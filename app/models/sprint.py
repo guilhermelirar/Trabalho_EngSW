@@ -4,6 +4,13 @@ from app.models import db
 
 class SprintBacklog(db.Model):
     __tablename__ = "sprint_backlogs"
+    __table_args__ = (
+        db.UniqueConstraint(
+            "project_backlog_id",
+            "sprint_number",
+            name="uq_sprint_backlog_number",
+        ),
+    )
 
     id = db.Column(db.Integer, primary_key=True)
     project_backlog_id = db.Column(
@@ -12,13 +19,6 @@ class SprintBacklog(db.Model):
         nullable=False,
     )
     sprint_number = db.Column(db.Integer, nullable=False)
-    __table_args__ = (
-        db.UniqueConstraint(
-            "project_backlog_id",
-            "sprint_number",
-            name="uq_sprint_backlog_number",
-        ),
-    )
 
     project_backlog = db.relationship("ProjectBacklog", back_populates="sprints")
     user_stories = db.relationship("UserStory", back_populates="sprint_backlog")

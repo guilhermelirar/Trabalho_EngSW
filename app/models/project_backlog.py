@@ -1,3 +1,5 @@
+from sqlalchemy.orm import Mapped, relationship
+
 from app.models import db
 
 
@@ -12,18 +14,15 @@ class ProjectBacklog(db.Model):
         unique=True,
     )
 
-    project = db.relationship("Project", back_populates="backlog")
-    sprints = db.relationship(
+    project: Mapped["Project"] = relationship("Project", back_populates="backlog")
+
+    sprints: Mapped[list["SprintBacklog"]] = relationship(
         "SprintBacklog",
         back_populates="project_backlog",
         cascade="all, delete-orphan",
     )
-    epics = db.relationship(
-        "Epic",
-        back_populates="project_backlog",
-        cascade="all, delete-orphan",
-    )
-    user_stories = db.relationship(
+
+    user_stories: Mapped[list["UserStory"]] = relationship(
         "UserStory",
         back_populates="project_backlog",
         cascade="all, delete-orphan",

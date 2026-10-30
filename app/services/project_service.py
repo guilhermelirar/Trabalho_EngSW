@@ -4,11 +4,13 @@
 from collections.abc import Sequence
 
 from sqlalchemy import select
+from sqlalchemy.exc import IntegrityError
 from sqlalchemy.orm import joinedload
 
 from app.models import db
 from app.models.project import Project
 from app.models.project_backlog import ProjectBacklog
+from app.models.sprint import SprintBacklog
 from app.services.auth_service import get_user_by_id
 from app.services.exceptions import ProjectDomainException
 
@@ -117,3 +119,60 @@ def update_project(project_id: int, owner_id: int, name: str) -> Project:
         return project
 
     raise ProjectDomainException("Projeto não encontrado", status_code=404)
+
+
+def create_product_backlog(project_id: int, user_id: int):
+    """
+    [US-006 Gerenciar Product Backlog]
+    Cria um product backlog associado a um projeto caso o projeto não tenha.
+    Levanta exceção ProjectDomainException em caso de projeto não encontrado,
+    ou caso o projeto já tenha um backlog associado.
+    """
+    project: Project = get_project_by_id(project_id, user_id)
+    if project.backlog:
+        raise ProjectDomainException("Backlog já existe para este projeto")
+
+    project.backlog = ProjectBacklog()
+    db.session.commit()
+    return project.backlog
+
+
+def delete_product_backlog(user_id: int, project_id: int):
+    """
+    [US-006 Gerenciar Product Backlog]
+    Deleta um backlog de produto e todas suas sprints e histórias
+    de usuário em cascata, caso exista. Levanta ProjectDomainException
+    caso o projeto não tenha um product backlog.
+    """
+    project: Project = get_project_by_id(project_id, user_id)
+    if project.backlog:
+        db.session.delete(project.backlog)
+        db.session.commit()
+
+
+def create_sprint_backlog(
+    user_id: int, project_id: int, sprint_number: int
+) -> SprintBacklog:
+    """
+    [US-008 Gerenciar Sprint Backlog]
+    Criação de Sprint Backlog relacionado a um backlog de projeto
+    """
+    project = Project.query.filter_by(id=project_id, owner_id=user_id).first()
+
+    if not project:
+        raise ProjectDomainException("Projeto não encontrado.")
+
+    if not project.backlog:
+        raise ProjectDomainException("O projeto ainda não possui um Product Backlog.")
+
+    sprint = SprintBacklog()
+    sprint.project_backlog_id = project.backlog.id
+    sprint.sprint_number = sprint_number
+
+    try:
+        db.session.add(sprint)
+    except IntegrityError:
+        raise ProjectDomainException("Uma sprint com este número já existe")
+
+    db.session.commit()
+    return sprint
