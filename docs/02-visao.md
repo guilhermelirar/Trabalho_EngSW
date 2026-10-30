@@ -1,10 +1,10 @@
-| `<Nome do Projeto>`             |                  |
+| `Backlog Manager`             |                  |
 | :------------------------------ | :--------------- |
 | **Documento de Visão e Escopo** | Data: dd/mm/2026 |
 
 ...
 
-# (Nome do Projeto)
+#BACKLOG MANAGER
 
 ## Visão
 
@@ -15,7 +15,8 @@ O projeto consiste no desenvolvimento de um sistema para gerenciamento de requis
 
 O sistema permitirá que equipes criem e gerenciem projetos, Product Backlogs, Sprint Backlogs, épicos, histórias de usuário e critérios de aceitação, além de utilizar Story Points, MoSCoW e RICE.
 
-Foi definido pelo grupo que o sistema será desenvolvido como um site, devido à maior facilidade de encontrar informações e realizar o desenvolvimento dessa forma, utilizando SQL para o banco de dados e XXX pro Front end e XXXX pro Backend.
+Foi definido pelo grupo que o sistema será desenvolvido como um site, devido à maior facilidade de encontrar informações e realizar o desenvolvimento dessa forma.
+
 
 ### 2. Posicionamento
 
@@ -36,7 +37,7 @@ Foi definido pelo grupo que o sistema será desenvolvido como um site, devido à
 | --------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | **Para**                                            | Usuários e equipes que utilizam histórias de usuário para gerenciamento de requisitos.                                                                              |
 | **Quem**                                            | Precisam criar, organizar e gerenciar os elementos relacionados aos requisitos de seus projetos.                                                                    |
-| **O <Nome do produto>**                             | é um sistema para gerenciamento de requisitos baseado em histórias de usuário.                                                                                      |
+| **O Backlog Manager**                             | é um sistema para gerenciamento de requisitos baseado em histórias de usuário.                                                                                      |
 | **Que**                                             | Permite gerenciar projetos, Product Backlogs, Sprint Backlogs, épicos, histórias de usuário e critérios de aceitação, além de utilizar Story Points, MoSCoW e RICE. |
 | **Ao contrário de**                                 | Alternativas de gerenciamento de requisitos que não ofereçam, em um único sistema, as funcionalidades definidas para o projeto.                                     |
 | **Nosso produto**                                   | Reúne as funcionalidades de gerenciamento, estimativa e priorização definidas pelo grupo em um único sistema.                                                       |
