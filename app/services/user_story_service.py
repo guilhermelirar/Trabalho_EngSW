@@ -44,7 +44,7 @@ def update_user_story(story_id: int, user_id: int, new_data: dict) -> UserStory:
     Edita campos de uma história de usuário existente.
     """
     # busca história de usuário no banco de dados
-    story = UserStory.query.get(story_id)
+    story = db.session.get(UserStory, story_id)
     if not story:
         raise UserStoryDomainException(
             "História de usuário não encontrada.", status_code=404
@@ -54,10 +54,15 @@ def update_user_story(story_id: int, user_id: int, new_data: dict) -> UserStory:
         raise ProjectDomainException("Projeto não encontrado", status_code=404)
 
     validate_user_story_data(new_data, require_all=False)
-    story.title = str(new_data["title"]).strip()
-    story.role = str(new_data["role"]).strip()
-    story.action = str(new_data["action"]).strip()
-    story.benefit = str(new_data["benefit"]).strip()
+
+    if new_data.get("title"):
+        story.title = str(new_data["title"]).strip()
+    if new_data.get("role"):
+        story.role = str(new_data["role"]).strip()
+    if new_data.get("action"):
+        story.action = str(new_data["action"]).strip()
+    if new_data.get("benefit"):
+        story.benefit = str(new_data["benefit"]).strip()
 
     db.session.commit()
     return story
