@@ -1,6 +1,5 @@
 import pytest
 from flask import Flask
-from typing_extensions import get_protocol_members
 
 from app.services.auth_service import register_user
 from app.services.project_service import *
