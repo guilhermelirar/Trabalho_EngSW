@@ -3,5 +3,10 @@ from flask_sqlalchemy import SQLAlchemy
 
 db = SQLAlchemy()
 
-# models/__init__.py
-from app.models.User import User
+from app.models.acceptance_criteria import AcceptanceCriteria
+from app.models.epic import Epic
+from app.models.project import Project
+from app.models.project_backlog import ProjectBacklog
+from app.models.sprint import SprintBacklog
+from app.models.user import User
+from app.models.user_story import UserStory

@@ -6,12 +6,18 @@ from flask_login import LoginManager, current_user
 
 from app.models import db
 from app.routes.auth_routes import auth_bp
+<<<<<<< HEAD
 from app.services.AuthService import get_user_by_id
 
 # Pasta onde está este arquivo (raiz do projeto).
 # Templates e static são procurados aqui, independente de onde o Flask foi iniciado.
 BASE_DIR = Path(__file__).resolve().parent
 
+=======
+from app.routes.project_routes import projects_bp
+from app.services.auth_service import get_user_by_id
+from app.models import db
+>>>>>>> dev
 
 def create_app():
     """
@@ -31,6 +37,7 @@ def create_app():
     # Configuração de banco de dados de desenvolvimento
     app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///banco.db'
     app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
+    app.config['SECRET_KEY'] = 'backlog-manager-123'
 
     # Necessária para a sessão do Flask-Login e para as mensagens flash.
     # Em produção, defina a variável de ambiente SECRET_KEY.
@@ -48,6 +55,7 @@ def create_app():
 
     # Registrando as rotas
     app.register_blueprint(auth_bp)
+    app.register_blueprint(projects_bp, url_prefix = '/projects', strict_slashes=False)
 
     @login_manager.user_loader
     def login_user_loader(user_id):

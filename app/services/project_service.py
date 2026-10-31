@@ -1,0 +1,178 @@
+# app/services/project_service.py
+# Camada de negócios para gerenciamento de Projetos
+
+from collections.abc import Sequence
+
+from sqlalchemy import select
+from sqlalchemy.exc import IntegrityError
+from sqlalchemy.orm import joinedload
+
+from app.models import db
+from app.models.project import Project
+from app.models.project_backlog import ProjectBacklog
+from app.models.sprint import SprintBacklog
+from app.services.auth_service import get_user_by_id
+from app.services.exceptions import ProjectDomainException
+
+
+def validate_user_id(user_id: int):
+    user = get_user_by_id(user_id)
+    if user is None:
+        raise ProjectDomainException("Usuário responsável não foi encontrado.")
+    return user
+
+
+def validate_project_name(name: str | None):
+    if not name:
+        raise ProjectDomainException("O nome do projeto não pode ser vazio.")
+
+    clean_name = name.strip()
+
+    if len(clean_name) > 100:
+        raise ProjectDomainException(
+            "O nome do projeto não pode conter mais de 100 caracteres."
+        )
+
+    return clean_name
+
+
+def create_project(user_id: int, name: str | None) -> Project:
+    """
+    (US005 Create)
+    Criar projeto de nome 'name' associado a um usuário com id 'user_id'.
+    Retorna o projeto em caso de sucesso, ou lança exceção ProjectDomainException
+    em caso de erro de validação
+    """
+    validate_user_id(user_id)
+    clean_name = validate_project_name(name)
+
+    project = Project()
+    project.name = clean_name
+    project.owner_id = user_id
+
+    db.session.add(project)
+    db.session.commit()
+    return project
+
+
+def get_projects_by_user(user_id: int) -> Sequence[Project]:
+    """
+    (US005 Read)
+    Retorna iterável Sequence[Project] com a lista de projetos
+    associados ao usuário de id 'user_id'
+    """
+    validate_user_id(user_id)
+    query = select(Project).where(Project.owner_id == user_id)
+    return db.session.scalars(query).all()
+
+
+def delete_project(project_id: int, owner_id: int):
+    """
+    (US005 DELETE)
+    Deleta um projeto de id 'project_id' associado a um
+    dono 'owner_id'. Em caso de não encontrado, irá levantar
+    uma exceção ProjectDomainException
+    """
+    project = db.session.get(Project, project_id)
+
+    if project and project.owner_id == owner_id:
+        db.session.delete(project)
+        db.session.commit()
+        return
+
+    raise ProjectDomainException("Projeto não encontrado", status_code=404)
+
+
+def get_project_by_id(project_id: int, owner_id: int):
+    """
+    (US005 READ)
+    Obtém projeto com campos nome, descrição, e lista de histórias
+    de usuário (project backlog)
+    """
+    project = (
+        Project.query.options(
+            joinedload(Project.backlog).joinedload(ProjectBacklog.user_stories),
+            joinedload(Project.backlog).joinedload(ProjectBacklog.sprints),
+        )
+        .filter_by(id=project_id, owner_id=owner_id)
+        .first()
+    )
+
+    if project:
+        return project
+
+    raise ProjectDomainException("Projeto não encontrado", status_code=404)
+
+
+def update_project(project_id: int, owner_id: int, name: str) -> Project:
+    """
+    (US005 Update)
+    Atualiza campos do projeto (nome)
+    """
+    new_name = validate_project_name(name)
+    project = db.session.get(Project, project_id)
+
+    # Se existe e é do usuário, atualizar e retornar
+    if project and project.owner_id == owner_id:
+        project.name = new_name
+        db.session.commit()
+        return project
+
+    raise ProjectDomainException("Projeto não encontrado", status_code=404)
+
+
+def create_product_backlog(project_id: int, user_id: int):
+    """
+    [US-006 Gerenciar Product Backlog]
+    Cria um product backlog associado a um projeto caso o projeto não tenha.
+    Levanta exceção ProjectDomainException em caso de projeto não encontrado,
+    ou caso o projeto já tenha um backlog associado.
+    """
+    project: Project = get_project_by_id(project_id, user_id)
+    if project.backlog:
+        raise ProjectDomainException("Backlog já existe para este projeto")
+
+    project.backlog = ProjectBacklog()
+    db.session.commit()
+    return project.backlog
+
+
+def delete_product_backlog(user_id: int, project_id: int):
+    """
+    [US-006 Gerenciar Product Backlog]
+    Deleta um backlog de produto e todas suas sprints e histórias
+    de usuário em cascata, caso exista. Levanta ProjectDomainException
+    caso o projeto não tenha um product backlog.
+    """
+    project: Project = get_project_by_id(project_id, user_id)
+    if project.backlog:
+        db.session.delete(project.backlog)
+        db.session.commit()
+
+
+def create_sprint_backlog(
+    user_id: int, project_id: int, sprint_number: int
+) -> SprintBacklog:
+    """
+    [US-008 Gerenciar Sprint Backlog]
+    Criação de Sprint Backlog relacionado a um backlog de projeto
+    """
+    project = Project.query.filter_by(id=project_id, owner_id=user_id).first()
+
+    if not project:
+        raise ProjectDomainException("Projeto não encontrado.")
+
+    if not project.backlog:
+        raise ProjectDomainException("O projeto ainda não possui um Product Backlog.")
+
+    sprint = SprintBacklog()
+    sprint.project_backlog_id = project.backlog.id
+    sprint.sprint_number = sprint_number
+
+    try:
+        db.session.add(sprint)
+    except IntegrityError:
+        raise ProjectDomainException("Uma sprint com este número já existe")
+
+    db.session.commit()
+    return sprint

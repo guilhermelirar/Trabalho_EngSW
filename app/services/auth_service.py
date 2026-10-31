@@ -1,7 +1,7 @@
 # app/services/AuthService.py
 # Criação e login de contas
 from app.services.exceptions import LoginException, UserCreationException
-from app.models.User import User
+from app.models.user import User
 from app.models import db
 import re
 from werkzeug.security import generate_password_hash, check_password_hash
@@ -51,7 +51,7 @@ def register_user(name: str | None, email: str | None, plain_password: str | Non
 
 def get_user_by_id(user_id):
     """Wrapper para query de usuário, retorna usuário ou None"""
-    return User.query.get(user_id)
+    return db.session.get(User, user_id)
 
 def authenticate_user(email: str, password: str) -> User:
     """

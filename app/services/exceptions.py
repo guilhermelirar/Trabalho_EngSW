@@ -28,3 +28,10 @@ class LoginException(ServiceException):
     print("LoginException: Usuário (email) ou senha incorretos")
     def __init__(self):
         super().__init__("E-mail ou senha incorretos", 401)
+
+class ProjectDomainException(ServiceException):
+    """Erro em criação de projeto"""
+    pass
+
+class UserStoryDomainException(ServiceException):
+    "Erros no gerenciamento de user story"
