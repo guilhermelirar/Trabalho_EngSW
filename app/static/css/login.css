@@ -1,0 +1,16 @@
+/* ============================================
+   login.css — ajustes exclusivos da tela de login
+   ============================================ */
+.cartao--login {
+    max-width: 370px;
+    padding-top: 1.8rem;
+    padding-bottom: 1.8rem;
+}
+
+.cartao--login .formulario {
+    gap: 0.9rem;
+}
+
+.cartao--login .botao {
+    margin-top: 0.4rem;
+}

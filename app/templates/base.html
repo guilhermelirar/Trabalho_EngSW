@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>{% block titulo %}Backlog Manager{% endblock %}</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/base.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/components.css') }}">
+    {% block css %}{% endblock %}
+</head>
+<body>
+    <main class="pagina">
+        <section class="marca">
+            <img src="{{ url_for('static', filename='img/logo.svg') }}"
+                 alt="Backlog Manager" class="marca__logo">
+        </section>
+
+        <section class="painel-form">
+            {% block conteudo %}{% endblock %}
+        </section>
+    </main>
+</body>
+</html>

@@ -1,0 +1,72 @@
+/* ============================================
+   base.css — variáveis, reset e layout geral
+   ============================================ */
+:root {
+    --azul-principal: #0a7cf0;
+    --azul-escuro: #0864c4;
+    --azul-claro: #e3f0ff;      /* fundo dos inputs e borda do cartão */
+    --ciano-link: #12b5cb;
+    --marrom-texto: #3b2a0e;
+    --branco: #ffffff;
+    --erro-fundo: #ffe5e5;
+    --erro-texto: #a12020;
+    --sucesso-fundo: #e1f7e8;
+    --sucesso-texto: #1d6b38;
+
+    --fonte: "Inter", system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+    --raio-cartao: 36px;
+    --raio-campo: 12px;
+}
+
+*,
+*::before,
+*::after {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    font-family: var(--fonte);
+    color: var(--marrom-texto);
+    background: var(--branco);
+    min-height: 100vh;
+}
+
+/* Tela dividida: logo à esquerda, formulário à direita */
+.pagina {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    align-items: center;
+    min-height: 100vh;
+    padding: 2rem 4vw;
+    gap: 2rem;
+}
+
+.marca {
+    display: flex;
+    justify-content: center;
+}
+
+.marca__logo {
+    width: min(100%, 320px);
+    height: auto;
+}
+
+.painel-form {
+    display: flex;
+    justify-content: center;
+}
+
+/* Telas pequenas: empilha logo e formulário */
+@media (max-width: 800px) {
+    .pagina {
+        grid-template-columns: 1fr;
+        justify-items: center;
+        padding: 1.5rem 1rem;
+    }
+
+    .marca__logo {
+        width: 180px;
+    }
+}
