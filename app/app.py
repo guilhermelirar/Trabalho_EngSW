@@ -4,15 +4,15 @@ from pathlib import Path
 from flask import Flask, redirect, url_for
 from flask_login import LoginManager, current_user
 
+from app.routes.auth_routes import auth_bp
+from app.routes.project_routes import projects_bp
+from app.services.auth_service import get_user_by_id
+
 # Pasta onde está este arquivo (raiz do projeto).
 # Templates e static são procurados aqui, independente de onde o Flask foi iniciado.
 BASE_DIR = Path(__file__).resolve().parent
 
-=======
-from app.routes.project_routes import projects_bp
-from app.services.auth_service import get_user_by_id
 from app.models import db
->>>>>>> dev
 
 def create_app():
     """
