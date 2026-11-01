@@ -1,0 +1,44 @@
+<article class="story-card">
+    <div class="story-card__topline">
+        <span class="story-card__id">US-{{ story.id }}</span>
+        <button class="story-card__edit" type="button" data-dialog-open="edit-story-{{ story.id }}" aria-label="Editar {{ story.title }}">•••</button>
+    </div>
+    <h3>{{ story.title }}</h3>
+    <p><strong>Como</strong> {{ story.role }}, <strong>eu quero</strong> {{ story.action }} <strong>para</strong> {{ story.benefit }}.</p>
+    <div class="story-card__meta">
+        {% if story.story_points is not none %}<span>{{ story.story_points }} SP</span>{% endif %}
+        {% if story.moscow %}<span class="story-card__moscow story-card__moscow--{{ story.moscow }}">{{ story.moscow }}</span>{% endif %}
+    </div>
+</article>
+
+<dialog class="dialog dialog--story" id="edit-story-{{ story.id }}" aria-labelledby="edit-story-title-{{ story.id }}">
+    <form method="post" action="{{ url_for('projects.update_story', project_id=project.id, story_id=story.id) }}" class="dialog__form dialog__form--story">
+        <div class="dialog__heading">
+            <div>
+                <p class="eyebrow">HU-{{ '%02d' | format(story.id) }}</p>
+                <h2 id="edit-story-title-{{ story.id }}">Editar história</h2>
+            </div>
+            <button class="icon-button" type="button" data-dialog-close aria-label="Fechar">×</button>
+        </div>
+
+        <label class="field field--wide"><span>Título</span><input name="title" value="{{ story.title }}" required></label>
+        <div class="form-grid form-grid--stack">
+            <label class="field"><span>Como um</span><input name="role" value="{{ story.role }}" required></label>
+            <label class="field"><span>Eu quero</span><input name="action" value="{{ story.action }}" required></label>
+        </div>
+        <label class="field field--wide"><span>Para</span><input name="benefit" value="{{ story.benefit }}" required></label>
+
+        <div class="story-prioritization-layout">
+            <div class="story-prioritization-fields">
+                {% include "_story_prioritization_fields.html" %}
+            </div>
+            <div class="story-save-actions">
+                <button class="button button--primary" type="submit">Salvar</button>
+                <button class="button button--secondary" type="button" data-dialog-close>Cancelar</button>
+            </div>
+        </div>
+        <div class="story-delete-row">
+            <button class="button button--danger button--compact" type="submit" formaction="{{ url_for('projects.remove_story', project_id=project.id, story_id=story.id) }}" formmethod="post" data-confirm="Excluir a história ‘{{ story.title }}’?">Excluir história</button>
+        </div>
+    </form>
+</dialog>

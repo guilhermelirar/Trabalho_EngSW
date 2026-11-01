@@ -1,1 +1,107 @@
-<h1>Meus projetos</h1>
+{% extends "base.html" %}
+
+{% block titulo %}Meus projetos | Backlog Manager{% endblock %}
+{% block body_class %}pagina-app{% endblock %}
+
+{% block css %}
+<link rel="stylesheet" href="{{ url_for('static', filename='css/projects.css') }}">
+{% endblock %}
+
+{% block corpo %}
+<main class="app-shell">
+    <header class="app-header">
+        <a class="app-brand" href="{{ url_for('projects.projects_list') }}" aria-label="Backlog Manager - Meus projetos">
+            <span class="app-brand__mark" aria-hidden="true">V</span>
+            <span>Backlog Manager</span>
+        </a>
+        <span class="app-header__user">{{ current_user.name }}</span>
+    </header>
+
+    <section class="projects-page" aria-labelledby="page-title">
+        <div class="page-heading">
+            <div>
+                <p class="eyebrow">Área de trabalho</p>
+                <h1 id="page-title">Meus projetos</h1>
+                <p class="page-heading__description">Organize os backlogs dos seus produtos em um só lugar.</p>
+            </div>
+            <button class="button button--primary" type="button" data-dialog-open="new-project-dialog">
+                <span aria-hidden="true">+</span> Novo projeto
+            </button>
+        </div>
+
+        {% include "_mensagens.html" %}
+
+        {% if projects %}
+        <div class="project-list">
+            {% for project in projects %}
+            <article class="project-card">
+                <div class="project-card__body">
+                    <span class="project-card__index">Projeto {{ loop.index }}</span>
+                    <h2>{{ project.name }}</h2>
+                    <p>{{ project.description or "Sem descrição cadastrada." }}</p>
+                </div>
+                <div class="project-card__actions" aria-label="Ações do projeto {{ project.name }}">
+                    <a class="button button--primary button--compact" href="{{ url_for('projects.project_detail', project_id=project.id) }}">Entrar</a>
+                    <button class="button button--secondary button--compact" type="button" data-dialog-open="edit-project-{{ project.id }}">Editar</button>
+                    <form method="post" action="{{ url_for('projects.remove_project', project_id=project.id) }}" class="inline-form" data-confirm="Excluir o projeto ‘{{ project.name }}’? Esta ação não pode ser desfeita.">
+                        <button class="button button--danger button--compact" type="submit">Excluir</button>
+                    </form>
+                </div>
+            </article>
+
+            <dialog class="dialog" id="edit-project-{{ project.id }}" aria-labelledby="edit-project-title-{{ project.id }}">
+                <form method="post" action="{{ url_for('projects.update_project', project_id=project.id) }}" class="dialog__form">
+                    <div class="dialog__heading">
+                        <div>
+                            <p class="eyebrow">Projeto</p>
+                            <h2 id="edit-project-title-{{ project.id }}">Editar projeto</h2>
+                        </div>
+                        <button class="icon-button" type="button" data-dialog-close aria-label="Fechar">×</button>
+                    </div>
+                    <label class="field">
+                        <span>Nome do projeto</span>
+                        <input name="name" value="{{ project.name }}" maxlength="100" required autofocus>
+                    </label>
+                    <div class="dialog__actions">
+                        <button class="button button--secondary" type="button" data-dialog-close>Cancelar</button>
+                        <button class="button button--primary" type="submit">Salvar alterações</button>
+                    </div>
+                </form>
+            </dialog>
+            {% endfor %}
+        </div>
+        {% else %}
+        <section class="empty-state">
+            <div class="empty-state__icon" aria-hidden="true">▦</div>
+            <h2>Comece pelo primeiro projeto</h2>
+            <p>Crie um projeto para montar seu Product Backlog e suas sprints.</p>
+            <button class="button button--primary" type="button" data-dialog-open="new-project-dialog">Criar projeto</button>
+        </section>
+        {% endif %}
+    </section>
+</main>
+
+<dialog class="dialog" id="new-project-dialog" aria-labelledby="new-project-title">
+    <form method="post" action="{{ url_for('projects.create_project') }}" class="dialog__form">
+        <div class="dialog__heading">
+            <div>
+                <p class="eyebrow">Novo espaço</p>
+                <h2 id="new-project-title">Criar projeto</h2>
+            </div>
+            <button class="icon-button" type="button" data-dialog-close aria-label="Fechar">×</button>
+        </div>
+        <label class="field">
+            <span>Nome do projeto</span>
+            <input name="name" placeholder="Ex.: Sistema de gestão de requisitos" maxlength="100" required autofocus>
+        </label>
+        <div class="dialog__actions">
+            <button class="button button--secondary" type="button" data-dialog-close>Cancelar</button>
+            <button class="button button--primary" type="submit">Criar projeto</button>
+        </div>
+    </form>
+</dialog>
+{% endblock %}
+
+{% block scripts %}
+<script src="{{ url_for('static', filename='js/projects.js') }}"></script>
+{% endblock %}

@@ -13,7 +13,8 @@
     <link rel="stylesheet" href="{{ url_for('static', filename='css/components.css') }}">
     {% block css %}{% endblock %}
 </head>
-<body>
+<body class="{% block body_class %}{% endblock %}">
+    {% block corpo %}
     <main class="pagina">
         <section class="marca">
             <img src="{{ url_for('static', filename='img/logo.svg') }}"
@@ -24,5 +25,7 @@
             {% block conteudo %}{% endblock %}
         </section>
     </main>
+    {% endblock %}
+    {% block scripts %}{% endblock %}
 </body>
 </html>

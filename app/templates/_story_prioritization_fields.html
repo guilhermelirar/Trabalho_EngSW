@@ -1,0 +1,52 @@
+{% set points_value = story.story_points if story is defined else none %}
+{% set moscow_value = story.moscow if story is defined else none %}
+{% set reach_value = story.rice_reach if story is defined else none %}
+{% set impact_value = story.rice_impact if story is defined else none %}
+{% set confidence_value = story.rice_confidence if story is defined else none %}
+{% set effort_value = story.rice_effort if story is defined else none %}
+{% set rice_score_value = story.rice_score if story is defined else none %}
+
+<fieldset class="story-form-section story-form-section--points">
+    <legend>Story Points</legend>
+    <div class="choice-list choice-list--points">
+        {% for points in [0, 1, 2, 3, 5, 8, 13, 21, 34, 55] %}
+        <label class="choice-circle" title="{{ points }} Story Points">
+            <input type="radio" name="story_points" value="{{ points }}" {% if points_value == points %}checked{% endif %}>
+            <span>{{ points }}</span>
+        </label>
+        {% endfor %}
+    </div>
+</fieldset>
+
+<fieldset class="story-form-section story-form-section--moscow">
+    <legend>MoSCoW</legend>
+    <div class="choice-list choice-list--moscow">
+        <label class="choice-circle choice-circle--must" title="Must have — indispensável">
+            <input type="radio" name="moscow" value="must" {% if moscow_value == 'must' %}checked{% endif %}>
+            <span>M</span>
+        </label>
+        <label class="choice-circle choice-circle--should" title="Should have — importante">
+            <input type="radio" name="moscow" value="should" {% if moscow_value == 'should' %}checked{% endif %}>
+            <span>S</span>
+        </label>
+        <label class="choice-circle choice-circle--could" title="Could have — desejável">
+            <input type="radio" name="moscow" value="could" {% if moscow_value == 'could' %}checked{% endif %}>
+            <span>C</span>
+        </label>
+        <label class="choice-circle choice-circle--wont" title="Won't have — fora do escopo">
+            <input type="radio" name="moscow" value="wont" {% if moscow_value == 'wont' %}checked{% endif %}>
+            <span>W</span>
+        </label>
+    </div>
+</fieldset>
+
+<fieldset class="story-form-section story-form-section--rice">
+    <legend>Cálculo RICE</legend>
+    <div class="rice-fields rice-fields--compact">
+        <label class="field"><span>Alcance</span><input type="number" name="rice_reach" min="0" step="1" value="{{ reach_value if reach_value is not none else '' }}" data-rice-field></label>
+        <label class="field"><span>Impacto</span><input type="number" name="rice_impact" min="0" step="0.1" value="{{ impact_value if impact_value is not none else '' }}" data-rice-field></label>
+        <label class="field"><span>Confiança</span><input type="number" name="rice_confidence" min="0" max="100" step="1" value="{{ confidence_value if confidence_value is not none else '' }}" data-rice-field></label>
+        <label class="field"><span>Esforço</span><input type="number" name="rice_effort" min="0.1" step="0.1" value="{{ effort_value if effort_value is not none else '' }}" data-rice-field></label>
+        <p class="rice-score"><span>Score RICE</span><output data-rice-score>{{ rice_score_value if rice_score_value is not none else '—' }}</output></p>
+    </div>
+</fieldset>

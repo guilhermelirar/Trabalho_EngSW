@@ -176,3 +176,24 @@ def create_sprint_backlog(
 
     db.session.commit()
     return sprint
+
+
+def delete_sprint_backlog(user_id: int, project_id: int, sprint_id: int):
+    """Remove uma sprint e devolve suas histórias ao Product Backlog."""
+    project = get_project_by_id(project_id, user_id)
+    if not project.backlog:
+        raise ProjectDomainException("O projeto não possui um Product Backlog.")
+
+    sprint = next(
+        (item for item in project.backlog.sprints if item.id == sprint_id), None
+    )
+    if not sprint:
+        raise ProjectDomainException("Sprint Backlog não encontrada.", status_code=404)
+
+    # Uma história nasce no Product Backlog. Ao apagar a sprint, ela volta para lá
+    # em vez de ser removida junto com o planejamento da sprint.
+    for story in sprint.user_stories:
+        story.sprint_backlog_id = None
+
+    db.session.delete(sprint)
+    db.session.commit()

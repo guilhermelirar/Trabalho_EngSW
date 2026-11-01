@@ -32,16 +32,17 @@ def login():
         flash("senha inválida", "danger")
         return render_template('login.html', email=email), 400
 
-    try:
-        # caminho de sucesso
-        user = auth_srv.authenticate_user(email, password)
-        login_user(user)
-        return redirect(url_for('projects.projects_list'))
+    if email and password:
+        try:
+            # caminho de sucesso
+            user = auth_srv.authenticate_user(email, password)
+            login_user(user)
+            return redirect(url_for('projects.projects_list'))
 
-    except LoginException as error:
-        # usuário ou senha incorretos
-        flash(error.message, "danger")
-        return render_template('login.html', email=email), 401
+        except LoginException as error:
+            # usuário ou senha incorretos
+            flash(error.message, "danger")
+            return render_template('login.html', email=email), 401
 
 # REGISTER (criar usuário)
 @auth_bp.route('/register', methods=['GET', 'POST'])
