@@ -3,7 +3,6 @@ from app.models.user_story import UserStory
 from app.services import project_service
 from app.services.exceptions import ProjectDomainException, UserStoryDomainException
 
-
 STORY_POINT_VALUES = {0, 1, 2, 3, 5, 8, 13, 21, 34, 55}
 MOSCOW_VALUES = {"must", "should", "could", "wont"}
 
@@ -22,7 +21,9 @@ def _optional_number(value, field: str, parser):
     try:
         return parser(str(value))
     except ValueError as error:
-        raise UserStoryDomainException(f"O campo '{field}' possui um valor inválido.") from error
+        raise UserStoryDomainException(
+            f"O campo '{field}' possui um valor inválido."
+        ) from error
 
 
 def get_prioritization_data(data: dict) -> dict:
@@ -75,12 +76,22 @@ def create_user_story(project_id: int, user_id: int, data: dict) -> UserStory:
 
     validate_user_story_data(data, require_all=True)
 
+    sprint_id = data.get("sprint_backlog_id")
+    sprint_backlog_id = int(sprint_id) if sprint_id and sprint_id.strip() else None
+
     user_story = UserStory()
     user_story.project_backlog_id = project.backlog.id
     user_story.title = str(data["title"]).strip()
     user_story.role = str(data["role"]).strip()
     user_story.action = str(data["action"]).strip()
     user_story.benefit = str(data["benefit"]).strip()
+
+    # Valida se sprint pertence ao projeto
+    if sprint_backlog_id:
+        valid_sprint_ids = {sprint.id for sprint in project.backlog.sprints}
+        if sprint_backlog_id not in valid_sprint_ids:
+            raise UserStoryDomainException("Sprint inválida para este projeto.")
+        user_story.sprint_backlog_id = sprint_backlog_id
 
     prioritization_data = get_prioritization_data(data)
     for field, value in prioritization_data.items():
@@ -130,6 +141,12 @@ def update_user_story(story_id: int, user_id: int, new_data: dict) -> UserStory:
         story.action = str(new_data["action"]).strip()
     if new_data.get("benefit"):
         story.benefit = str(new_data["benefit"]).strip()
+
+    if "sprint_backlog_id" in new_data:
+        raw_sprint_id = new_data.get("sprint_backlog_id")
+        story.sprint_backlog_id = (
+            int(raw_sprint_id) if raw_sprint_id and str(raw_sprint_id).strip() else None
+        )
 
     prioritization_fields = {
         "story_points",
