@@ -104,7 +104,7 @@ def get_project_by_id(project_id: int, owner_id: int):
     raise ProjectDomainException("Projeto não encontrado", status_code=404)
 
 
-def update_project(project_id: int, owner_id: int, name: str) -> Project:
+def update_project(project_id: int, owner_id: int, name: str | None) -> Project:
     """
     (US005 Update)
     Atualiza campos do projeto (nome)
