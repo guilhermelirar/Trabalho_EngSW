@@ -28,6 +28,20 @@
         </div>
         <label class="field field--wide"><span>Para</span><input name="benefit" value="{{ story.benefit }}" required></label>
 
+        <label class="field field--wide">
+            <span>Sprint</span>
+            <select name="sprint_backlog_id">
+                <option value="" {% if story.sprint_backlog_id is none %}selected{% endif %}>
+                    Sem sprint
+                </option>
+                {% for sprint in project.backlog.sprints | sort(attribute='sprint_number') %}
+                <option value="{{ sprint.id }}" {% if story.sprint_backlog_id == sprint.id %}selected{% endif %}>
+                    Sprint Backlog {{ sprint.sprint_number }}
+                </option>
+                {% endfor %}
+            </select>
+        </label>
+
         <div class="story-prioritization-layout">
             <div class="story-prioritization-fields">
                 {% include "_story_prioritization_fields.html" %}
