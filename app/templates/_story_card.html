@@ -12,7 +12,7 @@
 </article>
 
 <dialog class="dialog dialog--story" id="edit-story-{{ story.id }}" aria-labelledby="edit-story-title-{{ story.id }}">
-    <form method="post" action="{{ url_for('projects.update_story', project_id=project.id, story_id=story.id) }}" class="dialog__form dialog__form--story">
+    <form method="post" action="{{ url_for('story.update_story', project_id=project.id, story_id=story.id) }}" class="dialog__form dialog__form--story">
         <div class="dialog__heading">
             <div>
                 <p class="eyebrow">HU-{{ '%02d' | format(story.id) }}</p>
@@ -38,7 +38,7 @@
             </div>
         </div>
         <div class="story-delete-row">
-            <button class="button button--danger button--compact" type="submit" formaction="{{ url_for('projects.remove_story', project_id=project.id, story_id=story.id) }}" formmethod="post" data-confirm="Excluir a história ‘{{ story.title }}’?">Excluir história</button>
+            <button class="button button--danger button--compact" type="submit" formaction="{{ url_for('story.remove_story', project_id=project.id, story_id=story.id) }}" formmethod="post" data-confirm="Excluir a história ‘{{ story.title }}’?">Excluir história</button>
         </div>
     </form>
 </dialog>

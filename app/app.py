@@ -2,11 +2,12 @@ import os
 from pathlib import Path
 
 from flask import Flask, redirect, url_for
-from flask_login import LoginManager, current_user
+from flask_login import LoginManager
 from sqlalchemy import inspect, text
 
 from app.routes.auth_routes import auth_bp
 from app.routes.project_routes import projects_bp
+from app.routes.story_routes import story_bp
 from app.services.auth_service import get_user_by_id
 
 # Pasta onde está este arquivo (raiz do projeto).
@@ -81,6 +82,7 @@ def create_app():
     # Registrando as rotas
     app.register_blueprint(auth_bp)
     app.register_blueprint(projects_bp, url_prefix = '/projects', strict_slashes=False)
+    app.register_blueprint(story_bp, url_prefix = '/projects', strict_slashes = False)
 
     @login_manager.user_loader
     def login_user_loader(user_id):

@@ -124,7 +124,7 @@
                         {% for story in epic.user_stories %}
                         <div class="epic-story-row">
                             <span>HU-{{ '%02d' | format(story.id) }} · {{ story.title }}</span>
-                            <form method="post" action="{{ url_for('projects.unlink_story_from_epic', project_id=project.id, epic_id=epic.id, story_id=story.id) }}">
+                            <form method="post" action="{{ url_for('story.unlink_story_from_epic', project_id=project.id, epic_id=epic.id, story_id=story.id) }}">
                                 <button type="submit" aria-label="Desvincular {{ story.title }}">×</button>
                             </form>
                         </div>
@@ -135,14 +135,14 @@
                     <div class="epic-card__actions">
                         <button class="button button--secondary button--compact" type="button" data-dialog-open="link-story-{{ epic.id }}">Vincular HU</button>
                         <button class="button button--secondary button--compact" type="button" data-dialog-open="edit-epic-{{ epic.id }}">Editar</button>
-                        <form method="post" action="{{ url_for('projects.remove_epic', project_id=project.id, epic_id=epic.id) }}" class="inline-form" data-confirm="Excluir o épico ‘{{ epic.title }}’? As histórias serão mantidas.">
+                        <form method="post" action="{{ url_for('story.remove_epic', project_id=project.id, epic_id=epic.id) }}" class="inline-form" data-confirm="Excluir o épico ‘{{ epic.title }}’? As histórias serão mantidas.">
                             <button class="button button--danger button--compact" type="submit">Excluir</button>
                         </form>
                     </div>
                 </article>
 
                 <dialog class="dialog" id="edit-epic-{{ epic.id }}" aria-labelledby="edit-epic-title-{{ epic.id }}">
-                    <form method="post" action="{{ url_for('projects.update_epic', project_id=project.id, epic_id=epic.id) }}" class="dialog__form">
+                    <form method="post" action="{{ url_for('story.update_epic', project_id=project.id, epic_id=epic.id) }}" class="dialog__form">
                         <div class="dialog__heading">
                             <div><p class="eyebrow">Épico</p><h2 id="edit-epic-title-{{ epic.id }}">Editar épico</h2></div>
                             <button class="icon-button" type="button" data-dialog-close aria-label="Fechar">×</button>
@@ -156,7 +156,7 @@
                 </dialog>
 
                 <dialog class="dialog" id="link-story-{{ epic.id }}" aria-labelledby="link-story-title-{{ epic.id }}">
-                    <form method="post" action="{{ url_for('projects.link_story_to_epic', project_id=project.id, epic_id=epic.id) }}" class="dialog__form">
+                    <form method="post" action="{{ url_for('story.link_story_to_epic', project_id=project.id, epic_id=epic.id) }}" class="dialog__form">
                         <div class="dialog__heading">
                             <div><p class="eyebrow">{{ epic.title }}</p><h2 id="link-story-title-{{ epic.id }}">Vincular HU</h2></div>
                             <button class="icon-button" type="button" data-dialog-close aria-label="Fechar">×</button>
@@ -191,7 +191,7 @@
         </section>
 
         <dialog class="dialog" id="new-epic-dialog" aria-labelledby="new-epic-title">
-            <form method="post" action="{{ url_for('projects.create_epic', project_id=project.id) }}" class="dialog__form">
+            <form method="post" action="{{ url_for('story.create_epic', project_id=project.id) }}" class="dialog__form">
                 <div class="dialog__heading">
                     <div><p class="eyebrow">Product Backlog</p><h2 id="new-epic-title">Criar novo épico</h2></div>
                     <button class="icon-button" type="button" data-dialog-close aria-label="Fechar">×</button>
@@ -205,7 +205,7 @@
         </dialog>
 
         <dialog class="dialog dialog--story" id="new-story-dialog" aria-labelledby="new-story-title">
-            <form method="post" action="{{ url_for('projects.create_story', project_id=project.id) }}" class="dialog__form dialog__form--story">
+            <form method="post" action="{{ url_for('story.create_story', project_id=project.id) }}" class="dialog__form dialog__form--story">
                 <div class="dialog__heading">
                     <div>
                         <p class="eyebrow">Product Backlog</p>
