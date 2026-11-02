@@ -1,20 +1,24 @@
-{% extends "base.html" %}
-
-{% block titulo %}{{ project.name }} | Backlog Manager{% endblock %}
-{% block body_class %}pagina-app{% endblock %}
-
-{% block css %}
-<link rel="stylesheet" href="{{ url_for('static', filename='css/projects.css') }}">
-{% endblock %}
-
-{% block corpo %}
+{% extends "base.html" %} {% block titulo %}{{ project.name }} | Backlog
+Manager{% endblock %} {% block body_class %}pagina-app{% endblock %} {% block
+css %}
+<link
+    rel="stylesheet"
+    href="{{ url_for('static', filename='css/projects.css') }}"
+/>
+{% endblock %} {% block corpo %}
 <main class="app-shell app-shell--board">
     <header class="app-header">
-        <a class="app-brand" href="{{ url_for('projects.projects_list') }}" aria-label="Voltar para meus projetos">
+        <a
+            class="app-brand"
+            href="{{ url_for('projects.projects_list') }}"
+            aria-label="Voltar para meus projetos"
+        >
             <span class="app-brand__mark" aria-hidden="true">V</span>
             <span>Backlog Manager</span>
         </a>
-        <a class="back-link" href="{{ url_for('projects.projects_list') }}">← Meus projetos</a>
+        <a class="back-link" href="{{ url_for('projects.projects_list') }}"
+            >← Meus projetos</a
+        >
     </header>
 
     <section class="project-page" aria-labelledby="project-title">
@@ -22,91 +26,187 @@
             <div>
                 <p class="eyebrow">Projeto</p>
                 <h1 id="project-title">{{ project.name }}</h1>
-                <p>{{ project.description or "Planeje, priorize e acompanhe as histórias deste projeto." }}</p>
+                <p>
+                    {{ project.description or "Planeje, priorize e acompanhe as
+                    histórias deste projeto." }}
+                </p>
             </div>
             {% if project.backlog %}
             <div class="project-heading__actions">
-                <form method="post" action="{{ url_for('projects.create_sprint', project_id=project.id) }}">
-                    <button class="button button--secondary" type="submit">+ Criar Sprint Backlog</button>
+                <form
+                    method="post"
+                    action="{{ url_for('projects.create_sprint', project_id=project.id) }}"
+                >
+                    <button class="button button--secondary" type="submit">
+                        + Criar Sprint Backlog
+                    </button>
                 </form>
-                <button class="button button--primary" type="button" data-dialog-open="new-story-dialog">+ Criar história</button>
+                <button
+                    class="button button--primary"
+                    type="button"
+                    data-dialog-open="new-story-dialog"
+                >
+                    + Criar história
+                </button>
             </div>
             {% endif %}
         </div>
 
-        {% include "_mensagens.html" %}
-
-        {% if not project.backlog %}
+        {% include "_mensagens.html" %} {% if not project.backlog %}
         <section class="empty-state empty-state--backlog">
             <div class="empty-state__icon" aria-hidden="true">☷</div>
             <h2>Este projeto ainda não tem um Product Backlog</h2>
             <p>Crie-o para registrar histórias de usuário, épicos e sprints.</p>
-            <form method="post" action="{{ url_for('projects.create_backlog', project_id=project.id) }}">
-                <button class="button button--primary" type="submit">Criar Product Backlog</button>
+            <form
+                method="post"
+                action="{{ url_for('projects.create_backlog', project_id=project.id) }}"
+            >
+                <button class="button button--primary" type="submit">
+                    Criar Product Backlog
+                </button>
             </form>
         </section>
         {% else %}
         <div class="project-tabs" role="tablist" aria-label="Seções do projeto">
-            <button class="project-tab is-active" type="button" role="tab" aria-selected="true" aria-controls="backlogs-panel" id="backlogs-tab" data-tab-target="backlogs-panel">Backlogs e HUs</button>
-            <button class="project-tab" type="button" role="tab" aria-selected="false" aria-controls="epics-panel" id="epics-tab" data-tab-target="epics-panel">Aba de épicos</button>
+            <button
+                class="project-tab is-active"
+                type="button"
+                role="tab"
+                aria-selected="true"
+                aria-controls="backlogs-panel"
+                id="backlogs-tab"
+                data-tab-target="backlogs-panel"
+            >
+                Backlogs e HUs
+            </button>
+            <button
+                class="project-tab"
+                type="button"
+                role="tab"
+                aria-selected="false"
+                aria-controls="epics-panel"
+                id="epics-tab"
+                data-tab-target="epics-panel"
+            >
+                Aba de épicos
+            </button>
         </div>
 
-        <section class="project-tab-panel" id="backlogs-panel" role="tabpanel" aria-labelledby="backlogs-tab">
+        <section
+            class="project-tab-panel"
+            id="backlogs-panel"
+            role="tabpanel"
+            aria-labelledby="backlogs-tab"
+        >
             <section class="backlog-board" aria-label="Backlogs do projeto">
                 <article class="backlog-column">
                     <header class="backlog-column__header">
                         <div>
                             <h2>Product Backlog</h2>
-                            <span>{{ project.backlog.user_stories | selectattr('sprint_backlog_id', 'none') | list | length }} histórias</span>
+                            <span
+                                >{{ project.backlog.user_stories |
+                                selectattr('sprint_backlog_id', 'none') | list |
+                                length }} histórias</span
+                            >
                         </div>
-                        <button class="column-add" type="button" data-dialog-open="new-story-dialog" aria-label="Criar história no Product Backlog">+</button>
+                        <button
+                            class="column-add"
+                            type="button"
+                            data-dialog-open="new-story-dialog"
+                            aria-label="Criar história no Product Backlog"
+                        >
+                            +
+                        </button>
                     </header>
                     <div class="story-stack">
-                        {% for story in project.backlog.user_stories if story.sprint_backlog_id is none %}
-                            {% include "_story_card.html" %}
-                        {% else %}
+                        {% for story in project.backlog.user_stories if
+                        story.sprint_backlog_id is none %} {% include
+                        "_story_card.html" %} {% else %}
                         <p class="column-empty">Nenhuma história no backlog.</p>
                         {% endfor %}
                     </div>
                 </article>
 
-                {% for sprint in project.backlog.sprints | sort(attribute='sprint_number') %}
+                {% for sprint in project.backlog.sprints |
+                sort(attribute='sprint_number') %}
                 <article class="backlog-column">
                     <header class="backlog-column__header">
                         <div>
                             <h2>Sprint Backlog {{ sprint.sprint_number }}</h2>
-                            <span>{{ sprint.user_stories | length }} histórias</span>
+                            <span
+                                >{{ sprint.user_stories | length }}
+                                histórias</span
+                            >
                         </div>
                         <div class="column-actions">
-                            <button class="column-add" type="button" data-dialog-open="new-story-dialog" aria-label="Criar história">+</button>
-                            <form method="post" action="{{ url_for('projects.remove_sprint', project_id=project.id, sprint_id=sprint.id) }}" data-confirm="Remover a Sprint Backlog {{ sprint.sprint_number }}? As histórias retornarão ao Product Backlog.">
-                                <button class="column-delete" type="submit" title="Remover sprint" aria-label="Remover Sprint Backlog {{ sprint.sprint_number }}">×</button>
+                            <button
+                                class="column-add"
+                                type="button"
+                                data-dialog-open="new-story-dialog"
+                                data-sprint-id="{{ sprint.id }}"
+                                aria-label="Criar história"
+                            >
+                                +
+                            </button>
+                            <form
+                                method="post"
+                                action="{{ url_for('projects.remove_sprint', project_id=project.id, sprint_id=sprint.id) }}"
+                                data-confirm="Remover a Sprint Backlog {{ sprint.sprint_number }}? As histórias retornarão ao Product Backlog."
+                            >
+                                <button
+                                    class="column-delete"
+                                    type="submit"
+                                    title="Remover sprint"
+                                    aria-label="Remover Sprint Backlog {{ sprint.sprint_number }}"
+                                >
+                                    ×
+                                </button>
                             </form>
                         </div>
                     </header>
                     <div class="story-stack">
-                        {% for story in sprint.user_stories %}
-                            {% include "_story_card.html" %}
-                        {% else %}
-                        <p class="column-empty">Nenhuma história nesta sprint.</p>
+                        {% for story in sprint.user_stories %} {% include
+                        "_story_card.html" %} {% else %}
+                        <p class="column-empty">
+                            Nenhuma história nesta sprint.
+                        </p>
                         {% endfor %}
                     </div>
                 </article>
                 {% endfor %}
 
-                <form method="post" action="{{ url_for('projects.create_sprint', project_id=project.id) }}" class="add-sprint">
+                <form
+                    method="post"
+                    action="{{ url_for('projects.create_sprint', project_id=project.id) }}"
+                    class="add-sprint"
+                >
                     <button type="submit">+ Adicionar sprint</button>
                 </form>
             </section>
         </section>
 
-        <section class="project-tab-panel" id="epics-panel" role="tabpanel" aria-labelledby="epics-tab" hidden>
+        <section
+            class="project-tab-panel"
+            id="epics-panel"
+            role="tabpanel"
+            aria-labelledby="epics-tab"
+            hidden
+        >
             <div class="epics-heading">
                 <div>
                     <h2>Épicos cadastrados</h2>
-                    <p>Organize as histórias de usuário por grandes blocos de trabalho.</p>
+                    <p>
+                        Organize as histórias de usuário por grandes blocos de
+                        trabalho.
+                    </p>
                 </div>
-                <button class="button button--primary" type="button" data-dialog-open="new-epic-dialog">+ Criar novo épico</button>
+                <button
+                    class="button button--primary"
+                    type="button"
+                    data-dialog-open="new-epic-dialog"
+                >
+                    + Criar novo épico
+                </button>
             </div>
 
             {% if project.backlog.epics %}
@@ -119,62 +219,178 @@
                             <h3>{{ epic.title }}</h3>
                         </div>
                     </div>
-                    <section class="epic-card__stories" aria-label="Histórias vinculadas a {{ epic.title }}">
+                    <section
+                        class="epic-card__stories"
+                        aria-label="Histórias vinculadas a {{ epic.title }}"
+                    >
                         <h4>Histórias de usuário vinculadas</h4>
                         {% for story in epic.user_stories %}
                         <div class="epic-story-row">
-                            <span>HU-{{ '%02d' | format(story.id) }} · {{ story.title }}</span>
-                            <form method="post" action="{{ url_for('story.unlink_story_from_epic', project_id=project.id, epic_id=epic.id, story_id=story.id) }}">
-                                <button type="submit" aria-label="Desvincular {{ story.title }}">×</button>
+                            <span
+                                >HU-{{ '%02d' | format(story.id) }} · {{
+                                story.title }}</span
+                            >
+                            <form
+                                method="post"
+                                action="{{ url_for('story.unlink_story_from_epic', project_id=project.id, epic_id=epic.id, story_id=story.id) }}"
+                            >
+                                <button
+                                    type="submit"
+                                    aria-label="Desvincular {{ story.title }}"
+                                >
+                                    ×
+                                </button>
                             </form>
                         </div>
                         {% else %}
-                        <p class="epic-card__empty">Nenhuma história vinculada.</p>
+                        <p class="epic-card__empty">
+                            Nenhuma história vinculada.
+                        </p>
                         {% endfor %}
                     </section>
                     <div class="epic-card__actions">
-                        <button class="button button--secondary button--compact" type="button" data-dialog-open="link-story-{{ epic.id }}">Vincular HU</button>
-                        <button class="button button--secondary button--compact" type="button" data-dialog-open="edit-epic-{{ epic.id }}">Editar</button>
-                        <form method="post" action="{{ url_for('story.remove_epic', project_id=project.id, epic_id=epic.id) }}" class="inline-form" data-confirm="Excluir o épico ‘{{ epic.title }}’? As histórias serão mantidas.">
-                            <button class="button button--danger button--compact" type="submit">Excluir</button>
+                        <button
+                            class="button button--secondary button--compact"
+                            type="button"
+                            data-dialog-open="link-story-{{ epic.id }}"
+                        >
+                            Vincular HU
+                        </button>
+                        <button
+                            class="button button--secondary button--compact"
+                            type="button"
+                            data-dialog-open="edit-epic-{{ epic.id }}"
+                        >
+                            Editar
+                        </button>
+                        <form
+                            method="post"
+                            action="{{ url_for('story.remove_epic', project_id=project.id, epic_id=epic.id) }}"
+                            class="inline-form"
+                            data-confirm="Excluir o épico ‘{{ epic.title }}’? As histórias serão mantidas."
+                        >
+                            <button
+                                class="button button--danger button--compact"
+                                type="submit"
+                            >
+                                Excluir
+                            </button>
                         </form>
                     </div>
                 </article>
 
-                <dialog class="dialog" id="edit-epic-{{ epic.id }}" aria-labelledby="edit-epic-title-{{ epic.id }}">
-                    <form method="post" action="{{ url_for('story.update_epic', project_id=project.id, epic_id=epic.id) }}" class="dialog__form">
+                <dialog
+                    class="dialog"
+                    id="edit-epic-{{ epic.id }}"
+                    aria-labelledby="edit-epic-title-{{ epic.id }}"
+                >
+                    <form
+                        method="post"
+                        action="{{ url_for('story.update_epic', project_id=project.id, epic_id=epic.id) }}"
+                        class="dialog__form"
+                    >
                         <div class="dialog__heading">
-                            <div><p class="eyebrow">Épico</p><h2 id="edit-epic-title-{{ epic.id }}">Editar épico</h2></div>
-                            <button class="icon-button" type="button" data-dialog-close aria-label="Fechar">×</button>
+                            <div>
+                                <p class="eyebrow">Épico</p>
+                                <h2 id="edit-epic-title-{{ epic.id }}">
+                                    Editar épico
+                                </h2>
+                            </div>
+                            <button
+                                class="icon-button"
+                                type="button"
+                                data-dialog-close
+                                aria-label="Fechar"
+                            >
+                                ×
+                            </button>
                         </div>
-                        <label class="field"><span>Título do épico</span><input name="title" value="{{ epic.title }}" maxlength="120" required autofocus></label>
+                        <label class="field"
+                            ><span>Título do épico</span
+                            ><input
+                                name="title"
+                                value="{{ epic.title }}"
+                                maxlength="120"
+                                required
+                                autofocus
+                        /></label>
                         <div class="dialog__actions">
-                            <button class="button button--secondary" type="button" data-dialog-close>Cancelar</button>
-                            <button class="button button--primary" type="submit">Salvar alterações</button>
+                            <button
+                                class="button button--secondary"
+                                type="button"
+                                data-dialog-close
+                            >
+                                Cancelar
+                            </button>
+                            <button
+                                class="button button--primary"
+                                type="submit"
+                            >
+                                Salvar alterações
+                            </button>
                         </div>
                     </form>
                 </dialog>
 
-                <dialog class="dialog" id="link-story-{{ epic.id }}" aria-labelledby="link-story-title-{{ epic.id }}">
-                    <form method="post" action="{{ url_for('story.link_story_to_epic', project_id=project.id, epic_id=epic.id) }}" class="dialog__form">
+                <dialog
+                    class="dialog"
+                    id="link-story-{{ epic.id }}"
+                    aria-labelledby="link-story-title-{{ epic.id }}"
+                >
+                    <form
+                        method="post"
+                        action="{{ url_for('story.link_story_to_epic', project_id=project.id, epic_id=epic.id) }}"
+                        class="dialog__form"
+                    >
                         <div class="dialog__heading">
-                            <div><p class="eyebrow">{{ epic.title }}</p><h2 id="link-story-title-{{ epic.id }}">Vincular HU</h2></div>
-                            <button class="icon-button" type="button" data-dialog-close aria-label="Fechar">×</button>
+                            <div>
+                                <p class="eyebrow">{{ epic.title }}</p>
+                                <h2 id="link-story-title-{{ epic.id }}">
+                                    Vincular HU
+                                </h2>
+                            </div>
+                            <button
+                                class="icon-button"
+                                type="button"
+                                data-dialog-close
+                                aria-label="Fechar"
+                            >
+                                ×
+                            </button>
                         </div>
                         <label class="field">
                             <span>História de usuário</span>
                             <select name="story_id" required>
-                                <option value="" selected disabled>Selecione uma história</option>
-                                {% for story in project.backlog.user_stories if not story.epic_id %}
-                                <option value="{{ story.id }}">HU-{{ '%02d' | format(story.id) }} · {{ story.title }}</option>
+                                <option value="" selected disabled>
+                                    Selecione uma história
+                                </option>
+                                {% for story in project.backlog.user_stories if
+                                not story.epic_id %}
+                                <option value="{{ story.id }}">
+                                    HU-{{ '%02d' | format(story.id) }} · {{
+                                    story.title }}
+                                </option>
                                 {% else %}
-                                <option value="" disabled>Nenhuma história disponível para vínculo</option>
+                                <option value="" disabled>
+                                    Nenhuma história disponível para vínculo
+                                </option>
                                 {% endfor %}
                             </select>
                         </label>
                         <div class="dialog__actions">
-                            <button class="button button--secondary" type="button" data-dialog-close>Cancelar</button>
-                            <button class="button button--primary" type="submit">Vincular história</button>
+                            <button
+                                class="button button--secondary"
+                                type="button"
+                                data-dialog-close
+                            >
+                                Cancelar
+                            </button>
+                            <button
+                                class="button button--primary"
+                                type="submit"
+                            >
+                                Vincular história
+                            </button>
                         </div>
                     </form>
                 </dialog>
@@ -184,48 +400,138 @@
             <section class="empty-state empty-state--epics">
                 <div class="empty-state__icon" aria-hidden="true">◆</div>
                 <h2>Nenhum épico cadastrado</h2>
-                <p>Crie um épico para agrupar histórias de usuário relacionadas.</p>
-                <button class="button button--primary" type="button" data-dialog-open="new-epic-dialog">Criar novo épico</button>
+                <p>
+                    Crie um épico para agrupar histórias de usuário
+                    relacionadas.
+                </p>
+                <button
+                    class="button button--primary"
+                    type="button"
+                    data-dialog-open="new-epic-dialog"
+                >
+                    Criar novo épico
+                </button>
             </section>
             {% endif %}
         </section>
 
-        <dialog class="dialog" id="new-epic-dialog" aria-labelledby="new-epic-title">
-            <form method="post" action="{{ url_for('story.create_epic', project_id=project.id) }}" class="dialog__form">
+        <dialog
+            class="dialog"
+            id="new-epic-dialog"
+            aria-labelledby="new-epic-title"
+        >
+            <form
+                method="post"
+                action="{{ url_for('story.create_epic', project_id=project.id) }}"
+                class="dialog__form"
+            >
                 <div class="dialog__heading">
-                    <div><p class="eyebrow">Product Backlog</p><h2 id="new-epic-title">Criar novo épico</h2></div>
-                    <button class="icon-button" type="button" data-dialog-close aria-label="Fechar">×</button>
+                    <div>
+                        <p class="eyebrow">Product Backlog</p>
+                        <h2 id="new-epic-title">Criar novo épico</h2>
+                    </div>
+                    <button
+                        class="icon-button"
+                        type="button"
+                        data-dialog-close
+                        aria-label="Fechar"
+                    >
+                        ×
+                    </button>
                 </div>
-                <label class="field"><span>Título do épico</span><input name="title" placeholder="Ex.: Controle de acesso e autenticação" maxlength="120" required autofocus></label>
+                <label class="field"
+                    ><span>Título do épico</span
+                    ><input
+                        name="title"
+                        placeholder="Ex.: Controle de acesso e autenticação"
+                        maxlength="120"
+                        required
+                        autofocus
+                /></label>
                 <div class="dialog__actions">
-                    <button class="button button--secondary" type="button" data-dialog-close>Cancelar</button>
-                    <button class="button button--primary" type="submit">Criar épico</button>
+                    <button
+                        class="button button--secondary"
+                        type="button"
+                        data-dialog-close
+                    >
+                        Cancelar
+                    </button>
+                    <button class="button button--primary" type="submit">
+                        Criar épico
+                    </button>
                 </div>
             </form>
         </dialog>
 
-        <dialog class="dialog dialog--story" id="new-story-dialog" aria-labelledby="new-story-title">
-            <form method="post" action="{{ url_for('story.create_story', project_id=project.id) }}" class="dialog__form dialog__form--story">
+        <dialog
+            class="dialog dialog--story"
+            id="new-story-dialog"
+            aria-labelledby="new-story-title"
+        >
+            <form
+                method="post"
+                action="{{ url_for('story.create_story', project_id=project.id) }}"
+                class="dialog__form dialog__form--story"
+            >
+                <input type="hidden" name="sprint_backlog_id" value="">
+
                 <div class="dialog__heading">
                     <div>
                         <p class="eyebrow">Product Backlog</p>
                         <h2 id="new-story-title">Criar história</h2>
                     </div>
-                    <button class="icon-button" type="button" data-dialog-close aria-label="Fechar">×</button>
+                    <button
+                        class="icon-button"
+                        type="button"
+                        data-dialog-close
+                        aria-label="Fechar"
+                    >
+                        ×
+                    </button>
                 </div>
-                <label class="field field--wide"><span>Título</span><input name="title" placeholder="Ex.: Realizar autenticação" required autofocus></label>
+                <label class="field field--wide"
+                    ><span>Título</span
+                    ><input
+                        name="title"
+                        placeholder="Ex.: Realizar autenticação"
+                        required
+                        autofocus
+                /></label>
                 <div class="form-grid form-grid--stack">
-                    <label class="field"><span>Como um</span><input name="role" placeholder="usuário" required></label>
-                    <label class="field"><span>Eu quero</span><input name="action" placeholder="fazer login" required></label>
+                    <label class="field"
+                        ><span>Como um</span
+                        ><input name="role" placeholder="usuário" required
+                    /></label>
+                    <label class="field"
+                        ><span>Eu quero</span
+                        ><input
+                            name="action"
+                            placeholder="fazer login"
+                            required
+                    /></label>
                 </div>
-                <label class="field field--wide"><span>Para</span><input name="benefit" placeholder="acessar o sistema com segurança" required></label>
+                <label class="field field--wide"
+                    ><span>Para</span
+                    ><input
+                        name="benefit"
+                        placeholder="acessar o sistema com segurança"
+                        required
+                /></label>
                 <div class="story-prioritization-layout">
                     <div class="story-prioritization-fields">
                         {% include "_story_prioritization_fields.html" %}
                     </div>
                     <div class="story-save-actions">
-                        <button class="button button--primary" type="submit">Salvar</button>
-                        <button class="button button--secondary" type="button" data-dialog-close>Cancelar</button>
+                        <button class="button button--primary" type="submit">
+                            Salvar
+                        </button>
+                        <button
+                            class="button button--secondary"
+                            type="button"
+                            data-dialog-close
+                        >
+                            Cancelar
+                        </button>
                     </div>
                 </div>
             </form>
@@ -233,8 +539,6 @@
         {% endif %}
     </section>
 </main>
-{% endblock %}
-
-{% block scripts %}
+{% endblock %} {% block scripts %}
 <script src="{{ url_for('static', filename='js/projects.js') }}"></script>
 {% endblock %}

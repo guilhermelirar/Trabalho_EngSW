@@ -16,8 +16,16 @@ document.addEventListener("click", (event) => {
 
     const opener = event.target.closest("[data-dialog-open]");
     if (opener) {
-        const dialog = document.getElementById(opener.dataset.dialogOpen);
+        const dialogId = opener.dataset.dialogOpen;
+        const dialog = document.getElementById(dialogId);
         if (dialog) {
+            if (dialogId === "new-story-dialog") {
+                const sprintId = opener.dataset.sprintId || "";
+                const sprintInput = dialog.querySelector("input[name='sprint_backlog_id']");
+                if (sprintInput) {
+                    sprintInput.value = sprintId;
+                }
+            }
             updateRiceScore(dialog);
             dialog.showModal();
         }
