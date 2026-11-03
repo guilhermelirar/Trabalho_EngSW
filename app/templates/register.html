@@ -1,1 +1,42 @@
-<h1>Cadastro</h1>
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <title>Cadastro</title>
+</head>
+<body>
+    <h1>Criar Conta</h1>
+
+    <!-- Exibe mensagens de erro/sucesso do flash -->
+    {% with messages = get_flashed_messages(with_categories=true) %}
+      {% if messages %}
+        <ul>
+        {% for category, message in messages %}
+          <li><strong>[{{ category }}]</strong> {{ message }}</li>
+        {% endfor %}
+        </ul>
+      {% endif %}
+    {% endwith %}
+
+    <form method="POST" action="{{ url_for('auth.register') }}">
+        <div>
+            <label for="name">Nome:</label><br>
+            <input type="text" id="name" name="name" value="{{ name or '' }}" required>
+        </div>
+        <br>
+        <div>
+            <label for="email">E-mail:</label><br>
+            <input type="email" id="email" name="email" value="{{ email or '' }}" required>
+        </div>
+        <br>
+        <div>
+            <label for="password">Senha:</label><br>
+            <input type="password" id="password" name="password" required>
+        </div>
+        <br>
+        <button type="submit">Cadastrar</button>
+    </form>
+
+    <p>Já tem uma conta? <a href="{{ url_for('auth.login') }}">Faça login aqui</a>.</p>
+</body>
+</html>

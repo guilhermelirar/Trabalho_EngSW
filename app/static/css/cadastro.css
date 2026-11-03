@@ -1,0 +1,23 @@
+/* ============================================
+   cadastro.css — ajustes exclusivos da tela de cadastro
+   ============================================ */
+.cartao--cadastro {
+    max-width: 400px;
+}
+
+/* Círculo com ícone de usuário */
+.avatar {
+    display: grid;
+    place-items: center;
+    width: 64px;
+    height: 64px;
+    margin: 0 auto 0.8rem;
+    color: var(--branco);
+    background: var(--azul-claro);
+    border-radius: 50%;
+}
+
+.avatar svg {
+    width: 40px;
+    height: 40px;
+}

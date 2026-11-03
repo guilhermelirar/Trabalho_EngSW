@@ -5,7 +5,7 @@ Testes unitários para as funções do serviço de autenticação
 
 from flask import Flask
 import pytest
-from app.services.AuthService import *
+from app.services.auth_service import *
 from app.services.exceptions import UserCreationException
 
 VALID_EMAIL = "alice@sub.domain.com"
