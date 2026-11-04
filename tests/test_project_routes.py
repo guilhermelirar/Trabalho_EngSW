@@ -1,7 +1,6 @@
 # tests/test_project_routes.py
 
 from flask.testing import FlaskClient
-from flask_login.utils import url_for
 
 from app.models import Epic, Project, SprintBacklog, UserStory, db
 
