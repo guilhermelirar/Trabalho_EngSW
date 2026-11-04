@@ -68,7 +68,7 @@ def authenticate_user(email: str | None, password: str | None) -> User:
     falha de autenticação (ex: senha incorreta, usuário não existente)
     """
 
-    if not email and not password:
+    if not email or not password:
         raise LoginException()
 
     user: User | None = User.query.filter_by(email=email).first()
