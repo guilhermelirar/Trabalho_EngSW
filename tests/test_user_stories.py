@@ -1,7 +1,8 @@
 import pytest
 from flask import Flask
-from sqlalchemy.sql.operators import ne
+from sqlalchemy.exc import IntegrityError
 
+from app.models import UserStory, db
 from app.services import user_story_service
 from app.services.exceptions import ProjectDomainException, UserStoryDomainException
 
@@ -98,3 +99,30 @@ def test_delete_user_story_success(app: Flask, project_with_backlog, test_user):
             )
 
         assert exc_info.value.status_code == 404
+
+
+@pytest.mark.parametrize(
+    ("field", "value"),
+    [
+        ("story_points", 4),
+        ("moscow", "must"),
+        ("rice_impact", 1.5),
+        ("rice_confidence", 75),
+    ],
+)
+def test_database_rejects_invalid_prioritization_values(
+    app: Flask, project_with_backlog, field, value
+):
+    with app.app_context():
+        story = UserStory()
+        story.project_backlog_id = project_with_backlog.backlog.id
+        story.title = "História"
+        story.role = "Usuário"
+        story.action = "faz algo"
+        story.benefit = "obtém valor"
+        setattr(story, field, value)
+        db.session.add(story)
+
+        with pytest.raises(IntegrityError):
+            db.session.commit()
+        db.session.rollback()

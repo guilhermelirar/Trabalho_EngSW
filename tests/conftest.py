@@ -7,10 +7,7 @@ from app.services.auth_service import register_user
 
 @pytest.fixture
 def app():
-    _app = create_app()
-
-    # aplicando configurações de teste
-    _app.config.update(
+    _app = create_app(
         {
             "TESTING": True,
             "SQLALCHEMY_DATABASE_URI": "sqlite:///:memory:",

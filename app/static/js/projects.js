@@ -44,25 +44,41 @@ function updateRiceScore(dialog) {
         return;
     }
 
-    const inputs = ["rice_reach", "rice_impact", "rice_confidence", "rice_effort"]
+    const pointsInput = dialog.querySelector('[name="story_points"]:checked');
+    const effortInput = dialog.querySelector('[name="rice_effort"]');
+    const effort = pointsInput ? Number(pointsInput.value) : null;
+    if (effortInput) {
+        effortInput.value = effort === null ? "" : String(effort);
+    }
+
+    const inputs = ["rice_reach", "rice_impact", "rice_confidence"]
         .map((name) => dialog.querySelector(`[name="${name}"]`));
-    if (inputs.some((input) => !input || !input.value.trim())) {
+    if (effort === null || inputs.some((input) => !input || !input.value.trim())) {
         output.textContent = "—";
         return;
     }
     const values = inputs.map((input) => Number(input.value));
 
-    if (values.some((value) => !Number.isFinite(value)) || values[3] <= 0) {
+    if (values.some((value) => !Number.isFinite(value)) || effort <= 0) {
         output.textContent = "—";
         return;
     }
 
-    const score = (values[0] * values[1] * (values[2] / 100)) / values[3];
+    const score = (values[0] * values[1] * (values[2] / 100)) / effort;
     output.textContent = Number.isInteger(score) ? String(score) : score.toFixed(2);
 }
 
 document.addEventListener("input", (event) => {
     if (event.target.matches("[data-rice-field]")) {
+        const dialog = event.target.closest("dialog");
+        if (dialog) {
+            updateRiceScore(dialog);
+        }
+    }
+});
+
+document.addEventListener("change", (event) => {
+    if (event.target.matches("[name='story_points']")) {
         const dialog = event.target.closest("dialog");
         if (dialog) {
             updateRiceScore(dialog);

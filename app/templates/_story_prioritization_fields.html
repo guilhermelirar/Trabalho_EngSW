@@ -3,7 +3,7 @@
 {% set reach_value = story.rice_reach if story is defined else none %}
 {% set impact_value = story.rice_impact if story is defined else none %}
 {% set confidence_value = story.rice_confidence if story is defined else none %}
-{% set effort_value = story.rice_effort if story is defined else none %}
+{% set effort_value = story.story_points if story is defined else none %}
 {% set rice_score_value = story.rice_score if story is defined else none %}
 
 <fieldset class="story-form-section story-form-section--points">
@@ -11,7 +11,7 @@
     <div class="choice-list choice-list--points">
         {% for points in [0, 1, 2, 3, 5, 8, 13, 21, 34, 55] %}
         <label class="choice-circle" title="{{ points }} Story Points">
-            <input type="radio" name="story_points" value="{{ points }}" {% if points_value == points %}checked{% endif %}>
+            <input type="radio" name="story_points" value="{{ points }}" data-rice-field {% if points_value == points %}checked{% endif %}>
             <span>{{ points }}</span>
         </label>
         {% endfor %}
@@ -22,19 +22,19 @@
     <legend>MoSCoW</legend>
     <div class="choice-list choice-list--moscow">
         <label class="choice-circle choice-circle--must" title="Must have — indispensável">
-            <input type="radio" name="moscow" value="must" {% if moscow_value == 'must' %}checked{% endif %}>
+            <input type="radio" name="moscow" value="M" {% if moscow_value == 'M' %}checked{% endif %}>
             <span>M</span>
         </label>
         <label class="choice-circle choice-circle--should" title="Should have — importante">
-            <input type="radio" name="moscow" value="should" {% if moscow_value == 'should' %}checked{% endif %}>
+            <input type="radio" name="moscow" value="S" {% if moscow_value == 'S' %}checked{% endif %}>
             <span>S</span>
         </label>
         <label class="choice-circle choice-circle--could" title="Could have — desejável">
-            <input type="radio" name="moscow" value="could" {% if moscow_value == 'could' %}checked{% endif %}>
+            <input type="radio" name="moscow" value="C" {% if moscow_value == 'C' %}checked{% endif %}>
             <span>C</span>
         </label>
         <label class="choice-circle choice-circle--wont" title="Won't have — fora do escopo">
-            <input type="radio" name="moscow" value="wont" {% if moscow_value == 'wont' %}checked{% endif %}>
+            <input type="radio" name="moscow" value="W" {% if moscow_value == 'W' %}checked{% endif %}>
             <span>W</span>
         </label>
     </div>
@@ -44,9 +44,25 @@
     <legend>Cálculo RICE</legend>
     <div class="rice-fields rice-fields--compact">
         <label class="field"><span>Alcance</span><input type="number" name="rice_reach" min="0" step="1" value="{{ reach_value if reach_value is not none else '' }}" data-rice-field></label>
-        <label class="field"><span>Impacto</span><input type="number" name="rice_impact" min="0" step="0.1" value="{{ impact_value if impact_value is not none else '' }}" data-rice-field></label>
-        <label class="field"><span>Confiança</span><input type="number" name="rice_confidence" min="0" max="100" step="1" value="{{ confidence_value if confidence_value is not none else '' }}" data-rice-field></label>
-        <label class="field"><span>Esforço</span><input type="number" name="rice_effort" min="0.1" step="0.1" value="{{ effort_value if effort_value is not none else '' }}" data-rice-field></label>
+        <label class="field">
+            <span>Impacto</span>
+            <select name="rice_impact" data-rice-field>
+                <option value="">Não definido</option>
+                {% for impact in [0.25, 0.5, 1, 2, 3] %}
+                <option value="{{ impact }}" {% if impact_value == impact %}selected{% endif %}>{{ impact }}</option>
+                {% endfor %}
+            </select>
+        </label>
+        <label class="field">
+            <span>Confiança</span>
+            <select name="rice_confidence" data-rice-field>
+                <option value="">Não definida</option>
+                {% for confidence in [50, 80, 100] %}
+                <option value="{{ confidence }}" {% if confidence_value == confidence %}selected{% endif %}>{{ confidence }}%</option>
+                {% endfor %}
+            </select>
+        </label>
+        <label class="field"><span>Esforço (Story Points)</span><input type="number" name="rice_effort" value="{{ effort_value if effort_value is not none else '' }}" readonly></label>
         <p class="rice-score"><span>Score RICE</span><output data-rice-score>{{ rice_score_value if rice_score_value is not none else '—' }}</output></p>
     </div>
 </fieldset>

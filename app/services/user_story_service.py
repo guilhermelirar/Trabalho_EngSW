@@ -4,7 +4,20 @@ from app.services import project_service
 from app.services.exceptions import ProjectDomainException, UserStoryDomainException
 
 STORY_POINT_VALUES = {0, 1, 2, 3, 5, 8, 13, 21, 34, 55}
-MOSCOW_VALUES = {"must", "should", "could", "wont"}
+MOSCOW_VALUES = {"M", "S", "C", "W"}
+MOSCOW_ALIASES = {
+    "M": "M",
+    "MUST": "M",
+    "S": "S",
+    "SHOULD": "S",
+    "C": "C",
+    "COULD": "C",
+    "W": "W",
+    "WONT": "W",
+    "WON'T": "W",
+}
+RICE_IMPACT_VALUES = {0.25, 0.5, 1, 2, 3}
+RICE_CONFIDENCE_VALUES = {50, 80, 100}
 
 
 def validate_user_story_data(data: dict, require_all: bool = True) -> None:
@@ -33,23 +46,22 @@ def get_prioritization_data(data: dict) -> dict:
         raise UserStoryDomainException("Selecione um valor de Story Points permitido.")
 
     moscow = data.get("moscow")
-    moscow = str(moscow).strip().lower() if moscow else None
+    moscow = MOSCOW_ALIASES.get(str(moscow).strip().upper()) if moscow else None
+    if data.get("moscow") and moscow is None:
+        raise UserStoryDomainException("Selecione uma classificação MoSCoW válida.")
     if moscow is not None and moscow not in MOSCOW_VALUES:
         raise UserStoryDomainException("Selecione uma classificação MoSCoW válida.")
 
     reach = _optional_number(data.get("rice_reach"), "Alcance", int)
     impact = _optional_number(data.get("rice_impact"), "Impacto", float)
     confidence = _optional_number(data.get("rice_confidence"), "Confiança", int)
-    effort = _optional_number(data.get("rice_effort"), "Esforço", float)
 
     if reach is not None and reach < 0:
         raise UserStoryDomainException("O Alcance não pode ser negativo.")
-    if impact is not None and impact < 0:
-        raise UserStoryDomainException("O Impacto não pode ser negativo.")
-    if confidence is not None and not 0 <= confidence <= 100:
-        raise UserStoryDomainException("A Confiança deve estar entre 0 e 100%.")
-    if effort is not None and effort <= 0:
-        raise UserStoryDomainException("O Esforço deve ser maior que zero.")
+    if impact is not None and impact not in RICE_IMPACT_VALUES:
+        raise UserStoryDomainException("Selecione um valor de Impacto permitido.")
+    if confidence is not None and confidence not in RICE_CONFIDENCE_VALUES:
+        raise UserStoryDomainException("Selecione um valor de Confiança permitido.")
 
     return {
         "story_points": story_points,
@@ -57,7 +69,6 @@ def get_prioritization_data(data: dict) -> dict:
         "rice_reach": reach,
         "rice_impact": impact,
         "rice_confidence": confidence,
-        "rice_effort": effort,
     }
 
 
@@ -154,7 +165,6 @@ def update_user_story(story_id: int, user_id: int, new_data: dict) -> UserStory:
         "rice_reach",
         "rice_impact",
         "rice_confidence",
-        "rice_effort",
     }
     if any(field in new_data for field in prioritization_fields):
         prioritization_data = get_prioritization_data(new_data)

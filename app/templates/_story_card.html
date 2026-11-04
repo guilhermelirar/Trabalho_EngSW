@@ -7,7 +7,10 @@
     <p><strong>Como</strong> {{ story.role }}, <strong>eu quero</strong> {{ story.action }} <strong>para</strong> {{ story.benefit }}.</p>
     <div class="story-card__meta">
         {% if story.story_points is not none %}<span>{{ story.story_points }} SP</span>{% endif %}
-        {% if story.moscow %}<span class="story-card__moscow story-card__moscow--{{ story.moscow }}">{{ story.moscow }}</span>{% endif %}
+        {% if story.moscow %}
+        {% set moscow_class = {'M': 'must', 'S': 'should', 'C': 'could', 'W': 'wont'} %}
+        <span class="story-card__moscow story-card__moscow--{{ moscow_class[story.moscow] }}" title="{{ {'M': 'Must have', 'S': 'Should have', 'C': 'Could have', 'W': 'Won’t have'}[story.moscow] }}">{{ story.moscow }}</span>
+        {% endif %}
     </div>
 </article>
 

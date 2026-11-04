@@ -302,10 +302,14 @@ body.pagina-app {
 .story-delete-row { margin-top: 12px; }
 .story-card__meta { display: flex; flex-wrap: wrap; gap: 5px; margin-top: 12px; }
 .story-card__meta span { padding: 3px 7px; color: #1469b4; background: #e7f2ff; border-radius: 999px; font-size: .64rem; font-weight: 700; }
-.story-card__meta .story-card__moscow--must { color: #a22019; background: #fff0ef; }
-.story-card__meta .story-card__moscow--should { color: #a26400; background: #fff8e4; }
-.story-card__meta .story-card__moscow--could { color: #176b37; background: #e9f8ee; }
-.story-card__meta .story-card__moscow--wont { color: #536476; background: #edf1f4; }
+.story-card__meta .story-card__moscow--must,
+.story-card__meta .story-card__moscow--M { color: #a22019; background: #fff0ef; }
+.story-card__meta .story-card__moscow--should,
+.story-card__meta .story-card__moscow--S { color: #a26400; background: #fff8e4; }
+.story-card__meta .story-card__moscow--could,
+.story-card__meta .story-card__moscow--C { color: #176b37; background: #e9f8ee; }
+.story-card__meta .story-card__moscow--wont,
+.story-card__meta .story-card__moscow--W { color: #536476; background: #edf1f4; }
 
 @media (max-width: 680px) {
     .app-shell, .app-shell--board { width: min(100% - 24px, 1120px); padding-top: 12px; }
