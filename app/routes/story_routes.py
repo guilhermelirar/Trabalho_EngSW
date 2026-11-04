@@ -11,8 +11,7 @@ from app.services.exceptions import (
 
 story_bp = Blueprint("story", __name__)
 
-
-@story_bp.route("/<int:project_id>/stories", methods=["POST"])
+@story_bp.route("/projects/<int:project_id>/stories", methods=["POST"])
 @login_required
 def create_story(project_id: int):
     try:
@@ -23,31 +22,31 @@ def create_story(project_id: int):
     return redirect(url_for("projects.project_detail", project_id=project_id))
 
 
-@story_bp.route("/<int:project_id>/stories/<int:story_id>/edit", methods=["POST"])
+@story_bp.route("/stories/<int:story_id>", methods=["POST"])
 @login_required
-def update_story(project_id: int, story_id: int):
+def update_story(story_id: int):
     try:
-        # Confirma a associação da história ao projeto antes da atualização.
-        story_srvc.get_user_story(story_id, project_id, current_user.id)
-        story_srvc.update_user_story(story_id, current_user.id, request.form)
+        story = story_srvc.update_user_story(story_id, current_user.id, request.form)
         flash("História de usuário atualizada com sucesso!", "success")
+        return redirect(url_for("projects.project_detail", project_id=story.project_backlog.project_id))
     except (ProjectDomainException, UserStoryDomainException) as error:
         flash(error.message, "danger")
-    return redirect(url_for("projects.project_detail", project_id=project_id))
+        return redirect(request.referrer or url_for("projects.projects_list"))
 
 
-@story_bp.route("/<int:project_id>/stories/<int:story_id>/delete", methods=["POST"])
+@story_bp.route("/stories/<int:story_id>/delete", methods=["POST"])
 @login_required
-def remove_story(project_id: int, story_id: int):
+def remove_story(story_id: int):
     try:
-        story_srvc.delete_user_story(story_id, project_id, current_user.id)
+        project_id = story_srvc.delete_user_story(story_id, current_user.id)
         flash("História de usuário excluída com sucesso!", "success")
+        return redirect(url_for("projects.project_detail", project_id=project_id))
     except (ProjectDomainException, UserStoryDomainException) as error:
         flash(error.message, "danger")
-    return redirect(url_for("projects.project_detail", project_id=project_id))
+        return redirect(request.referrer or url_for("projects.projects_list"))
 
 
-@story_bp.route("/<int:project_id>/epics", methods=["POST"])
+@story_bp.route("/projects/<int:project_id>/epics", methods=["POST"])
 @login_required
 def create_epic(project_id: int):
     try:
@@ -58,7 +57,7 @@ def create_epic(project_id: int):
     return redirect(url_for("projects.project_detail", project_id=project_id))
 
 
-@story_bp.route("/<int:project_id>/epics/<int:epic_id>/edit", methods=["POST"])
+@story_bp.route("/projects/<int:project_id>/epics/<int:epic_id>/edit", methods=["POST"])
 @login_required
 def update_epic(project_id: int, epic_id: int):
     try:
@@ -71,7 +70,7 @@ def update_epic(project_id: int, epic_id: int):
     return redirect(url_for("projects.project_detail", project_id=project_id))
 
 
-@story_bp.route("/<int:project_id>/epics/<int:epic_id>/delete", methods=["POST"])
+@story_bp.route("/projects/<int:project_id>/epics/<int:epic_id>/delete", methods=["POST"])
 @login_required
 def remove_epic(project_id: int, epic_id: int):
     try:
@@ -82,7 +81,7 @@ def remove_epic(project_id: int, epic_id: int):
     return redirect(url_for("projects.project_detail", project_id=project_id))
 
 
-@story_bp.route("/<int:project_id>/epics/<int:epic_id>/stories/link", methods=["POST"])
+@story_bp.route("/projects/<int:project_id>/epics/<int:epic_id>/stories/link", methods=["POST"])
 @login_required
 def link_story_to_epic(project_id: int, epic_id: int):
     try:
@@ -97,7 +96,7 @@ def link_story_to_epic(project_id: int, epic_id: int):
 
 
 @story_bp.route(
-    "/<int:project_id>/epics/<int:epic_id>/stories/<int:story_id>/unlink",
+    "/projects/<int:project_id>/epics/<int:epic_id>/stories/<int:story_id>/unlink",
     methods=["POST"],
 )
 @login_required

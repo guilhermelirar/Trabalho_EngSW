@@ -87,15 +87,14 @@ def test_delete_user_story_success(app: Flask, project_with_backlog, test_user):
 
         # Act: executa a deleção
         user_story_service.delete_user_story(
-            story_id=story_id, project_id=project_with_backlog.id, user_id=test_user.id
+            story_id=story_id, user_id=test_user.id
         )
 
         # Assert: valida que buscar a história deletada lança UserStoryDomainException (404)
         with pytest.raises(UserStoryDomainException) as exc_info:
             user_story_service.get_user_story(
                 story_id=story_id,
-                project_id=project_with_backlog.id,
-                user_id=test_user.id,
+                user_id=test_user.id
             )
 
         assert exc_info.value.status_code == 404
@@ -126,3 +125,24 @@ def test_database_rejects_invalid_prioritization_values(
         with pytest.raises(IntegrityError):
             db.session.commit()
         db.session.rollback()
+
+
+def test_create_acceptance_criteria_success(
+    app: Flask, project_with_backlog, test_user
+):
+    story = user_story_service.create_user_story(
+        project_id=project_with_backlog.id,
+        user_id=test_user.id,
+        data=story_data(),
+    )
+
+    criteria_data = {
+        "title": "Critério de aceitação",
+        "given": "[contexto inicial ou o estado do sistema antes da ação acontecer]",
+        "when": "[ação ou evento específico que o usuário executa]",
+        "then": "[resultado esperado ou a consequência daquela ação]",
+    }
+
+    user_story_service.add_acceptance_criteria_to_story(
+        story_id=story.id, user_id=test_user.id, data=criteria_data
+    )

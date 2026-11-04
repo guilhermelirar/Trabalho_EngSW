@@ -1,6 +1,7 @@
 # tests/test_project_routes.py
 
 from flask.testing import FlaskClient
+from flask_login.utils import url_for
 
 from app.models import Epic, Project, SprintBacklog, UserStory, db
 
@@ -89,7 +90,7 @@ def test_epic_link_and_sprint_removal_preserve_user_stories(
         assert story.rice_score == 1.67
 
     edited = authenticated_client.post(
-        f"{project_url}/stories/{story_id}/edit",
+        f"/stories/{story_id}",
         data={
             "title": "Criar conta",
             "role": "usuario",
@@ -108,6 +109,7 @@ def test_epic_link_and_sprint_removal_preserve_user_stories(
     with app.app_context():
         story = db.session.get(UserStory, story_id)
         sprint = SprintBacklog.query.one()
+        assert story is not None
         assert story.story_points == 8
         assert story.moscow == "M"
         assert story.rice_effort == 8
