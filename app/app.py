@@ -3,7 +3,6 @@ from pathlib import Path
 
 from flask import Flask, redirect, url_for
 from flask_login import LoginManager
-from sqlalchemy import inspect, text
 
 from app.routes.auth_routes import auth_bp
 from app.routes.project_routes import projects_bp
@@ -17,34 +16,7 @@ BASE_DIR = Path(__file__).resolve().parent
 from app.models import db
 
 
-def migrate_user_story_prioritization_fields():
-    """Adiciona os campos de priorização em bancos SQLite já existentes.
-
-    O projeto ainda não usa uma ferramenta de migrations; por isso esta pequena
-    migração mantém os bancos locais criados antes desses campos funcionando.
-    """
-    if db.engine.dialect.name != "sqlite":
-        return
-
-    columns = {
-        "story_points": "INTEGER",
-        "moscow": "VARCHAR(10)",
-        "rice_reach": "INTEGER",
-        "rice_impact": "FLOAT",
-        "rice_confidence": "INTEGER",
-        "rice_effort": "FLOAT",
-    }
-    current_columns = {
-        column["name"] for column in inspect(db.engine).get_columns("user_stories")
-    }
-    with db.engine.begin() as connection:
-        for name, definition in columns.items():
-            if name not in current_columns:
-                connection.execute(
-                    text(f"ALTER TABLE user_stories ADD COLUMN {name} {definition}")
-                )
-
-def create_app():
+def create_app(config: dict | None = None):
     """
     Função que cria a instância Flask de acordo com
     a configuração especificada.
@@ -67,6 +39,8 @@ def create_app():
     # Necessária para a sessão do Flask-Login e para as mensagens flash.
     # Em produção, defina a variável de ambiente SECRET_KEY.
     app.config['SECRET_KEY'] = os.environ.get('SECRET_KEY', 'dev-troque-esta-chave')
+    if config:
+        app.config.update(config)
 
     # Iniciando extensões
     db.init_app(app)
@@ -77,7 +51,6 @@ def create_app():
 
     with app.app_context():
         db.create_all()
-        migrate_user_story_prioritization_fields()
 
     # Registrando as rotas
     app.register_blueprint(auth_bp)
