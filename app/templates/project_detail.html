@@ -109,14 +109,30 @@ css %}
                                 length }} histórias</span
                             >
                         </div>
-                        <button
-                            class="column-add"
-                            type="button"
-                            data-dialog-open="new-story-dialog"
-                            aria-label="Criar história no Product Backlog"
-                        >
-                            +
-                        </button>
+                        <div class="column-actions">
+                            <button
+                                class="column-add"
+                                type="button"
+                                data-dialog-open="new-story-dialog"
+                                aria-label="Criar história no Product Backlog"
+                            >
+                                +
+                            </button>
+                            <form
+                                method="post"
+                                action="{{ url_for('projects.remove_backlog', project_id=project.id) }}"
+                                data-confirm="Remover o Product Backlog? Todas as histórias vinculadas ao backlog serão excluídas."
+                            >
+                                <button
+                                    class="column-delete"
+                                    type="submit"
+                                    title="Remover Product Backlog"
+                                    aria-label="Remover Product Backlog"
+                                >
+                                    ×
+                                </button>
+                            </form>
+                        </div>
                     </header>
                     <div class="story-stack">
                         {% for story in project.backlog.user_stories if
