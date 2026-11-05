@@ -102,9 +102,8 @@ O quadro poderá ser atualizado durante o desenvolvimento e nas reuniões da equ
 
 | ID | Título | Membro (Responsável) | Categoria (Tags) | Conclusão (Status) | Descrição | Critério de aceitação |
 | :--- | :--- | :--- | :--- | :--- | :--- | :--- |
-| **BACKLOG** | | | | | | |
-
-| **A FAZER** | | | | | | |
+| | **BACKLOG** | | | | | |
+| | **A FAZER** | | | | | |
 | #38 | Frontend - Implementação da tela Projetos | Vinícius Gonçalves Duarte | P0, S, accessibility, feature | A Fazer | Implementar a tela principal de projetos. | a definir |
 | #41 | Frontend - Implementação Base da Tela de Projetos | Vinícius Gonçalves Duarte | P0, S | A Fazer | Implementar a estrutura básica da tela de projetos. | a definir |
 | #42 | Frontend - Implementação Avançada da Tela de Projeto | Vinícius Gonçalves Duarte | P0, XS, feature | A Fazer | Implementar funcionalidades avançadas da tela de projetos. | a definir |
@@ -112,26 +111,26 @@ O quadro poderá ser atualizado durante o desenvolvimento e nas reuniões da equ
 | #23 | Criar uma arquitetura do Backend | Guilherme Lira Ribeiro | P1, S, documentation, good first issue | A Fazer | a definir | a definir |
 | #45 | Frontend - Implementação do sistema de Tags | Vinícius Gonçalves Duarte | P1, M, accessibility | A Fazer | Implementar o sistema de tags no frontend. | a definir |
 | #17 | Estudar MoSCoW e RICE | a definir | P2, L, documentation, feature | A Fazer | a definir | a definir |
-| **EM ANDAMENTO** | | | | | | |
+| | **EM ANDAMENTO** | | | | | |
 | #43 | Backend - Implementação das partes da tela projeto | Guilherme Lira Ribeiro | P0, XS, accessibility, database, feature | Em Andamento | Implementar as funcionalidades de backend necessárias à tela de projeto. | a definir |
 | #13 | Criar os modelos da arquitetura de telas (frontend) | a definir | P0, M, accessibility, feature | Em Andamento | Criar os modelos da arquitetura de telas do frontend. | a definir |
 | #36 | Backend - Fazer nova base do backend | Guilherme Lira Ribeiro | P1, M, documentation | Em Andamento | Desenvolver uma nova base para o backend. | a definir |
 | #31 | Frontend - Gerar o modelo para a tela de controle de projetos | a definir | P2, L, feature | Em Andamento | Gerar o modelo da tela de controle de projetos. | a definir |
 | #32 | Frontend - Gerar o modelo das telas de projetos | a definir | P2, M, feature | Em Andamento | Gerar os modelos das telas de projetos. | a definir |
-| **EM REVISÃO** | | | | | | |
+| | **EM REVISÃO** | | | | | |
 | #39 | Backend - Implementação da parte de Projetos | Guilherme Lira Ribeiro | P0, M, feature | Em Revisão | Implementar a parte de projetos no backend. | a definir |
 | #33 | Backend - Conectar a tela autenticação e Banco de dados | Guilherme Lira Ribeiro | P1, S, database, feature | Em Revisão | Conectar a tela de autenticação ao banco de dados. | a definir |
 | #30 | Frontend - Implementação da tela Autenticação | a definir | P1, M, feature | Em Revisão | Implementar a tela de autenticação no frontend. | a definir |
-| **CONCLUÍDO** | | | | | | |
-| #1 | Preencher documento de gerenciamento | Guilherme Lira Ribeiro | P0, S, documentation, setup | Backlog | Preencher o documento de gerenciamento do projeto. | a definir |
-| #2 | Elaborar documento de visão e escopo (docs/visao.md) | a definir | P0, S, documentation | Backlog | a definir | a definir |
-| #3 | Elaborar histórias de usuário | Guilherme Lira Ribeiro | P0, S, documentation, setup | Backlog | Elaborar as histórias de usuário do sistema. | a definir |
-| #5 | definir arquitetura | Guilherme Lira Ribeiro | P0, S, documentation, setup | Backlog | Definir a arquitetura do sistema. | a definir |
+| | **CONCLUÍDO** | | | | | |
+| #1 | Preencher documento de gerenciamento | Guilherme Lira Ribeiro | P0, S, documentation, setup | Concluído | Preencher o documento de gerenciamento do projeto. | a definir |
+| #2 | Elaborar documento de visão e escopo (docs/visao.md) | a definir | P0, S, documentation | Concluído | a definir | a definir |
+| #3 | Elaborar histórias de usuário | Guilherme Lira Ribeiro | P0, S, documentation, setup | Concluído | Elaborar as histórias de usuário do sistema. | a definir |
+| #5 | definir arquitetura | Guilherme Lira Ribeiro | P0, S, documentation, setup | Concluído | Definir a arquitetura do sistema. | a definir |
+| #16 | Definir Visão e Escopo | a definir | P0, S, documentation | Concluído | a definir | a definir |
+| #18 | Definir os critérios de aceitação | Arthur Arruda Frauches | P0, S, documentation, feature | Concluído | Definir os critérios de aceitação das tarefas. | a definir |
+| #22 | Início da implementação a arquitetura de Banco de dados | João Vitor Frabis Zago | P0, S, database, documentation | Concluído | Iniciar a implementação da arquitetura do banco de dados. | a definir |
+| #24 | Início da implementação do sistema de autenticação | Guilherme Lira Ribeiro | P0, S, accessibility, feature, good first issue | Concluído | Iniciar a implementação do sistema de autenticação. | a definir |
 | #15 | Atualizar a documentação | Arthur Arruda Frauches | P1, M, documentation | Concluído | Atualizar a documentação do projeto. | a definir |
-| #16 | Definir Visão e Escopo | a definir | P0, S, documentation | Backlog | a definir | a definir |
-| #18 | Definir os critérios de aceitação | Arthur Arruda Frauches | P0, S, documentation, feature | Backlog | Definir os critérios de aceitação das tarefas. | a definir |
-| #22 | Início da implementação a arquitetura de Banco de dados | João Vitor Frabis Zago | P0, S, database, documentation | Backlog | Iniciar a implementação da arquitetura do banco de dados. | a definir |
-| #24 | Início da implementação do sistema de autenticação | Guilherme Lira Ribeiro | P0, S, accessibility, feature, good first issue | Backlog | Iniciar a implementação do sistema de autenticação. | a definir |
 | #26 | Definindo o nome do projeto no documento Visão | a definir | a definir | Concluído | a definir | a definir |
 | #29 | Teste do sistema de autenticação | a definir | P0, S, accessibility, feature | Concluído | a definir | a definir |
 | #34 | BD - Criar o banco de dados para autenticação | João Vitor Frabis Zago | P0, XS, database, feature | Concluído | Criar o banco de dados para autenticação. | a definir |
@@ -140,6 +139,8 @@ O quadro poderá ser atualizado durante o desenvolvimento e nas reuniões da equ
 | #40 | BD - Implementação da parte de Projetos | a definir | P0, S, accessibility, database, feature | Concluído | a definir | a definir |
 | #44 | BD - Implementação do banco de dados da tela projeto | a definir | P0, XS, database, feature | Concluído | a definir | a definir |
 | #46 | BD - Implementação de Tags | a definir | accessibility, database | Concluído | a definir | a definir |
+
+
 ### 3.3 Cartões no Modelo a serem desenvolvidos
 
 ---
