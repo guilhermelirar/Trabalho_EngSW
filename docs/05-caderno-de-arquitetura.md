@@ -1,6 +1,6 @@
-| Backlog Manager            |                 |
-| :------------------------- | :-------------- |
-| **Caderno de Arquitetura** | Data: 8/10/2026 |
+| Backlog Manager            | 
+| :------------------------- | 
+| **Caderno de Arquitetura** |
 
 # BACKLOG MANAGER
 
@@ -8,7 +8,7 @@
 
 ## 1. Propósito
 
-Este documento descreve a filosofia, decisões, restrições, justificativas
+Este documento descreve decisões, restrições, justificativas
 elementos significativos e outros aspectos relevantes para o design e implementação
 do sistema.
 
@@ -229,3 +229,35 @@ um banco de dados separado durante a execução dos testes.
 A utilização dessas ferramentas estabelece inicialmente uma arquitetura de backend baseada em **Flask**, com o gerenciamento da persistência realizado por meio de **Flask-SQLAlchemy e SQLAlchemy**. A escolha dessas tecnologias também permite manter a camada de acesso aos dados relativamente independente do sistema de banco de dados utilizado, enquanto o Werkzeug fornece recursos que podem ser utilizados nas funcionalidades relacionadas à autenticação e segurança.
 
 As versões das dependências correspondem à definição inicial apresentada pelo grupo e poderão ser atualizadas durante o desenvolvimento caso seja necessário.
+
+---
+
+## 10. Diagramas dos Artefatos Usados
+
+### 10.1. Fluxograma da rota de usuário 
+
+### 10.2. Diagrama do Banco de Dados
+
+### 10.3. Diagrama do Banco de Telas
+
+[Mostrar (descreva oque eu devo colocar)]
+
+<!-- 
+INSTRUÇÕES PARA O DIAGRAMA:
+1. Crie uma imagem (no Draw.io, Miro, Figma ou PowerPoint) mostrando os blocos da arquitetura.
+2. Salve a imagem na sua pasta de imagens (ex: `../imagens/diagrama-arquitetura.png`).
+3. Apague este bloco de comentário e a linha "[Mostrar...]" acima, deixando apenas a sintaxe da imagem abaixo:
+
+![Diagrama da Arquitetura](../imagens/diagrama-arquitetura.png)
+
+O QUE DESENHAR NO DIAGRAMA:
+- Um bloco no topo: "Navegador do Usuário (Frontend HTML/CSS/JS)"
+- Uma seta para baixo com "Requisições HTTP"
+- Um bloco no meio: "Flask App (routes/) - Camada de Apresentação"
+- Uma seta para baixo
+- Um bloco no meio: "Flask App (services/) - Regras de Negócio (Ex: Cálculo RICE)"
+- Uma seta para baixo
+- Um bloco no meio: "Flask App (models/) - SQLAlchemy ORM"
+- Uma seta para baixo
+- Um bloco no fundo: "Banco de Dados (SQLite em Dev / PostgreSQL em Prod)"
+-->
