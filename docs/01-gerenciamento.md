@@ -135,7 +135,6 @@ O quadro poderá ser atualizado durante o desenvolvimento e nas reuniões da equ
 | #29 | Teste do sistema de autenticação | Vinícius Gonçalves Duarte | P0, S, accessibility, feature | Concluído | Testar as funcionalidades da tela de autenticação | apresentar os testes ao grupo |
 | #34 | BD - Criar o banco de dados para autenticação | João Vitor Frabis Zago | P0, XS, database, feature | Concluído | Criar o banco de dados para autenticação. | Fazer uma implementação real e funcional no banco de dados que suporte as necessidades da tela autenticação |
 | #35 | BD - Gerar um modelo atualizado do Banco de dados | João Vitor Frabis Zago | P2, M, database, documentation | Concluído | Gerar um modelo atualizado do Banco de dados. | Após uma reunião desenvolver um novo modelos de banco de dados para que suporte as novas necessidades do sistema |
-| #37 | a definir | a definir | a definir | Concluído | a definir | a definir |
 | #40 | BD - Implementação da parte de Projetos | João Vitor Frabis Zago | P0, S, accessibility, database, feature | Concluído | Criar o banco de dados para projetos. | Fazer uma implementação real e funcional no banco de dados que suporte as necessidades da tela projetos |
 | #44 | BD - Implementação do banco de dados da tela projeto | João Vitor Frabis Zago | P0, XS, database, feature | Concluído | Criar o banco de dados para projeto. | Fazer uma implementação real e funcional no banco de dados que suporte as necessidades da tela projeto |
 | #46 | BD - Implementação de Tags | João Vitor Frabis Zago | accessibility, database | Concluído | Criar o banco de dados para Tags. | Fazer uma implementação real e funcional no banco de dados que suporte as necessidades das Tags |
@@ -407,15 +406,6 @@ O quadro poderá ser atualizado durante o desenvolvimento e nas reuniões da equ
 - **Responsável:** João Vitor Frabis Zago
 - **Descrição:** Gerar um modelo atualizado do Banco de dados.
 - **Critérios de Aceitação:** Após uma reunião desenvolver um novo modelo de banco de dados para que suporte as novas necessidades do sistema.
-  - [x] Critério atingido
-
----
-
-#### #37 – a definir
-
-- **Responsável:** a definir
-- **Descrição:** a definir
-- **Critérios de Aceitação:** a definir.
   - [x] Critério atingido
 
 ---
