@@ -1,6 +1,7 @@
 from app.models import db
 from app.models.acceptance_criteria import AcceptanceCriteria
 from app.models.user_story import UserStory
+from app.routes.auth_routes import UserCreationException
 from app.services import project_service
 from app.services.exceptions import ProjectDomainException, UserStoryDomainException
 
@@ -218,6 +219,7 @@ def add_acceptance_criteria_to_story(
     story_id: int, user_id: int, data: dict
 ) -> AcceptanceCriteria:
     """
+    US-014 Gerenciamento de Critérios de Aceitação
     Cria um objeto AcceptanceCriteria a partir de data, e vincula a uma história
     de usuário existente. Retorna o objeto criado em caso de sucesso, e levanta
     UserStoryDomainException em caso de erro.
@@ -239,3 +241,42 @@ def add_acceptance_criteria_to_story(
     db.session.commit()
 
     return criteria
+
+
+def update_acc_criteria(criteria_id: int, user_id: int, new_data: dict):
+    """
+    US-014 Gerenciamento de Critérios de Aceitação
+    Atualiza um critério de aceitação com novos dados, retornando objeto
+    atualizado em caso de sucesso ou levantando UserStoryDomainException
+    em caso de erro (critério não encontrado ou acesso negado)
+    """
+
+    criteria = db.session.get(AcceptanceCriteria, criteria_id)
+    if (not criteria
+        or criteria.user_story.project_backlog.project.owner_id != user_id):
+        raise UserCreationException("Critério de aceitação não encontrado")
+
+    clean_data = _validate_acceptance_criteria_data(new_data, require_all=False)
+    criteria.title = clean_data.get("title") or criteria.title
+    criteria.given = clean_data.get("given") or criteria.given
+    criteria.when = clean_data.get("when") or criteria.when
+    criteria.then = clean_data.get("then") or criteria.then
+
+    db.session.commit()
+    return criteria
+
+def delete_acc_criteria(criteria_id: int, user_id: int):
+    """
+    US-014 Gerenciamento de Critérios de Aceitação
+    Remove um critério de aceitação caso exista, ou levanta exceção
+    UserStoryDomainException em caso de acesso negado ou critério
+    não encontrado
+    """
+
+    criteria = db.session.get(AcceptanceCriteria, criteria_id)
+    if (not criteria
+        or criteria.user_story.project_backlog.project.owner_id != user_id):
+        raise UserCreationException("Critério de aceitação não encontrado")
+
+    db.session.delete(criteria)
+    db.session.commit()
