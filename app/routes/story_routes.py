@@ -11,6 +11,7 @@ from app.services.exceptions import (
 
 story_bp = Blueprint("story", __name__)
 
+
 @story_bp.route("/projects/<int:project_id>/stories", methods=["POST"])
 @login_required
 def create_story(project_id: int):
@@ -28,7 +29,11 @@ def update_story(story_id: int):
     try:
         story = story_srvc.update_user_story(story_id, current_user.id, request.form)
         flash("História de usuário atualizada com sucesso!", "success")
-        return redirect(url_for("projects.project_detail", project_id=story.project_backlog.project_id))
+        return redirect(
+            url_for(
+                "projects.project_detail", project_id=story.project_backlog.project_id
+            )
+        )
     except (ProjectDomainException, UserStoryDomainException) as error:
         flash(error.message, "danger")
         return redirect(request.referrer or url_for("projects.projects_list"))
@@ -70,7 +75,9 @@ def update_epic(project_id: int, epic_id: int):
     return redirect(url_for("projects.project_detail", project_id=project_id))
 
 
-@story_bp.route("/projects/<int:project_id>/epics/<int:epic_id>/delete", methods=["POST"])
+@story_bp.route(
+    "/projects/<int:project_id>/epics/<int:epic_id>/delete", methods=["POST"]
+)
 @login_required
 def remove_epic(project_id: int, epic_id: int):
     try:
@@ -81,7 +88,9 @@ def remove_epic(project_id: int, epic_id: int):
     return redirect(url_for("projects.project_detail", project_id=project_id))
 
 
-@story_bp.route("/projects/<int:project_id>/epics/<int:epic_id>/stories/link", methods=["POST"])
+@story_bp.route(
+    "/projects/<int:project_id>/epics/<int:epic_id>/stories/link", methods=["POST"]
+)
 @login_required
 def link_story_to_epic(project_id: int, epic_id: int):
     try:
@@ -107,3 +116,53 @@ def unlink_story_from_epic(project_id: int, epic_id: int, story_id: int):
     except ServiceException as error:
         flash(error.message, "danger")
     return redirect(url_for("projects.project_detail", project_id=project_id))
+
+
+@story_bp.route("/stories/<int:story_id>/criteria", methods=["POST"])
+@login_required
+def new_acceptance_criteria(story_id: int):
+    try:
+        story_srvc.add_acceptance_criteria_to_story(
+            story_id, current_user.id, request.form
+        )
+
+        flash(
+            "Critério de aceitação adicionado com sucesso à História de Usuário.",
+            "success",
+        )
+    except ServiceException as error:
+        flash(error.message, "danger")
+
+    return redirect(request.referrer or url_for("projects.projects_list"))
+
+
+@story_bp.route("/stories/criteria/<int:criteria_id>/edit", methods=["POST"])
+@login_required
+def update_acceptance_criteria(criteria_id: int):
+    try:
+        story_srvc.update_acc_criteria(criteria_id, current_user.id, request.form)
+
+        flash(
+            "Critério de aceitação atualizado com sucesso.",
+            "success",
+        )
+    except ServiceException as error:
+        flash(error.message, "danger")
+
+    return redirect(request.referrer or url_for("projects.projects_list"))
+
+
+@story_bp.route("/stories/criteria/<int:criteria_id>/delete", methods=["POSTS"])
+@login_required
+def delete_acceptance_criteria(criteria_id: int):
+    try:
+        story_srvc.delete_acc_criteria(criteria_id, current_user.id)
+
+        flash(
+            "Critério de aceitação removido da história de usuário.",
+            "success",
+        )
+    except ServiceException as error:
+        flash(error.message, "danger")
+
+    return redirect(request.referrer or url_for("projects.projects_list"))
