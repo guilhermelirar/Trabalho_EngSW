@@ -2,6 +2,8 @@ import pytest
 
 from app.app import create_app, db
 from app.models import Project, ProjectBacklog, User
+from app.models.acceptance_criteria import AcceptanceCriteria
+from app.models.user_story import UserStory
 from app.services.auth_service import register_user
 
 
@@ -71,3 +73,19 @@ def project_with_backlog(app, test_user):
     db.session.commit()
 
     return project
+
+
+@pytest.fixture
+def existing_user_story(app, project_with_backlog):
+    """Cria história de usuário dentro de um projeto existente"""
+    us = UserStory()
+    us.project_backlog_id = project_with_backlog.backlog.id
+    us.title = "História de usuário"
+    us.role = "[Papel]"
+    us.action = "[Ação]"
+    us.benefit = "[Benefit]"
+
+    db.session.add(us)
+    db.session.commit()
+
+    return us
