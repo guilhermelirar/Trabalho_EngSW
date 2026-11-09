@@ -195,6 +195,7 @@ Este documento apresenta a visão geral e o escopo do Backlog Manager. Os detalh
 | **Histórias de usuário** | Especificação das funcionalidades, histórias, critérios de aceitação, estimativas e priorização. |
 | **Architecture Notebook** | Arquitetura do software, componentes, relacionamentos e decisões técnicas. |
 | **Projeto de interface** | Storyboard, wireframes e organização das telas. |
+| **Implementação do front-end** | Descrição das tecnologias de interface, estrutura dos templates, componentes visuais, telas implementadas, interações JavaScript, estilos CSS e responsividade. |
 | **Projeto físico do banco de dados** | Tabelas, colunas, chaves, relacionamentos e descrição das estruturas de dados. |
 | **Protótipo e testes** | Implementação do protótipo e demonstração do funcionamento por meio de testes de sistema. |
 | **Infraestrutura de implantação** | Hardware, software e serviços necessários para implantação. |

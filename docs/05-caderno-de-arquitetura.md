@@ -149,6 +149,34 @@ A configuração do ambiente de testes também poderá utilizar um banco de dado
 
 > **Observação:** as versões e dependências apresentadas correspondem à proposta inicial discutida pelo grupo e poderão ser ajustadas durante o desenvolvimento do projeto.
 
+### 6.2 Ferramentas usadas no Front-end
+
+Para o desenvolvimento da interface do sistema, foram utilizadas
+as seguintes tecnologias:
+
+- **HTML5:** responsável pela estruturação semântica das páginas,
+  formulários, componentes e elementos de interação.
+- **CSS3:** utilizado na definição da identidade visual, organização
+  dos componentes, estilização dos formulários e adaptação da interface
+  para diferentes resoluções de tela.
+- **JavaScript:** responsável pelas interações executadas no navegador,
+  incluindo controle de diálogos, navegação entre abas, confirmações
+  de operações e cálculo dinâmico da pontuação RICE.
+- **Jinja2:** mecanismo de templates utilizado para renderizar páginas
+  HTML dinamicamente e permitir o reaproveitamento de estruturas
+  e componentes visuais.
+- **Google Fonts (Inter):** utilizado para fornecer a tipografia
+  da interface.
+
+A utilização de templates permite reduzir a duplicação de código HTML
+e manter uma estrutura visual consistente entre as páginas.
+A separação dos estilos CSS por responsabilidade facilita a manutenção
+e evolução da identidade visual.
+
+O JavaScript complementa a renderização realizada pelo servidor,
+permitindo interações locais sem a necessidade de transformar
+a aplicação em uma SPA (Single Page Application).
+
 ## 7. Abstrações relativas à arquitetura
 
 As principais abstrações identificadas a partir das funcionalidades definidas são:
@@ -174,7 +202,35 @@ O sistema será organizado em torno do gerenciamento de requisitos por meio de h
 
 ### Perspectiva de interface
 
-O sistema será disponibilizado como um site com uma interface gráfica.
+O sistema será disponibilizado como uma aplicação web, acessível por meio
+de navegadores, utilizando uma interface gráfica construída com HTML5,
+CSS3 e JavaScript.
+
+A camada de apresentação utiliza templates Jinja2 para renderização
+dinâmica das páginas HTML no servidor. Essa abordagem permite reutilizar
+estruturas visuais e componentes, mantendo a organização das diferentes
+telas do sistema.
+
+A interface está organizada em páginas de autenticação, gerenciamento
+de projetos e gerenciamento dos elementos de backlog. São utilizados
+componentes visuais como cartões, formulários, diálogos modais, abas
+de navegação e elementos de priorização.
+
+A interação com o sistema ocorre principalmente por meio de formulários
+HTML e requisições HTTP. O JavaScript complementa a experiência do
+usuário com funcionalidades locais, como alternância de abas, abertura
+e fechamento de diálogos, confirmações de operações e atualização
+dinâmica da pontuação RICE.
+
+Os estilos são organizados em arquivos CSS separados por responsabilidade,
+permitindo a manutenção da identidade visual, dos componentes reutilizáveis
+e das adaptações para diferentes tamanhos de tela.
+
+Os detalhes da implementação, incluindo a estrutura dos templates,
+organização dos arquivos CSS e JavaScript, descrição das telas e
+comportamentos da interface, estão documentados em:
+
+[Documentação da Implementação do Front-end](06-implementacao-frontend.md).
 
 ### Perspectiva de dados
 
@@ -240,7 +296,6 @@ As versões das dependências correspondem à definição inicial apresentada pe
 
 ### 10.3. Diagrama do Banco de Telas
 
-[Mostrar (descreva oque eu devo colocar)]
 
 <!-- 
 INSTRUÇÕES PARA O DIAGRAMA:
