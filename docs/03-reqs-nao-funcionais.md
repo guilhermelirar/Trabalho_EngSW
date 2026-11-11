@@ -1,18 +1,22 @@
-| **Backlog Manager** |                  |
-| ------------------------------------------------- | ---------------- |
-| **Requisitos Não Funcionais**                     |  |
 
-#BACKLOG MANAGER
+| **Sistema de Gestão de Backlog** | **Responsável** |
+| :------------------------------- | :-------------- |
+| **Requisitos Não Funcionais** | Arthur Arruda Frauches — Matrícula: 241017728 |
 
-# Requisitos Não Funcionais
+---
 
-## 1. Propósito
+# Backlog Manager
 
-Este documento descreve os requisitos não funcionais considerados relevantes para o desenvolvimento do Sistema de Gestão de Requisitos para Projetos.
+## Requisitos Não Funcionais
+
+### 1. Propósito
+
+Este documento descreve os requisitos não funcionais considerados relevantes para o desenvolvimento do Backlog Manager.
 
 Os requisitos não funcionais definem características e restrições relacionadas à qualidade, ao funcionamento e à utilização do sistema, complementando os requisitos funcionais definidos por meio das histórias de usuário.
 
 Os requisitos apresentados neste documento constituem uma definição inicial e poderão ser revisados pelo grupo conforme o desenvolvimento do projeto.
+
 
 ## 2. Requisitos Não Funcionais
 
@@ -28,9 +32,11 @@ A organização da interface deverá facilitar o acesso às funcionalidades rela
 
 ### RNF-002 — Segurança
 
-O sistema deverá proteger o acesso às funcionalidades que dependem de autenticação, permitindo que os serviços sejam acessados somente após a autenticação do usuário.
+O sistema deverá proteger o acesso às funcionalidades que dependem de autenticação, permitindo que seus serviços sejam acessados somente após a autenticação do usuário.
 
-As informações relacionadas à conta do usuário e aos dados gerenciados pelo sistema deverão ser tratadas de forma segura.
+O sistema também deverá garantir que cada usuário tenha acesso somente aos projetos vinculados à sua própria conta, impedindo a visualização, a consulta, a atualização ou a exclusão de projetos pertencentes a outros usuários.
+
+As informações relacionadas às contas dos usuários e aos dados gerenciados pelo sistema deverão ser protegidas contra acessos e operações não autorizados.
 
 **Métrica:** A definir pelo grupo.
 
@@ -48,9 +54,9 @@ O desempenho deverá ser considerado principalmente nas operações de consulta 
 
 ### RNF-004 — Confiabilidade
 
-O sistema deverá executar suas funcionalidades de maneira consistente, mantendo a integridade das informações armazenadas durante as operações realizadas pelo usuário.
+O sistema deverá executar suas funcionalidades de maneira consistente, apresentando resultados compatíveis com as operações solicitadas pelo usuário.
 
-As operações de criação, consulta, atualização e exclusão deverão produzir resultados compatíveis com as ações realizadas no sistema.
+As operações de criação, consulta, atualização e exclusão deverão funcionar conforme o comportamento esperado, evitando falhas que comprometam a utilização do sistema.
 
 **Métrica:** A definir pelo grupo.
 
@@ -58,14 +64,44 @@ As operações de criação, consulta, atualização e exclusão deverão produz
 
 ### RNF-005 — Manutenibilidade
 
-O sistema deverá ser desenvolvido de forma organizada, facilitando a manutenção, correção de problemas e evolução das funcionalidades ao longo do desenvolvimento do projeto.
+O sistema deverá ser desenvolvido de forma organizada, facilitando a manutenção, a correção de problemas e a evolução das funcionalidades ao longo do desenvolvimento do projeto.
 
-A organização do sistema deverá permitir que os diferentes integrantes responsáveis por arquitetura/backend, banco de dados e interface/frontend possam trabalhar e realizar alterações de maneira estruturada.
+A organização do sistema deverá permitir que os diferentes integrantes responsáveis pela arquitetura e pelo back-end, pelo banco de dados e pela interface e pelo front-end possam trabalhar e realizar alterações de maneira estruturada.
 
 **Métrica:** A definir pelo grupo.
 
+---
 
+### RNF-006 — Compatibilidade
 
-As métricas, padrões e demais critérios específicos de avaliação deverão ser definidos pelo grupo posteriormente.
+O sistema deverá ser desenvolvido de forma que suas funcionalidades possam ser utilizadas por meio dos principais navegadores modernos, mantendo o funcionamento adequado de sua interface e de seus recursos.
+
+A apresentação das páginas e a execução das funcionalidades deverão manter um comportamento consistente nos navegadores suportados pelo projeto.
+
+**Métrica:** A definir pelo grupo.
+
+---
+
+### RNF-007 — Acessibilidade
+
+O sistema deverá apresentar uma interface que facilite a utilização por pessoas com diferentes necessidades, considerando aspectos como legibilidade dos textos, organização dos elementos visuais e facilidade de navegação.
+
+Os componentes da interface deverão ser organizados de maneira clara, permitindo que o usuário identifique as funcionalidades disponíveis e interaja com elas adequadamente.
+
+**Métrica:** A definir pelo grupo.
+
+---
+
+### RNF-008 — Integridade dos Dados
+
+O sistema deverá preservar a integridade das informações armazenadas no banco de dados, garantindo que os registros respeitem as regras de negócio e os relacionamentos definidos para o projeto.
+
+As operações realizadas deverão evitar inconsistências nos dados, como associações inválidas entre projetos, backlogs, histórias de usuário, épicos e critérios de aceitação.
+
+**Métrica:** A definir pelo grupo.
+
+---
+
+As métricas, os padrões e os demais critérios específicos de avaliação deverão ser definidos pelo grupo posteriormente.
 
 Os requisitos não funcionais poderão ser revisados ou complementados conforme novas decisões forem tomadas durante o desenvolvimento do projeto.
