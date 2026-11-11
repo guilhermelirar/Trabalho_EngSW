@@ -1,5 +1,5 @@
-| Backlog Manager            | 
-| :------------------------- | 
+| Backlog Manager            |
+| :------------------------- |
 | **Caderno de Arquitetura** |
 
 # BACKLOG MANAGER
@@ -15,8 +15,8 @@ do sistema.
 ## 2. Objetivos e filosofia da arquitetura
 
 A arquitetura deverá fornecer suporte ao desenvolvimento de um **sistema para gerenciamento de requisitos baseado em histórias de usuário**.
-
-O sistema será desenvolvido como uma **aplicação web**, disponibilizando uma interface gráfica (site) para acesso às suas funcionalidades.
+O sistema será desenvolvido como uma **aplicação web**, disponibilizando uma interface gráfica (site) para acesso às suas funcionalidades, será provido
+por meio de um servidor onde a aplicação Python que implementa a lógica de negócios será executada.
 
 A arquitetura deverá permitir o desenvolvimento das funcionalidades relacionadas ao gerenciamento de:
 
@@ -30,11 +30,9 @@ A arquitetura deverá permitir o desenvolvimento das funcionalidades relacionada
 - MoSCoW;
 - RICE score.
 
-A divisão inicial do trabalho considera responsabilidades específicas para arquitetura/backend, banco de dados e interface/frontend, mantendo a possibilidade de colaboração entre os integrantes.
-
-<!-- Questões que conduzirão arq. como preocupações de deployment, performance,
-     robustez para manutenção; objetivos (goals) que a arquitetura precisa ter
-     na estrutura e comportamento, e se deve funcionar bem em condições não usuais -->
+A divisão do trabalho considera responsabilidades específicas para frontend, backend e interface, mantendo a possibilidade de colaboração entre os integrantes.
+Essa modularização é prática para garantir melhor manutenabilidade do software a ser desenvolvido, bem como permitir que mais de um desenvolvedor trabalhe no código
+ao mesmo tempo, desde que em módulos com certo nível de independência.
 
 ## 3. Suposições e dependências
 
@@ -52,14 +50,12 @@ As seguintes definições foram estabelecidas inicialmente pelo grupo:
 Para cumprir os objetivos, será adotada a linguagem de programação Python 3, bem como frameworks para aplicação web
 por ela suportados, nomeadamente o Flask para o desenvolvimento da aplicação (backend), por ser uma framework que se
 destaca pela leveza, simplicidade e alto poder de customização. Além disso possui vasta documentação e é adotado por
-grandes empresas. Este framework é ideal para protótipos e microsserviços, e também possui uma série de extensões como
-suporte a motores de template HTML (Jinja2), ferramentas de utilidade e segurança, como Werkzeug, e de banco de dados,
-como o Flask-SQLAlchemy. Essas extensões também são consideradas dependências desta arquitetura.
+grandes empresas. Junto ao Flask, serão utilizadas suas extensões como o motor de templates Jija2 para renderização
+do lado do servidor, Flask-Login para gerenciamento de sessão e Flask-SQLAlchemy, para mapeamento objeto relacional e
+banco de dados.
 
-<!-- premissas sobre o comportamento, consistencia de dados, performance;
-    limites antecipados, experiencia da equipe -->
-<!-- sistema externos como APIs, bancos de dados compartilhados (nao aplicavel);
-    blocos de software ou bibliotecas; -->
+Este sistema não faz uso de APIs externas ou bancos de dados compartilhados com outros sistemas. É esperada a consistência
+de dados através de um único banco de dados relacional (SQL), com as tabelas que se fizerem necessárias.
 
 ## 4. Requisitos significativos para arquitetura
 
@@ -122,18 +118,23 @@ Esses requisitos deverão ser considerados na definição da estrutura do sistem
 
 ## 6. Mecanismos de arquitetura
 
-Com base nas funcionalidades definidas, deverão ser considerados mecanismos relacionados a:
+Com base nas funcionalidades definidas, foram estabelecidos os seguintes mecanismos de arquitetura:
 
-- **Autenticação do usuário**: senhas devem ser comparadas e armazenadas por meio de hash, utilizando a ferramenta werkzeug.security para tal, a fim de garantir a segurança de informações críticas.
-- **Persistência das informações**: será utilizada uma abstração do banco de dados relacional com a extensão Flask-SQLAlchemy (ORM) e execução via SQLite na fase de desenvolvimento.
-- **Tratamento de erros e exceções:** camada centralizada de exceções personalizadas (`ServiceError`) para captura global no servidor e tornar implementação das rotas mais simples (focadas no caso de sucesso). Usará mecanismo nativo do Flask para tal (`@app.errorhandler`)
-- **Comunicação entre a interface e o backend**;
-- **Gerenciamento dos dados dos projetos**;
-- **Gerenciamento dos diferentes tipos de backlog**;
-- **Gerenciamento das histórias de usuário**;
-- **Cálculo da pontuação RICE**.
+- **Autenticação do usuário e Gestão de Sessão**: senhas são armazenadas via hash criptográfico (`werkzeug.security`). O controle de sessão e estado do usuário autenticado é mantido pela extensão `Flask-Login`.
 
-### 6.1 Ferramentas usadas
+- **Persistência das informações**: utilização de Mapeamento Objeto-Relacional (ORM) com `Flask-SQLAlchemy`. Em desenvolvimento utiliza-se `SQLite`, com suporte a migração para SGBDs relacioanais em produção via alteração da URI de conexão.
+
+- **Tratamento de erros e exceções**: camada centralizada de exceções personalizadas (`ServiceError` em `app/services/exceptions.py`) para captura global no servidor via `@app.errorhandler`, convertendo erros de negócio em mensagens de feedback (_flash messages_).
+
+- **Comunicação entre a interface e o backend**: submissão de formulários HTML via métodos HTTP **POST** (criação/alteração/exclusão) e **GET** (navegação). Aplicação do padrão **Post-Redirect-Get (PRG)** com mensagens de contexto (_flash messages_) para evitar re-submissão de dados ao atualizar a página.
+
+- **Gerenciamento dos dados dos projetos e backlogs**: encapsulamento das regras de associação (como limite de um Product Backlog por projeto e múltiplos Sprint Backlogs) diretamente na camada de serviços (`project_service.py`).
+
+- **Gerenciamento e movimentação de histórias de usuário**: orquestração na camada de serviços (`user_story_service.py`) para vincular histórias a Product/Sprint Backlogs e associá-las a Épicos e Critérios de Aceitação.
+
+- **Cálculo e validação da pontuação RICE e estimativas**: regras de validação para a sequência de Fibonacci (Story Points), classificações MoSCoW e o cálculo do RICE score ($\frac{R \times I \times C}{E}$) isolados na camada de serviços, espelhados via JavaScript no cliente (`projects.js`) apenas para pré-visualização instantânea na tela.
+
+### 6.1 Ferramentas usadas no Backend
 
 Para o desenvolvimento do backend do sistema, foram definidas inicialmente as seguintes dependências Python:
 
@@ -146,8 +147,6 @@ Para o desenvolvimento do backend do sistema, foram definidas inicialmente as se
 A configuração do banco de dados poderá ser definida posteriormente de acordo com a escolha do sistema de gerenciamento de banco de dados. Dessa forma, a aplicação poderá utilizar diferentes bancos de dados alterando sua configuração de conexão.
 
 A configuração do ambiente de testes também poderá utilizar um banco de dados separado do banco principal, permitindo a realização dos testes sem interferir nos dados da aplicação.
-
-> **Observação:** as versões e dependências apresentadas correspondem à proposta inicial discutida pelo grupo e poderão ser ajustadas durante o desenvolvimento do projeto.
 
 ### 6.2 Ferramentas usadas no Front-end
 
@@ -179,20 +178,27 @@ a aplicação em uma SPA (Single Page Application).
 
 ## 7. Abstrações relativas à arquitetura
 
-As principais abstrações identificadas a partir das funcionalidades definidas são:
+As principais abstrações identificadas representam as entidades e conceitos de domínio do sistema (mapeadas nas classes de modelo em `app/models/`), cujas regras e fluxos de negócio são manipulados e orquestrados pela camada de serviços (`app/services/`):
 
-- **Usuário**;
-- **Projeto**;
-- **Product Backlog**;
-- **Sprint Backlog**;
-- **História de Usuário**;
-- **Épico**;
-- **Critério de Aceitação**;
-- **Story Points**;
-- **MoSCoW**;
-- **RICE**.
+- **Usuário (`User`)**: entidade que representa os atores do sistema. Armazena as credenciais de acesso (`password_hash`), integra-se com a gestão de sessão via `UserMixin` (Flask-Login) e estabelece a relação de propriedade sobre os projetos criados.
 
-Essas abstrações correspondem aos principais elementos funcionais identificados na reunião e deverão ser consideradas durante a definição do modelo de dados e da implementação do sistema.
+- **Projeto (`Project`)**: entidade que delimita o escopo de um trabalho. Agrupa um único Product Backlog, múltiplos Sprint Backlogs e vincula-se ao seu usuário proprietário (`User`).
+
+- **Product Backlog (`ProjectBacklog`)**: repositório principal de requisitos do projeto. Contém a lista global de histórias de usuário pendentes de alocação em sprints, mantendo relação 1:1 com o Projeto.
+
+- **Sprint Backlog (`Sprint`)**: subconjunto iterativo e delimitado do backlog de um projeto. Agrupa histórias de usuário selecionadas para execução dentro de um ciclo específico.
+
+- **História de Usuário (`UserStory`)**: unidade fundamental de requisito funcional do sistema, estruturada no formato padrão ("Como [papel] quero [ação] para [benefício]"). Armazena estimativas (Story Points), priorizações (MoSCoW, RICE) e relacionamentos com backlogs e épicos.
+
+- **Épico (`Epic`)**: estrutura de alto nível que agrupa e categoriza histórias de usuário relacionadas por um objetivo funcional comum dentro do projeto.
+
+- **Critério de Aceitação (`AcceptanceCriteria`)**: condições específicas que validam a conclusão de uma História de Usuário, estruturadas no formato ("Dado [contexto] quando [ação] então [resultado]").
+
+- **Story Points**: conceito de estimativa de esforço atribuído às histórias de usuário, restrito aos valores discretos da sequência de Fibonacci (0, 1, 2, 3, 5, 8, 13, 21, 34, 55).
+
+- **MoSCoW**: conceito de categorização de prioridade de requisitos em quatro níveis: Must have (M), Should have (S), Could have (C) e Won't have (W).
+
+- **RICE Score**: pontuação de priorização quantitativa baseada nos parâmetros Reach (Alcance), Impact (Impacto), Confidence (Confiança) e Effort (Esforço), calculada pela fórmula (R x I x C) / E.
 
 ## 8. Arquitetura segundo perspectivas
 
@@ -288,16 +294,7 @@ As versões das dependências correspondem à definição inicial apresentada pe
 
 ---
 
-## 10. Diagramas dos Artefatos Usados
-
-### 10.1. Fluxograma da rota de usuário 
-
-### 10.2. Diagrama do Banco de Dados
-
-### 10.3. Diagrama do Banco de Telas
-
-
-<!-- 
+<!--
 INSTRUÇÕES PARA O DIAGRAMA:
 1. Crie uma imagem (no Draw.io, Miro, Figma ou PowerPoint) mostrando os blocos da arquitetura.
 2. Salve a imagem na sua pasta de imagens (ex: `../imagens/diagrama-arquitetura.png`).
