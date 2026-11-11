@@ -202,11 +202,11 @@ As principais abstrações identificadas representam as entidades e conceitos de
 
 ## 8. Arquitetura segundo perspectivas
 
-### Perspectiva funcional
+### 8.1 Perspectiva funcional
 
 O sistema será organizado em torno do gerenciamento de requisitos por meio de histórias de usuário, incluindo projetos, backlogs, histórias, épicos, critérios de aceitação e mecanismos de estimativa e priorização.
 
-### Perspectiva de interface
+### 8.2 Perspectiva de interface
 
 O sistema será disponibilizado como uma aplicação web, acessível por meio
 de navegadores, utilizando uma interface gráfica construída com HTML5,
@@ -238,7 +238,7 @@ comportamentos da interface, estão documentados em:
 
 [Documentação da Implementação do Front-end](06-implementacao-frontend.md).
 
-### Perspectiva de dados
+### 8.3 Perspectiva de dados
 
 O sistema deverá armazenar as informações necessárias ao gerenciamento dos projetos e dos elementos relacionados às histórias de usuário.
 
@@ -247,7 +247,7 @@ classes Python (`models/`) gerenciadas pelo SQLAlchemy, utilizando o banco
 SQLite em ambiente de desenvolvimento local com suporte a migração para
 SGBD relacional (como MySQL/PostgreSQL) em produção.
 
-### Perspectiva de backend
+### 8.4 Perspectiva de backend
 
 O backend será responsável pela implementação das regras de negócio e dos serviços necessários para o funcionamento do sistema. Isso será feito por
 meio de três camadas:
@@ -256,7 +256,10 @@ meio de três camadas:
 - **Camada de Lógica de Negócios (`services/`)**: responsável por concentrar e executar as regras de negócio da aplicação (como o cálculo do RICE score, validações de formato e tratamento de exceções de domínio). Recebe os dados já extraídos da camada de apresentação, processa as operações necessárias e orquestra a persistência de dados com a camada de modelos, garantindo o isolamento da regra de negócio independente da interface.
 - **Camada de Acesso a Dados (`models/`)** responsável por fornecer classes equivalentes às entidades e domínios dos sistema, que persistem em banco de dados. Permite que a camada superior trabalhe com princípios de orientação a objetos, abstraídas as peculiaridades do banco de dados relacional configurado com o SQLAlchemy.
 
-### Perspectiva de integração
+![Diagrama da Arquitetura do Sistema](img/diagrama_arquitetura.png)
+*Figura 1: Visão geral da arquitetura em camadas e dependências do sistema Backlog Manager.*
+
+### 8.5 Perspectiva de integração
 
 Deverá existir integração entre a interface, o backend e o banco de dados para permitir o funcionamento das funcionalidades do sistema. O SQLAlchemy permite trabalhar com tabelas e registros no banco de dados como se fossem objetos, segundo a abordagem de Mapeamento Objeto-Relacional (ORM). Como exposto na perspectiva de backend, este acesso é feito na camada de lógica de negócios usando as classes providas pela camada de acesso a dados.
 
@@ -286,30 +289,8 @@ para atender a requisitos de performance.
 Além disso, a possibilidade de utilizar uma configuração específica para testes permite que o sistema utilize
 um banco de dados separado durante a execução dos testes.
 
-### Impacto geral na arquitetura
+### 9.3 Impacto geral na arquitetura
 
 A utilização dessas ferramentas estabelece inicialmente uma arquitetura de backend baseada em **Flask**, com o gerenciamento da persistência realizado por meio de **Flask-SQLAlchemy e SQLAlchemy**. A escolha dessas tecnologias também permite manter a camada de acesso aos dados relativamente independente do sistema de banco de dados utilizado, enquanto o Werkzeug fornece recursos que podem ser utilizados nas funcionalidades relacionadas à autenticação e segurança.
 
 As versões das dependências correspondem à definição inicial apresentada pelo grupo e poderão ser atualizadas durante o desenvolvimento caso seja necessário.
-
----
-
-<!--
-INSTRUÇÕES PARA O DIAGRAMA:
-1. Crie uma imagem (no Draw.io, Miro, Figma ou PowerPoint) mostrando os blocos da arquitetura.
-2. Salve a imagem na sua pasta de imagens (ex: `../imagens/diagrama-arquitetura.png`).
-3. Apague este bloco de comentário e a linha "[Mostrar...]" acima, deixando apenas a sintaxe da imagem abaixo:
-
-![Diagrama da Arquitetura](../imagens/diagrama-arquitetura.png)
-
-O QUE DESENHAR NO DIAGRAMA:
-- Um bloco no topo: "Navegador do Usuário (Frontend HTML/CSS/JS)"
-- Uma seta para baixo com "Requisições HTTP"
-- Um bloco no meio: "Flask App (routes/) - Camada de Apresentação"
-- Uma seta para baixo
-- Um bloco no meio: "Flask App (services/) - Regras de Negócio (Ex: Cálculo RICE)"
-- Uma seta para baixo
-- Um bloco no meio: "Flask App (models/) - SQLAlchemy ORM"
-- Uma seta para baixo
-- Um bloco no fundo: "Banco de Dados (SQLite em Dev / PostgreSQL em Prod)"
--->
