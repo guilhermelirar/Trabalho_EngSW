@@ -17,7 +17,6 @@ Os requisitos não funcionais definem características e restrições relacionad
 
 Os requisitos apresentados neste documento constituem uma definição inicial e poderão ser revisados pelo grupo conforme o desenvolvimento do projeto.
 
-
 ## 2. Requisitos Não Funcionais
 
 ### RNF-001 — Usabilidade
@@ -26,7 +25,9 @@ O sistema deverá possuir uma interface gráfica organizada e de fácil compreen
 
 A organização da interface deverá facilitar o acesso às funcionalidades relacionadas ao gerenciamento de projetos, backlogs, histórias de usuário, épicos, critérios de aceitação, Story Points, MoSCoW e RICE.
 
-**Métrica:** A definir pelo grupo.
+**Métrica:**
+- Pelo menos 80% dos usuários participantes dos testes deverão conseguir realizar as principais tarefas do sistema sem auxílio externo.
+- As operações principais deverão ser realizadas sem que o usuário precise recorrer a instruções externas para compreender a navegação.
 
 ---
 
@@ -38,7 +39,10 @@ O sistema também deverá garantir que cada usuário tenha acesso somente aos pr
 
 As informações relacionadas às contas dos usuários e aos dados gerenciados pelo sistema deverão ser protegidas contra acessos e operações não autorizados.
 
-**Métrica:** A definir pelo grupo.
+**Métrica:**
+- 100% das funcionalidades protegidas deverão impedir o acesso de usuários não autenticados.
+- 100% dos testes de autorização deverão impedir que um usuário consulte, altere ou exclua projetos pertencentes a outra conta.
+- Nenhuma operação não autorizada deverá modificar os dados armazenados no sistema.
 
 ---
 
@@ -48,7 +52,9 @@ O sistema deverá apresentar desempenho adequado durante a utilização de suas 
 
 O desempenho deverá ser considerado principalmente nas operações de consulta e gerenciamento dos dados do sistema.
 
-**Métrica:** A definir pelo grupo.
+**Métrica:**
+- As operações de consulta, criação, atualização e exclusão deverão apresentar tempo de resposta de até 2 segundos em pelo menos 95% dos testes realizados.
+- As operações de carregamento das principais telas do sistema deverão apresentar tempo de resposta de até 3 segundos em condições normais de utilização.
 
 ---
 
@@ -58,7 +64,10 @@ O sistema deverá executar suas funcionalidades de maneira consistente, apresent
 
 As operações de criação, consulta, atualização e exclusão deverão funcionar conforme o comportamento esperado, evitando falhas que comprometam a utilização do sistema.
 
-**Métrica:** A definir pelo grupo.
+**Métrica:**
+- Pelo menos 99% das operações válidas deverão ser concluídas corretamente durante os testes.
+- Nenhuma operação deverá informar sucesso quando a ação solicitada não tiver sido concluída corretamente.
+- As operações deverão apresentar resultados compatíveis com os critérios de aceitação definidos nas respectivas histórias de usuário.
 
 ---
 
@@ -68,40 +77,39 @@ O sistema deverá ser desenvolvido de forma organizada, facilitando a manutenç�
 
 A organização do sistema deverá permitir que os diferentes integrantes responsáveis pela arquitetura e pelo back-end, pelo banco de dados e pela interface e pelo front-end possam trabalhar e realizar alterações de maneira estruturada.
 
-**Métrica:** A definir pelo grupo.
+**Métrica:**
+- 100% das funcionalidades implementadas deverão possuir código organizado e integrado à estrutura definida para o projeto.
+- As alterações realizadas deverão preservar o funcionamento das funcionalidades existentes, conforme verificado pelos testes de regressão.
+- Os componentes e módulos do sistema deverão seguir os padrões de organização e documentação definidos pelo grupo.
 
 ---
 
-### RNF-006 — Compatibilidade
-
-O sistema deverá ser desenvolvido de forma que suas funcionalidades possam ser utilizadas por meio dos principais navegadores modernos, mantendo o funcionamento adequado de sua interface e de seus recursos.
-
-A apresentação das páginas e a execução das funcionalidades deverão manter um comportamento consistente nos navegadores suportados pelo projeto.
-
-**Métrica:** A definir pelo grupo.
-
----
-
-### RNF-007 — Acessibilidade
+### RNF-006 — Acessibilidade
 
 O sistema deverá apresentar uma interface que facilite a utilização por pessoas com diferentes necessidades, considerando aspectos como legibilidade dos textos, organização dos elementos visuais e facilidade de navegação.
 
 Os componentes da interface deverão ser organizados de maneira clara, permitindo que o usuário identifique as funcionalidades disponíveis e interaja com elas adequadamente.
 
-**Métrica:** A definir pelo grupo.
+**Métrica:**
+- 100% dos campos de formulário deverão possuir identificação ou rótulos que permitam compreender sua finalidade.
+- Os principais elementos de navegação e interação deverão poder ser utilizados por meio do teclado.
+- Os textos e elementos visuais deverão apresentar contraste adequado para facilitar a leitura, adotando como referência o nível AA das diretrizes WCAG 2.1.
 
 ---
 
-### RNF-008 — Integridade dos Dados
+### RNF-007 — Integridade dos Dados
 
 O sistema deverá preservar a integridade das informações armazenadas no banco de dados, garantindo que os registros respeitem as regras de negócio e os relacionamentos definidos para o projeto.
 
 As operações realizadas deverão evitar inconsistências nos dados, como associações inválidas entre projetos, backlogs, histórias de usuário, épicos e critérios de aceitação.
 
-**Métrica:** A definir pelo grupo.
+**Métrica:**
+- 100% dos relacionamentos definidos no modelo físico do banco de dados deverão respeitar as restrições de integridade referencial.
+- Nenhuma operação válida deverá gerar registros com associações incompatíveis com as regras de negócio.
+- 100% dos testes de validação deverão impedir a inserção de dados que violem as restrições e regras de negócio implementadas.
 
 ---
 
-As métricas, os padrões e os demais critérios específicos de avaliação deverão ser definidos pelo grupo posteriormente.
+As métricas e os critérios apresentados constituem metas iniciais para a avaliação dos requisitos não funcionais. Seus valores poderão ser revisados pelo grupo conforme as tecnologias utilizadas, os resultados dos testes e as decisões tomadas durante o desenvolvimento do projeto.
 
 Os requisitos não funcionais poderão ser revisados ou complementados conforme novas decisões forem tomadas durante o desenvolvimento do projeto.
