@@ -14,8 +14,8 @@ class Project(db.Model):
     id: Mapped[int] = db.Column(db.Integer, primary_key=True)
     name: Mapped[str] = db.Column(db.Text, nullable=False)
     description: Mapped[str | None] = db.Column(db.Text, nullable=True)
-    owner_id: Mapped[int] = db.Column(
-        "user_id", db.Integer, db.ForeignKey("users.id"), nullable=False
+    user_id: Mapped[int] = db.Column(
+        db.Integer, db.ForeignKey("users.id"), nullable=False
     )
 
     backlog: Mapped["ProjectBacklog | None"] = relationship(

@@ -59,7 +59,7 @@ def project_with_backlog(app, test_user):
     project = Project()
     project.name = "Sistema de Gestão"
     project.description = "Projeto de teste para EngSW"
-    project.owner_id = test_user.id
+    project.user_id = test_user.id
 
     db.session.add(project)
     db.session.commit()

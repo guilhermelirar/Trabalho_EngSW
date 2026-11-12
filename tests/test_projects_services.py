@@ -16,7 +16,7 @@ def test_project_creation_success(app: Flask):
         proj = create_project(user_id, "Project 1")
 
         assert proj is not None
-        assert proj.owner_id == user_id
+        assert proj.user_id == user_id
 
 
 def test_project_read_list_success(app: Flask):
