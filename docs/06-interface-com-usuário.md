@@ -10,7 +10,7 @@ Em conformidade com as **Instruções 17 e 18** e o **Critério 6** da especific
 - **Requisitos cobertos:** (1), (2) e (3)
 - **Cenário de uso:** Um novo usuário acessa a interface gráfica do sistema, cria uma conta com nome, e-mail e senha, autentica-se com suas credenciais e passa a ter acesso aos serviços de gestão de projetos.
 
-[docs/assets/storyboard1.jpg]
+[assets/storyboard1.jpg]
 
 
 
@@ -28,7 +28,7 @@ Em conformidade com as **Instruções 17 e 18** e o **Critério 6** da especific
 - **Requisitos cobertos:** (4)
 - **Cenário de uso:** O usuário autenticado visualiza seus projetos em linhas horizontais sobre a tela branca, cria ou edita um projeto por meio do formulário modal, exclui registros indesejados e entra no espaço de trabalho de um projeto específico.
 
-[docs/assets/storyboard2.jpg]
+[assets/storyboard2.jpg]
 
 
 
@@ -47,7 +47,7 @@ Em conformidade com as **Instruções 17 e 18** e o **Critério 6** da especific
 - **Requisitos cobertos:** (5), (6), (7), (8), (9), (12) e (13)
 - **Cenário de uso:** Dentro de um projeto, o usuário visualiza o *Product Backlog* único à esquerda, cria um novo *Sprint Backlog*, cadastra uma História de Usuário com Critério de Aceitação nos formatos padronizados e a move do *Product Backlog* para o *Sprint Backlog*.
 
-[docs/assets/storyboard3.jpg]
+[assets/storyboard3.jpg]
 
 
 
@@ -66,7 +66,7 @@ Em conformidade com as **Instruções 17 e 18** e o **Critério 6** da especific
 - **Requisitos cobertos:** (10), (11), (14), (15), (16), (17), (18) e (19)
 - **Cenário de uso:** O usuário cria um Épico na aba dedicada, vincula Histórias de Usuário existentes a ele e atribui os graus de importância (Story Points de Fibonacci, etiqueta MoSCoW e parâmetros RICE), visualizando o resultado em tags circulares no cartão.
 
-[docs/assets/storyboard4.jpg]
+[assets/storyboard4.jpg]
 
 
 
