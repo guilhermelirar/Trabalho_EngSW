@@ -1,5 +1,5 @@
-| Informação | Descrição |
-|---|---|
+| Informação | Descrição |Responsável |
+|---|---|Arthur Arruda Frauches — Matrícula: 241017728|
 | **Projeto** | Backlog Manager |
 | **Documento** | Gerenciamento do Projeto |
 | **Primeira reunião oficial** | 25/09/2026 |
@@ -9,6 +9,7 @@
 | **Quinta reunião oficial** | 25/10/2026 |
 
 ...
+
 
 # BACKLOG MANAGER
 
