@@ -66,14 +66,14 @@ def delete_epic(epic_id: int, project_id: int, user_id: int) -> None:
 
 def link_user_story(epic_id: int, story_id: int, project_id: int, user_id: int) -> None:
     epic = get_epic(epic_id, project_id, user_id)
-    story = get_user_story(story_id, project_id, user_id)
+    story = get_user_story(story_id, user_id)
     story.epic_id = epic.id
     db.session.commit()
 
 
 def unlink_user_story(epic_id: int, story_id: int, project_id: int, user_id: int) -> None:
     epic = get_epic(epic_id, project_id, user_id)
-    story = get_user_story(story_id, project_id, user_id)
+    story = get_user_story(story_id, user_id)
     if story.epic_id != epic.id:
         raise EpicDomainException("A história não está vinculada a este épico.")
     story.epic_id = None

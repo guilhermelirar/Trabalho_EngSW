@@ -1,5 +1,7 @@
 from app.models import db
+from app.models.acceptance_criteria import AcceptanceCriteria
 from app.models.user_story import UserStory
+from app.routes.auth_routes import UserCreationException
 from app.services import project_service
 from app.services.exceptions import ProjectDomainException, UserStoryDomainException
 
@@ -113,14 +115,9 @@ def create_user_story(project_id: int, user_id: int, data: dict) -> UserStory:
     return user_story
 
 
-def get_user_story(story_id: int, project_id: int, user_id: int):
+def get_user_story(story_id: int, user_id: int):
     story = db.session.get(UserStory, story_id)
-    project = project_service.get_project_by_id(project_id, user_id)
-
-    if not project:
-        raise ProjectDomainException("Projeto não encontrado", status_code=404)
-
-    if not story or story.project_backlog_id != project.backlog.id:
+    if not story or story.project_backlog.project.owner_id != user_id:
         raise UserStoryDomainException(
             "História de usuário não encontrada", status_code=404
         )
@@ -175,10 +172,111 @@ def update_user_story(story_id: int, user_id: int, new_data: dict) -> UserStory:
     return story
 
 
-def delete_user_story(story_id: int, project_id: int, user_id: int):
+def delete_user_story(story_id: int, user_id: int):
     """
     Deleta uma história de usuário se encontrar
     """
-    story = get_user_story(story_id, project_id, user_id)
+    story = get_user_story(story_id, user_id)
     db.session.delete(story)
+    db.session.commit()
+
+
+def _validate_acceptance_criteria_data(data: dict, require_all: bool = True) -> dict:
+    """
+    Sanitiza e valida os dados do formulário de Critérios de Aceitação.
+    Retorna os campos limpos se válidos ou levanta UserStoryDomainException.
+    """
+    if not data:
+        raise UserStoryDomainException(
+            "Os dados do critério de aceitação não podem estar vazios."
+        )
+
+    title = (data.get("title") or "").strip()
+    given = (data.get("given") or "").strip()
+    when = (data.get("when") or "").strip()
+    then = (data.get("then") or "").strip()
+
+    cleaned_fields = {
+        "title": title,
+        "given": given,
+        "when": when,
+        "then": then,
+    }
+
+    if require_all:
+        missing = [
+            field_name for field_name, value in cleaned_fields.items() if not value
+        ]
+        if missing:
+            raise UserStoryDomainException(
+                "Todos os campos do critério de aceitação (Título, Dado, Quando, Então) são obrigatórios."
+            )
+
+    return cleaned_fields
+
+
+def add_acceptance_criteria_to_story(
+    story_id: int, user_id: int, data: dict
+) -> AcceptanceCriteria:
+    """
+    US-014 Gerenciamento de Critérios de Aceitação
+    Cria um objeto AcceptanceCriteria a partir de data, e vincula a uma história
+    de usuário existente. Retorna o objeto criado em caso de sucesso, e levanta
+    UserStoryDomainException em caso de erro.
+    """
+
+    # Validação de permissão do usuário e dos campos de critério de aceitação
+    story = get_user_story(story_id, user_id)
+    cleaned_data = _validate_acceptance_criteria_data(data, require_all=True)
+
+    # Criando objeto e adicionando no banco de dados
+    criteria = AcceptanceCriteria()
+    criteria.user_story_id = story.id
+    criteria.title = cleaned_data["title"]
+    criteria.given = cleaned_data["given"]
+    criteria.when = cleaned_data["when"]
+    criteria.then = cleaned_data["then"]
+
+    db.session.add(criteria)
+    db.session.commit()
+
+    return criteria
+
+
+def update_acc_criteria(criteria_id: int, user_id: int, new_data: dict):
+    """
+    US-014 Gerenciamento de Critérios de Aceitação
+    Atualiza um critério de aceitação com novos dados, retornando objeto
+    atualizado em caso de sucesso ou levantando UserStoryDomainException
+    em caso de erro (critério não encontrado ou acesso negado)
+    """
+
+    criteria = db.session.get(AcceptanceCriteria, criteria_id)
+    if (not criteria
+        or criteria.user_story.project_backlog.project.owner_id != user_id):
+        raise UserCreationException("Critério de aceitação não encontrado")
+
+    clean_data = _validate_acceptance_criteria_data(new_data, require_all=False)
+    criteria.title = clean_data.get("title") or criteria.title
+    criteria.given = clean_data.get("given") or criteria.given
+    criteria.when = clean_data.get("when") or criteria.when
+    criteria.then = clean_data.get("then") or criteria.then
+
+    db.session.commit()
+    return criteria
+
+def delete_acc_criteria(criteria_id: int, user_id: int):
+    """
+    US-014 Gerenciamento de Critérios de Aceitação
+    Remove um critério de aceitação caso exista, ou levanta exceção
+    UserStoryDomainException em caso de acesso negado ou critério
+    não encontrado
+    """
+
+    criteria = db.session.get(AcceptanceCriteria, criteria_id)
+    if (not criteria
+        or criteria.user_story.project_backlog.project.owner_id != user_id):
+        raise UserCreationException("Critério de aceitação não encontrado")
+
+    db.session.delete(criteria)
     db.session.commit()

@@ -1,14 +1,11 @@
-| Informação | Descrição |
-|---|---|
-| **Projeto** | Backlog Manager |
-| **Documento** | Visão e Escopo |
-| **Data da versão** | 07/10/2026 |
-| **Finalidade** | Apresentar a visão geral, os objetivos, o escopo e as principais características do produto. |
+
+| **Sistema de Gestão de Backlog** | **Responsável** |
+| :------------------------------- | :-------------- |
+| **Visão e Escopo** | Arthur Arruda Frauches — Matrícula: 241017728 |
 
 ---
-# Backlog Manager
 
-## Visão
+# Backlog Manager
 
 ## 1. Visão
 
@@ -18,7 +15,7 @@ O Backlog Manager consiste em um sistema para gerenciamento de requisitos basead
 
 O sistema permitirá gerenciar projetos, Product Backlogs, Sprint Backlogs, histórias de usuário, épicos e critérios de aceitação. Também oferecerá suporte à estimativa de histórias por meio de Story Points e à priorização utilizando MoSCoW e RICE.
 
-A aplicação será desenvolvida como um site, permitindo que os usuários acessem suas funcionalidades por meio de uma interface gráfica. As tecnologias específicas de frontend, backend e banco de dados serão registradas nos respectivos documentos técnicos do projeto.
+A aplicação será desenvolvida como um site, permitindo que os usuários acessem suas funcionalidades por meio de uma interface gráfica. As tecnologias específicas de front-end, back-end e banco de dados serão registradas nos respectivos documentos técnicos do projeto.
 
 ### 1.2. Objetivos do produto
 
@@ -31,6 +28,8 @@ Os principais objetivos do Backlog Manager são:
 - Padronizar a elaboração de histórias de usuário e de seus critérios de aceitação.
 - Permitir a atribuição de Story Points às histórias de usuário.
 - Apoiar a priorização de histórias por meio dos métodos MoSCoW e RICE.
+- Garantir que cada usuário tenha acesso apenas aos projetos vinculados à sua própria conta.
+- Permitir o gerenciamento dos registros cadastrados, incluindo sua exclusão definitiva quando solicitada pelo usuário.
 
 ### 1.3. Declaração do problema
 
@@ -39,7 +38,7 @@ Os principais objetivos do Backlog Manager são:
 | **O problema** | Necessidade de organizar e gerenciar os elementos relacionados aos requisitos de projetos de software. |
 | **Afeta** | Usuários e equipes que utilizam histórias de usuário para gerenciar requisitos de projetos. |
 | **O impacto é** | Dificuldade de manter organizados os projetos, backlogs, histórias, critérios de aceitação e informações de estimativa e priorização quando esses elementos não estão centralizados. |
-| **Uma solução de sucesso seria** | Um sistema que permita gerenciar esses elementos em um único ambiente, de acordo com as funcionalidades definidas para o projeto. |
+| **Uma solução de sucesso seria** | Um sistema que permita gerenciar esses elementos em um único ambiente, de acordo com as funcionalidades definidas para o projeto, mantendo os projetos de cada usuário separados dos projetos dos demais usuários. |
 
 ### 1.4. Declaração de posicionamento do produto
 
@@ -50,9 +49,10 @@ Os principais objetivos do Backlog Manager são:
 | **O Backlog Manager** | É um sistema para gerenciamento de requisitos baseado em histórias de usuário. |
 | **Que** | Permite gerenciar projetos, backlogs, histórias de usuário, épicos e critérios de aceitação, além de utilizar Story Points, MoSCoW e RICE. |
 | **Ao contrário de** | Alternativas que não reúnam, em um único sistema, as funcionalidades previstas para o projeto. |
-| **Nosso produto** | Reúne as funcionalidades de gerenciamento, estimativa e priorização de requisitos definidas para o sistema. |
+| **Nosso produto** | Reúne as funcionalidades de gerenciamento, estimativa e priorização de requisitos definidas para o sistema, mantendo os projetos de cada usuário restritos à sua própria conta. |
 
 ---
+
 ## 2. Escopo do produto
 
 ### 2.1. Funcionalidades incluídas no escopo
@@ -62,7 +62,7 @@ O produto deverá contemplar os seguintes grupos de funcionalidades:
 | Grupo funcional | Descrição |
 |---|---|
 | **Interface e acesso ao sistema** | Disponibilizar uma interface gráfica, permitir a criação de contas, a autenticação e o acesso aos serviços após a autenticação. |
-| **Gerenciamento de projetos** | Permitir criar, consultar, atualizar e excluir projetos. |
+| **Gerenciamento de projetos** | Permitir criar, consultar, atualizar e excluir projetos, garantindo que cada usuário visualize e gerencie somente seus próprios projetos. |
 | **Gerenciamento de backlogs** | Permitir gerenciar Product Backlogs e Sprint Backlogs e movimentar histórias entre backlogs. |
 | **Gerenciamento de histórias de usuário** | Permitir criar, consultar, atualizar e excluir histórias, utilizando o formato padrão definido para sua descrição. |
 | **Gerenciamento de épicos** | Permitir criar, consultar, atualizar e excluir épicos, além de vinculá-los às histórias de usuário. |
@@ -76,6 +76,8 @@ Esses grupos representam as principais capacidades previstas para o produto e de
 
 Não serão acrescentadas funcionalidades que não tenham sido definidas nos requisitos ou aprovadas pelo grupo.
 
+O compartilhamento de projetos entre diferentes usuários não fará parte do escopo do sistema. Cada usuário terá acesso somente aos projetos vinculados à sua própria conta.
+
 Funcionalidades adicionais, integrações externas ou recursos complementares deverão ser avaliados pela equipe antes de serem incorporados ao escopo do projeto.
 
 ---
@@ -86,51 +88,55 @@ Funcionalidades adicionais, integrações externas ou recursos complementares de
 
 | Parte interessada | Descrição | Responsabilidades ou necessidades |
 |---|---|---|
-| **Usuário do sistema** | Pessoa que utilizará o Backlog Manager para gerenciar os requisitos de seus projetos. | Criar e gerenciar os elementos disponibilizados pelo sistema, conforme as funcionalidades implementadas. |
+| **Usuário do sistema** | Pessoa que utilizará o Backlog Manager para gerenciar os requisitos de seus projetos. | Criar e gerenciar os elementos disponibilizados pelo sistema, conforme as funcionalidades implementadas, tendo acesso somente aos projetos vinculados à sua própria conta. |
 | **Equipe do projeto** | Integrantes responsáveis pelo desenvolvimento do sistema e pela elaboração dos artefatos acadêmicos. | Definir requisitos, projetar e desenvolver a solução, testar o sistema e manter a documentação atualizada. |
 
 ### 3.2. Ambiente de utilização
 
 O Backlog Manager será desenvolvido como um site, com interface gráfica acessível por meio de um navegador.
 
-O sistema contará com criação de contas e autenticação. A existência de contas individuais não implica, por si só, a existência de diferentes perfis de acesso. A diferenciação de permissões deverá seguir as decisões registradas nos requisitos do projeto.
+O sistema contará com criação de contas e autenticação. Cada usuário terá acesso somente aos projetos vinculados à sua própria conta, não sendo permitido visualizar ou gerenciar projetos pertencentes a outros usuários.
+
+A existência de contas individuais não implica, por si só, a existência de diferentes perfis de acesso. A diferenciação de permissões deverá seguir as decisões registradas nos requisitos do projeto.
 
 As tecnologias específicas e os detalhes do ambiente de execução serão descritos nos documentos de arquitetura e de infraestrutura.
 
 ### 3.3. Organização da equipe
 
-As responsabilidades principais da equipe foram inicialmente distribuídas da seguinte forma:
+As principais responsabilidades da equipe foram inicialmente distribuídas da seguinte forma:
 
 | Área | Responsável principal | Atividades principais |
 |---|---|---|
 | **Gerenciamento e requisitos** | Arthur Arruda Frauches | Organização do Kanban, acompanhamento das atividades, Product Backlog, histórias de usuário e critérios de aceitação. |
-| **Arquitetura e backend** | Guilherme Lira Ribeiro | Arquitetura do sistema, API, regras de negócio e autenticação. |
-| **Banco de dados** | João Vitor Frabis Zago | Modelo físico, tabelas, relacionamentos, scripts e integração com o backend. |
-| **Interface e frontend** | Isaac Júnior Araújo Gomes | Wireframes, storyboard, frontend e navegação. |
-| **Integração, testes e documentação** | Vinícius Gonçalves Duarte | Integração dos componentes, testes, documentação das atualizações dos testes e descrição da infraestrutura de implantação. |
+| **Arquitetura e back-end** | Guilherme Lira Ribeiro | Arquitetura do sistema, API, regras de negócio e autenticação. |
+| **Banco de dados** | João Vitor Frabis Zago | Modelo físico, tabelas, relacionamentos, scripts e integração com o back-end. |
+| **Interface e front-end** | Isaac Júnior Araújo Gomes | Wireframes, storyboard, front-end e navegação. |
+| **Integração, testes e documentação** | Vinícius Gonçalves Duarte | Integração dos componentes, execução dos testes, atualização da documentação e descrição da infraestrutura de implantação. |
 
 Essa divisão representa as responsabilidades principais e não impede a colaboração entre os integrantes. A distribuição poderá ser ajustada conforme as necessidades e as decisões do grupo.
 
 ---
 
-### 4. Visão geral do produto
+## 4. Visão geral do produto
 
 O produto será um sistema para gerenciamento de requisitos baseado em histórias de usuário.
 
 Suas funcionalidades estão organizadas nos seguintes grupos:
 
-* Interface e acesso ao sistema;
-* Gestão de projetos;
-* Gestão de Product Backlog e Sprint Backlogs;
-* Gestão de histórias de usuário;
-* Gestão de épicos;
-* Gestão de critérios de aceitação;
-* Estimativa por Story Points;
-* Priorização com MoSCoW e RICE.
+- Interface e acesso ao sistema;
+- Gerenciamento de projetos;
+- Gerenciamento de Product Backlogs e Sprint Backlogs;
+- Gerenciamento de histórias de usuário;
+- Gerenciamento de épicos;
+- Gerenciamento de critérios de aceitação;
+- Estimativa por Story Points;
+- Priorização com MoSCoW e RICE.
 
-Esses grupos correspondem aos oito épicos definidos pelo grupo na reunião.
+Esses grupos correspondem aos oito épicos definidos pelo grupo e documentados no artefato de Histórias de Usuário.
 
-## 4. Regras e restrições gerais do produto
+O sistema será organizado de forma que cada usuário possa gerenciar seus próprios projetos e os respectivos elementos, sem acesso aos projetos cadastrados por outros usuários.
+
+## 5. Regras e restrições gerais do produto
 
 As funcionalidades do sistema deverão respeitar as seguintes regras definidas para o projeto:
 
@@ -145,8 +151,11 @@ As funcionalidades do sistema deverão respeitar as seguintes regras definidas p
 | **RG-07** | As etiquetas MoSCoW permitidas serão M, S, C e W. |
 | **RG-08** | O RICE deverá considerar Reach, Impact, Confidence e Effort. |
 | **RG-09** | A pontuação RICE deverá seguir a fórmula `(Reach × Impact × Confidence) / Effort`. |
+| **RG-10** | Cada usuário poderá visualizar e gerenciar somente os projetos vinculados à sua própria conta. |
+| **RG-11** | Não será permitido compartilhar projetos entre diferentes usuários. |
+| **RG-12** | Os registros excluídos serão removidos permanentemente do banco de dados e não poderão ser recuperados pelo sistema. Caso o usuário precise novamente de um registro excluído, deverá cadastrá-lo como um novo registro. |
 
-### 4.1. Regras do RICE
+### 5.1. Regras do RICE
 
 Os critérios RICE deverão respeitar os seguintes valores e significados:
 
@@ -160,10 +169,25 @@ Os critérios RICE deverão respeitar os seguintes valores e significados:
 
 **Observação:** como o valor zero é permitido para Story Points, o grupo deverá definir o tratamento de Effort igual a zero no cálculo RICE, pois não é possível realizar uma divisão por zero. Essa situação deverá ser tratada antes da implementação da funcionalidade.
 
+### 5.2. Regras de acesso e exclusão de registros
+
+O acesso aos projetos será individualizado. Cada usuário poderá consultar, criar, atualizar e excluir somente os projetos vinculados à sua própria conta. Não haverá compartilhamento de projetos entre usuários.
+
+A exclusão de registros será definitiva. Quando um usuário excluir um registro, ele será removido do banco de dados e não poderá ser recuperado por meio do sistema.
+
+Caso o usuário deseje utilizar novamente um registro que tenha sido excluído, deverá cadastrá-lo novamente. Esse novo cadastro será considerado um novo registro, e não uma recuperação do registro anterior.
+
+O comportamento da exclusão de registros que possuam outros elementos associados deverá ser considerado no projeto do banco de dados e nas regras de implementação, para garantir que os relacionamentos sejam tratados corretamente.
+
 ---
-## 5. Requisitos gerais e atributos de qualidade
+
+## 6. Requisitos gerais e atributos de qualidade
 
 O sistema deverá disponibilizar uma interface gráfica e exigir autenticação para acesso aos serviços previstos. Também deverá respeitar as regras de negócio definidas para projetos, backlogs, histórias de usuário, épicos, critérios de aceitação, estimativas e priorização.
+
+O acesso aos projetos deverá respeitar a separação entre as contas dos usuários, impedindo que um usuário visualize ou gerencie projetos vinculados a outra conta.
+
+Os registros excluídos deverão ser removidos permanentemente do banco de dados, sem possibilidade de recuperação por meio do sistema.
 
 Os requisitos não funcionais detalhados, incluindo critérios mensuráveis de segurança, usabilidade, desempenho, confiabilidade, padrões e métricas, serão especificados no documento próprio de requisitos não funcionais.
 
@@ -171,20 +195,23 @@ Os detalhes de arquitetura, tecnologias, estrutura do banco de dados, interface 
 
 ---
 
-## 6. Premissas e decisões técnicas
+## 7. Premissas e decisões técnicas
 
 O projeto considera as seguintes premissas:
 
 - O sistema será desenvolvido como uma aplicação web.
 - A solução contará com interface gráfica e autenticação.
+- Cada usuário terá acesso somente aos projetos vinculados à sua própria conta.
+- Não haverá compartilhamento de projetos entre diferentes usuários.
+- Os registros excluídos serão removidos permanentemente do banco de dados e não poderão ser recuperados.
 - As funcionalidades serão implementadas de acordo com os requisitos e as histórias de usuário definidos pelo grupo.
 - O desenvolvimento será acompanhado pelo processo de gerenciamento do projeto e pelo quadro Kanban.
 
-As tecnologias específicas de frontend, backend e banco de dados deverão ser registradas nos documentos técnicos correspondentes após sua definição pela equipe.
+As tecnologias específicas de front-end, back-end e banco de dados deverão ser registradas nos documentos técnicos correspondentes após sua definição pela equipe.
 
 ---
 
-## 7. Relação com os demais artefatos
+## 8. Relação com os demais artefatos
 
 Este documento apresenta a visão geral e o escopo do Backlog Manager. Os detalhes de implementação e especificação serão registrados nos seguintes artefatos:
 
@@ -195,14 +222,17 @@ Este documento apresenta a visão geral e o escopo do Backlog Manager. Os detalh
 | **Histórias de usuário** | Especificação das funcionalidades, histórias, critérios de aceitação, estimativas e priorização. |
 | **Architecture Notebook** | Arquitetura do software, componentes, relacionamentos e decisões técnicas. |
 | **Projeto de interface** | Storyboard, wireframes e organização das telas. |
+| **Implementação do front-end** | Descrição das tecnologias de interface, estrutura dos templates, componentes visuais, telas implementadas, interações JavaScript, estilos CSS e responsividade. |
 | **Projeto físico do banco de dados** | Tabelas, colunas, chaves, relacionamentos e descrição das estruturas de dados. |
 | **Protótipo e testes** | Implementação do protótipo e demonstração do funcionamento por meio de testes de sistema. |
 | **Infraestrutura de implantação** | Hardware, software e serviços necessários para implantação. |
 
 ---
 
-## 8. Considerações finais
+## 9. Considerações finais
 
 O Backlog Manager tem como finalidade centralizar e organizar o gerenciamento de requisitos de projetos de software por meio de histórias de usuário, backlogs, épicos, critérios de aceitação, estimativas e mecanismos de priorização.
 
-Este documento estabelece a visão geral do produto, seus principais usuários, as funcionalidades previstas e as regras gerais que deverão orientar o desenvolvimento. Os demais artefatos do projeto deverão detalhar os requisitos funcionais e não funcionais, as decisões arquiteturais, a interface, o banco de dados, os testes e a infraestrutura necessários para a construção da solução.
+Este documento estabelece a visão geral do produto, seus principais usuários, as funcionalidades previstas e as regras gerais que deverão orientar o desenvolvimento. Também define que os projetos serão individuais, sem compartilhamento entre usuários, e que os registros excluídos serão removidos permanentemente do banco de dados.
+
+Os demais artefatos do projeto deverão detalhar os requisitos funcionais e não funcionais, as decisões arquiteturais, a interface, o banco de dados, os testes e a infraestrutura necessários para a construção da solução.
