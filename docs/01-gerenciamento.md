@@ -6,7 +6,8 @@
 ...
 
 
-| Informação | Data |
+| **Informação** | **Data** |
+| :------------------------------- | :-------------- |
 | **Primeira reunião oficial** | 25/09/2026 |
 | **Segunda reunião oficial** | 03/10/2026 |
 | **Terceira reunião oficial** | 10/10/2026 |
