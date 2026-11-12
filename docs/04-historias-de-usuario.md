@@ -1,7 +1,7 @@
 
 | **Sistema de Gestão de Backlog** | **Responsável** |
 | :------------------------------- | :-------------- |
-| **Histórias de Usuário**         | Arthur Arruda Frauches — Matrícula: [241017728] |
+| **Histórias de Usuário**         | Grupo |
 
 # Histórias de Usuário (User Stories)
 
