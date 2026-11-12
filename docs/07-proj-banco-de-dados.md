@@ -17,7 +17,7 @@ define sete tabelas.
 
 ## 2. Diagrama de tabelas e relacionamentos
 
-![Diagrama do projeto físico do banco de dados, com nomes e tipos alinhados à implementação](./07-modelo-banco-referencia.png)
+![Diagrama do projeto físico do banco de dados, com nomes e tipos alinhados à implementação](./img/07-modelo-banco-referencia.png)
 
 **Leitura dos relacionamentos:** cada projeto pertence a um usuário e pode ter
 zero ou um Product Backlog; um Product Backlog pode reunir várias histórias,
