@@ -10,7 +10,7 @@ Em conformidade com as **Instruções 17 e 18** e o **Critério 6** da especific
 - **Requisitos cobertos:** (1), (2) e (3)
 - **Cenário de uso:** Um novo usuário acessa a interface gráfica do sistema, cria uma conta com nome, e-mail e senha, autentica-se com suas credenciais e passa a ter acesso aos serviços de gestão de projetos.
 
-[assets/storyboard1.jpg]
+![storyboard 1](assets/storyboard1.jpg)
 
 
 
