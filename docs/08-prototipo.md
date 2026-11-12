@@ -4,8 +4,9 @@ Em atendimento parcial ao **Critério 8** e à **Instrução 22**, foi produzido
 
 1. **Protótipo da Tela de Autenticação (Login e Cadastro):**
 
-[assets/Autenticação.png]
-[assets/Login.png]
+![autenticação](assets/Autenticação.png)
+
+![login](assets/Login.png)
 
 
    * Interface gráfica com alternância entre as abas/modos de **Login** e **Criar Conta (Cadastro)** (Requisito 1).
@@ -16,7 +17,7 @@ Em atendimento parcial ao **Critério 8** e à **Instrução 22**, foi produzido
 
 2. **Protótipo da Tela de Projetos:**
 
-[assets/Projetos.png]
+![projetos](assets/Projetos.png)
 
 
    * Fundo em branco com blocos retangulares cinzas dispostos em linhas horizontais empilhadas.
@@ -27,7 +28,7 @@ Em atendimento parcial ao **Critério 8** e à **Instrução 22**, foi produzido
 
 3. **Protótipo da Tela do Projeto (Quadro de Backlogs e HUs):**
 
-[assets/Backlog.png]
+![backlog](assets/Backlog.png)
 
 
    * Nome do projeto exibido no canto superior esquerdo e botão **+ Criar Sprint Backlog** no canto superior direito.
@@ -38,7 +39,7 @@ Em atendimento parcial ao **Critério 8** e à **Instrução 22**, foi produzido
 
 4. **Protótipo da Tela do Projeto (Aba de Épicos e Formulário de Priorização):**
 
-[assets/Projeto.png]
+![projeto](assets/Projeto.png)
 
 
    * Aba dedicada para criação, edição, exclusão e listagem de **Épicos** em blocos cinzas, exibindo os títulos e descrições das HUs vinculadas.
