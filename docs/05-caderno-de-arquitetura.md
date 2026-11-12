@@ -1,6 +1,6 @@
-| Backlog Manager            |
-| :------------------------- |
-| **Caderno de Arquitetura** |
+| **Backlog Manager** | **Responsável** |
+| :------------------------------- | :-------------- |
+| **Caderno de Arquitetura**         | Guilherme Lira Ribeiro - [231013538] |
 
 # BACKLOG MANAGER
 
