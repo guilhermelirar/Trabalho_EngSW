@@ -39,7 +39,7 @@ Em atendimento parcial ao **Critério 8** e à **Instrução 22**, foi produzido
 
 4. **Protótipo da Tela do Projeto (Aba de Épicos e Formulário de Priorização):**
 
-![projeto](assets/Projeto.png)
+![projeto](assets/epico.png)
 
 
    * Aba dedicada para criação, edição, exclusão e listagem de **Épicos** em blocos cinzas, exibindo os títulos e descrições das HUs vinculadas.
