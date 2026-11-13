@@ -1,9 +1,8 @@
 | **Backlog Manager** | **Responsável** |
 | :------------------------------- | :-------------- |
-| **Interface com o usuário**         | Vinícius Gonçalves Duarte - [222026869] |
-| |Isaac Júnior Araújo Gomes - [231025270] |
+| **Protótipo do sistema**         | Vinícius Gonçalves Duarte - [222026869] |
 
-# 06 — Implementação do Front-end
+# 08 — Protótipo do sistema
 
 ## 1. Introdução
 
