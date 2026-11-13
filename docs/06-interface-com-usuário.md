@@ -1,22 +1,28 @@
-| **Backlog Manager** | **Responsável**|
+
+| **Backlog Manager** | **Responsável** |
 | ---------------------------- | --- |
-| **Projeto de interface** | Isaac Júnior Araújo Gomes  - [231025270]|
+| **Projeto de interface** | Isaac Júnior Araújo Gomes - [231025270] |
 
-# Artefato 6: Projeto de Interface com o Usuário (Critério 6)
+# Projeto de Interface com o Usuário e Protótipo Inicial
+## Artefatos 6 e 8 — Critérios 6 e 8
 
-Em conformidade com as **Instruções 17 e 18** e o **Critério 6** da especificação do trabalho prático, o projeto de interface com o usuário é representado por **storyboards compostos por sequências de wireframes** (esboços simples de tela), estruturados a partir das três telas-base definidas pela equipe: **Tela de Autenticação**, **Tela de Projetos** e **Tela do Projeto**.
+Este documento apresenta o projeto de interface com o usuário e o protótipo inicial do Backlog Manager, em conformidade com as Instruções 17, 18 e 22 e com os Critérios 6 e 8 da especificação do trabalho prático.
+
+O projeto de interface é representado por **storyboards compostos por sequências de wireframes** (esboços simples de tela), estruturados a partir das três telas-base definidas pela equipe: **Tela de Autenticação**, **Tela de Projetos** e **Tela do Projeto**.
+
+O protótipo inicial apresenta a representação visual dessas telas e de seus principais componentes, respeitando o layout e os requisitos definidos pela equipe.
 
 ---
 
-### Storyboard 1: Criação de Conta, Autenticação e Acesso aos Serviços
+# 1. Projeto de Interface com o Usuário
 
-- **Tela-base envolvida:** Tela de Autenticação → Tela de Projetos
-- **Requisitos cobertos:** (1), (2) e (3)
+## 1.1. Storyboard 1: Criação de Conta, Autenticação e Acesso aos Serviços
+
+- **Tela-base envolvida:** Tela de Autenticação → Tela de Projetos.
+- **Requisitos cobertos:** (1), (2) e (3).
 - **Cenário de uso:** Um novo usuário acessa a interface gráfica do sistema, cria uma conta com nome, e-mail e senha, autentica-se com suas credenciais e passa a ter acesso aos serviços de gestão de projetos.
 
 ![storyboard 1](assets/storyboard1.jpg)
-
-
 
 | Quadro | Tela / Estado | Ação do Usuário | Resultado Esperado |
 | :--- | :--- | :--- | :--- |
@@ -26,15 +32,13 @@ Em conformidade com as **Instruções 17 e 18** e o **Critério 6** da especific
 
 ---
 
-### Storyboard 2: Gerenciamento Completo (CRUD) na Tela de Projetos
+## 1.2. Storyboard 2: Gerenciamento Completo (CRUD) na Tela de Projetos
 
-- **Tela-base envolvida:** Tela de Projetos → Tela do Projeto
-- **Requisitos cobertos:** (4)
+- **Tela-base envolvida:** Tela de Projetos → Tela do Projeto.
+- **Requisitos cobertos:** (4).
 - **Cenário de uso:** O usuário autenticado visualiza seus projetos em linhas horizontais sobre a tela branca, cria ou edita um projeto por meio do formulário modal, exclui registros indesejados e entra no espaço de trabalho de um projeto específico.
 
 ![storyboard 2](assets/storyboard2.jpg)
-
-
 
 | Passo | Tela / Estado | Ação do Usuário | Resultado Esperado |
 | :--- | :--- | :--- | :--- |
@@ -45,15 +49,13 @@ Em conformidade com as **Instruções 17 e 18** e o **Critério 6** da especific
 
 ---
 
-### Storyboard 3: Gestão de Backlogs, Histórias de Usuário e Movimentação
+## 1.3. Storyboard 3: Gestão de Backlogs, Histórias de Usuário e Movimentação
 
-- **Tela-base envolvida:** Tela do Projeto (Aba *Backlogs e HUs*)
-- **Requisitos cobertos:** (5), (6), (7), (8), (9), (12) e (13)
+- **Tela-base envolvida:** Tela do Projeto (Aba *Backlogs e HUs*).
+- **Requisitos cobertos:** (5), (6), (7), (8), (9), (12) e (13).
 - **Cenário de uso:** Dentro de um projeto, o usuário visualiza o *Product Backlog* único à esquerda, cria um novo *Sprint Backlog*, cadastra uma História de Usuário com Critério de Aceitação nos formatos padronizados e a move do *Product Backlog* para o *Sprint Backlog*.
 
 ![storyboard 3](assets/storyboard3.jpg)
-
-
 
 | Passo | Tela / Estado | Ação do Usuário | Resultado Esperado |
 | :--- | :--- | :--- | :--- |
@@ -64,15 +66,13 @@ Em conformidade com as **Instruções 17 e 18** e o **Critério 6** da especific
 
 ---
 
-### Storyboard 4: Aba de Épicos e Priorização (Story Points, MoSCoW e RICE)
+## 1.4. Storyboard 4: Aba de Épicos e Priorização (Story Points, MoSCoW e RICE)
 
-- **Tela-base envolvida:** Tela do Projeto (Aba *Épicos* e Modal de Priorização)
-- **Requisitos cobertos:** (10), (11), (14), (15), (16), (17), (18) e (19)
+- **Tela-base envolvida:** Tela do Projeto (Aba *Épicos* e Modal de Priorização).
+- **Requisitos cobertos:** (10), (11), (14), (15), (16), (17), (18) e (19).
 - **Cenário de uso:** O usuário cria um Épico na aba dedicada, vincula Histórias de Usuário existentes a ele e atribui os graus de importância (Story Points de Fibonacci, etiqueta MoSCoW e parâmetros RICE), visualizando o resultado em tags circulares no cartão.
 
 ![storyboard 4](assets/storyboard4.jpg)
-
-
 
 | Passo | Tela / Estado | Ação do Usuário | Resultado Esperado |
 | :--- | :--- | :--- | :--- |
@@ -82,7 +82,7 @@ Em conformidade com as **Instruções 17 e 18** e o **Critério 6** da especific
 
 ---
 
-### Matriz de Rastreabilidade (Requisitos × Storyboards)
+## 1.5. Matriz de Rastreabilidade (Requisitos × Storyboards)
 
 | Storyboard | Tela-Base | Cenário de Uso | Requisitos Cobertos |
 | :--- | :--- | :--- | :--- |
@@ -93,5 +93,39 @@ Em conformidade com as **Instruções 17 e 18** e o **Critério 6** da especific
 
 ---
 
+# 2. Protótipo Inicial: Prototipagem Visual das Telas
 
+Em atendimento parcial ao **Critério 8** e à **Instrução 22**, foi produzido o protótipo inicial das três telas-base de operação do sistema (**Tela de Autenticação**, **Tela de Projetos** e **Tela do Projeto**), respeitando fielmente o layout e os requisitos definidos pela equipe.
 
+## 2.1. Protótipo da Tela de Autenticação (Login e Cadastro)
+
+![autenticação](assets/Autenticação.png)
+
+![login](assets/Login.png)
+
+- Interface gráfica com alternância entre as abas/modos de **Login** e **Criar Conta (Cadastro)** (Requisito 1).
+- No fluxo de **Cadastro**, disponibiliza campos para preenchimento de **nome**, **e-mail** e **senha**, permitindo a criação de uma nova conta de usuário (Requisito 2).
+- No fluxo de **Login**, realiza a autenticação clássica via **e-mail e senha** e, após validação, redireciona o usuário para a **Tela de Projetos**, liberando o acesso aos serviços do sistema (Requisitos 2 e 3).
+
+## 2.2. Protótipo da Tela de Projetos
+
+![projetos](assets/Projetos.png)
+
+- Fundo em branco com blocos retangulares cinzas dispostos em linhas horizontais empilhadas.
+- Exibição de título e descrição de cada projeto dentro do respectivo bloco, acompanhados dos botões **Entrar**, **Editar** e **Excluir** (Requisito 4).
+- Botão **+ Criar Novo Projeto** posicionado no topo da tela branca.
+
+## 2.3. Protótipo da Tela do Projeto (Quadro de Backlogs e HUs)
+
+![backlog](assets/Backlog.png)
+
+- Nome do projeto exibido no canto superior esquerdo e botão **+ Criar Sprint Backlog** no canto superior direito.
+- Coluna única fixa do **Product Backlog** à esquerda e colunas de **Sprint Backlogs** lado a lado à direita, cada uma com botão de exclusão e botão **+ Criar HU**.
+- Cartões de História de Usuário contendo título, descrição no padrão *"Como um... eu quero... para..."*, critério de aceitação no padrão *"Dado... quando... então..."*, setas de movimentação entre backlogs e **tags em círculos coloridos** (estilo Kanban) para **Story Points**, **MoSCoW** e **RICE**.
+
+## 2.4. Protótipo da Tela do Projeto (Aba de Épicos e Formulário de Priorização)
+
+![projeto](assets/epico.png)
+
+- Aba dedicada para criação, edição, exclusão e listagem de **Épicos** em blocos cinzas, exibindo os títulos e descrições das HUs vinculadas.
+- Formulário de edição da HU com campos guiados para os modelos textuais obrigatórios e cálculo automático da pontuação RICE pela fórmula `(Reach × Impact × Confidence) / Effort`.
