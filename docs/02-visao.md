@@ -105,17 +105,15 @@ As tecnologias específicas e os detalhes do ambiente de execução serão descr
 
 As principais responsabilidades da equipe foram inicialmente distribuídas da seguinte forma:
 
-| Área | Responsável principal | Atividades principais |
-|---|---|---|
-| **Gerenciamento e requisitos** | Arthur Arruda Frauches | Organização do Kanban, acompanhamento das atividades, Product Backlog, histórias de usuário e critérios de aceitação. |
-| **Arquitetura e back-end** | Guilherme Lira Ribeiro | Arquitetura do sistema, API, regras de negócio e autenticação. |
-| **Banco de dados** | João Vitor Frabis Zago | Modelo físico, tabelas, relacionamentos, scripts e integração com o back-end. |
-| **Interface e front-end** | Isaac Júnior Araújo Gomes | Wireframes, storyboard, front-end e navegação. |
-| **Integração, testes e documentação** | Vinícius Gonçalves Duarte | Integração dos componentes, execução dos testes, atualização da documentação e descrição da infraestrutura de implantação. |
+| Área                                   | Responsável principal     | Atividades principais                                                                                                 |
+| -------------------------------------- | ------------------------- | --------------------------------------------------------------------------------------------------------------------- |
+| **Gerenciamento e requisitos**         | Arthur Arruda Frauches    | Organização do Kanban, acompanhamento das atividades, Product Backlog, histórias de usuário e critérios de aceitação. |
+| **Arquitetura, integração e back-end** | Guilherme Lira Ribeiro    | Arquitetura do sistema, API, regras de negócio e autenticação.                                                        |
+| **Banco de dados**                     | João Vitor Frabis Zago    | Modelo físico, tabelas, relacionamentos, scripts e integração com o back-end.                                         |
+| **Interface e front-end**              | Isaac Júnior Araújo Gomes | Wireframes, storyboard, front-end e navegação.                                                                        |
+| **Testes, interface e front-end**      | Vinícius Gonçalves Duarte | Testes, front-end, navegação e descrição da infraestrutura de implantação.                                            |
 
 Essa divisão representa as responsabilidades principais e não impede a colaboração entre os integrantes. A distribuição poderá ser ajustada conforme as necessidades e as decisões do grupo.
-
----
 
 ## 4. Visão geral do produto
 
