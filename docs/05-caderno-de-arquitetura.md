@@ -1,6 +1,6 @@
-| Backlog Manager            |                 |
-| :------------------------- | :-------------- |
-| **Caderno de Arquitetura** | Data: 8/10/2026 |
+| **Backlog Manager** | **Responsável** |
+| :------------------------------- | :-------------- |
+| **Caderno de Arquitetura**         | Guilherme Lira Ribeiro - [231013538] |
 
 # BACKLOG MANAGER
 
@@ -8,15 +8,15 @@
 
 ## 1. Propósito
 
-Este documento descreve a filosofia, decisões, restrições, justificativas
+Este documento descreve decisões, restrições, justificativas
 elementos significativos e outros aspectos relevantes para o design e implementação
 do sistema.
 
 ## 2. Objetivos e filosofia da arquitetura
 
 A arquitetura deverá fornecer suporte ao desenvolvimento de um **sistema para gerenciamento de requisitos baseado em histórias de usuário**.
-
-O sistema será desenvolvido como uma **aplicação web**, disponibilizando uma interface gráfica (site) para acesso às suas funcionalidades.
+O sistema será desenvolvido como uma **aplicação web**, disponibilizando uma interface gráfica (site) para acesso às suas funcionalidades, será provido
+por meio de um servidor onde a aplicação Python que implementa a lógica de negócios será executada.
 
 A arquitetura deverá permitir o desenvolvimento das funcionalidades relacionadas ao gerenciamento de:
 
@@ -30,11 +30,9 @@ A arquitetura deverá permitir o desenvolvimento das funcionalidades relacionada
 - MoSCoW;
 - RICE score.
 
-A divisão inicial do trabalho considera responsabilidades específicas para arquitetura/backend, banco de dados e interface/frontend, mantendo a possibilidade de colaboração entre os integrantes.
-
-<!-- Questões que conduzirão arq. como preocupações de deployment, performance,
-     robustez para manutenção; objetivos (goals) que a arquitetura precisa ter
-     na estrutura e comportamento, e se deve funcionar bem em condições não usuais -->
+A divisão do trabalho considera responsabilidades específicas para frontend, backend e interface, mantendo a possibilidade de colaboração entre os integrantes.
+Essa modularização é prática para garantir melhor manutenabilidade do software a ser desenvolvido, bem como permitir que mais de um desenvolvedor trabalhe no código
+ao mesmo tempo, desde que em módulos com certo nível de independência.
 
 ## 3. Suposições e dependências
 
@@ -52,14 +50,12 @@ As seguintes definições foram estabelecidas inicialmente pelo grupo:
 Para cumprir os objetivos, será adotada a linguagem de programação Python 3, bem como frameworks para aplicação web
 por ela suportados, nomeadamente o Flask para o desenvolvimento da aplicação (backend), por ser uma framework que se
 destaca pela leveza, simplicidade e alto poder de customização. Além disso possui vasta documentação e é adotado por
-grandes empresas. Este framework é ideal para protótipos e microsserviços, e também possui uma série de extensões como
-suporte a motores de template HTML (Jinja2), ferramentas de utilidade e segurança, como Werkzeug, e de banco de dados,
-como o Flask-SQLAlchemy. Essas extensões também são consideradas dependências desta arquitetura.
+grandes empresas. Junto ao Flask, serão utilizadas suas extensões como o motor de templates Jija2 para renderização
+do lado do servidor, Flask-Login para gerenciamento de sessão e Flask-SQLAlchemy, para mapeamento objeto relacional e
+banco de dados.
 
-<!-- premissas sobre o comportamento, consistencia de dados, performance;
-    limites antecipados, experiencia da equipe -->
-<!-- sistema externos como APIs, bancos de dados compartilhados (nao aplicavel);
-    blocos de software ou bibliotecas; -->
+Este sistema não faz uso de APIs externas ou bancos de dados compartilhados com outros sistemas. É esperada a consistência
+de dados através de um único banco de dados relacional (SQL), com as tabelas que se fizerem necessárias.
 
 ## 4. Requisitos significativos para arquitetura
 
@@ -122,18 +118,23 @@ Esses requisitos deverão ser considerados na definição da estrutura do sistem
 
 ## 6. Mecanismos de arquitetura
 
-Com base nas funcionalidades definidas, deverão ser considerados mecanismos relacionados a:
+Com base nas funcionalidades definidas, foram estabelecidos os seguintes mecanismos de arquitetura:
 
-- **Autenticação do usuário**: senhas devem ser comparadas e armazenadas por meio de hash, utilizando a ferramenta werkzeug.security para tal, a fim de garantir a segurança de informações críticas.
-- **Persistência das informações**: será utilizada uma abstração do banco de dados relacional com a extensão Flask-SQLAlchemy (ORM) e execução via SQLite na fase de desenvolvimento.
-- **Tratamento de erros e exceções:** camada centralizada de exceções personalizadas (`ServiceError`) para captura global no servidor e tornar implementação das rotas mais simples (focadas no caso de sucesso). Usará mecanismo nativo do Flask para tal (`@app.errorhandler`)
-- **Comunicação entre a interface e o backend**;
-- **Gerenciamento dos dados dos projetos**;
-- **Gerenciamento dos diferentes tipos de backlog**;
-- **Gerenciamento das histórias de usuário**;
-- **Cálculo da pontuação RICE**.
+- **Autenticação do usuário e Gestão de Sessão**: senhas são armazenadas via hash criptográfico (`werkzeug.security`). O controle de sessão e estado do usuário autenticado é mantido pela extensão `Flask-Login`.
 
-### 6.1 Ferramentas usadas
+- **Persistência das informações**: utilização de Mapeamento Objeto-Relacional (ORM) com `Flask-SQLAlchemy`. Em desenvolvimento utiliza-se `SQLite`, com suporte a migração para SGBDs relacioanais em produção via alteração da URI de conexão.
+
+- **Tratamento de erros e exceções**: camada centralizada de exceções personalizadas (`ServiceError` em `app/services/exceptions.py`) para captura global no servidor via `@app.errorhandler`, convertendo erros de negócio em mensagens de feedback (_flash messages_).
+
+- **Comunicação entre a interface e o backend**: submissão de formulários HTML via métodos HTTP **POST** (criação/alteração/exclusão) e **GET** (navegação). Aplicação do padrão **Post-Redirect-Get (PRG)** com mensagens de contexto (_flash messages_) para evitar re-submissão de dados ao atualizar a página.
+
+- **Gerenciamento dos dados dos projetos e backlogs**: encapsulamento das regras de associação (como limite de um Product Backlog por projeto e múltiplos Sprint Backlogs) diretamente na camada de serviços (`project_service.py`).
+
+- **Gerenciamento e movimentação de histórias de usuário**: orquestração na camada de serviços (`user_story_service.py`) para vincular histórias a Product/Sprint Backlogs e associá-las a Épicos e Critérios de Aceitação.
+
+- **Cálculo e validação da pontuação RICE e estimativas**: regras de validação para a sequência de Fibonacci (Story Points), classificações MoSCoW e o cálculo do RICE score ($\frac{R \times I \times C}{E}$) isolados na camada de serviços, espelhados via JavaScript no cliente (`projects.js`) apenas para pré-visualização instantânea na tela.
+
+### 6.1 Ferramentas usadas no Backend
 
 Para o desenvolvimento do backend do sistema, foram definidas inicialmente as seguintes dependências Python:
 
@@ -147,36 +148,97 @@ A configuração do banco de dados poderá ser definida posteriormente de acordo
 
 A configuração do ambiente de testes também poderá utilizar um banco de dados separado do banco principal, permitindo a realização dos testes sem interferir nos dados da aplicação.
 
-> **Observação:** as versões e dependências apresentadas correspondem à proposta inicial discutida pelo grupo e poderão ser ajustadas durante o desenvolvimento do projeto.
+### 6.2 Ferramentas usadas no Front-end
+
+Para o desenvolvimento da interface do sistema, foram utilizadas
+as seguintes tecnologias:
+
+- **HTML5:** responsável pela estruturação semântica das páginas,
+  formulários, componentes e elementos de interação.
+- **CSS3:** utilizado na definição da identidade visual, organização
+  dos componentes, estilização dos formulários e adaptação da interface
+  para diferentes resoluções de tela.
+- **JavaScript:** responsável pelas interações executadas no navegador,
+  incluindo controle de diálogos, navegação entre abas, confirmações
+  de operações e cálculo dinâmico da pontuação RICE.
+- **Jinja2:** mecanismo de templates utilizado para renderizar páginas
+  HTML dinamicamente e permitir o reaproveitamento de estruturas
+  e componentes visuais.
+- **Google Fonts (Inter):** utilizado para fornecer a tipografia
+  da interface.
+
+A utilização de templates permite reduzir a duplicação de código HTML
+e manter uma estrutura visual consistente entre as páginas.
+A separação dos estilos CSS por responsabilidade facilita a manutenção
+e evolução da identidade visual.
+
+O JavaScript complementa a renderização realizada pelo servidor,
+permitindo interações locais sem a necessidade de transformar
+a aplicação em uma SPA (Single Page Application).
 
 ## 7. Abstrações relativas à arquitetura
 
-As principais abstrações identificadas a partir das funcionalidades definidas são:
+As principais abstrações identificadas representam as entidades e conceitos de domínio do sistema (mapeadas nas classes de modelo em `app/models/`), cujas regras e fluxos de negócio são manipulados e orquestrados pela camada de serviços (`app/services/`):
 
-- **Usuário**;
-- **Projeto**;
-- **Product Backlog**;
-- **Sprint Backlog**;
-- **História de Usuário**;
-- **Épico**;
-- **Critério de Aceitação**;
-- **Story Points**;
-- **MoSCoW**;
-- **RICE**.
+- **Usuário (`User`)**: entidade que representa os atores do sistema. Armazena as credenciais de acesso (`password_hash`), integra-se com a gestão de sessão via `UserMixin` (Flask-Login) e estabelece a relação de propriedade sobre os projetos criados.
 
-Essas abstrações correspondem aos principais elementos funcionais identificados na reunião e deverão ser consideradas durante a definição do modelo de dados e da implementação do sistema.
+- **Projeto (`Project`)**: entidade que delimita o escopo de um trabalho. Agrupa um único Product Backlog, múltiplos Sprint Backlogs e vincula-se ao seu usuário proprietário (`User`).
+
+- **Product Backlog (`ProjectBacklog`)**: repositório principal de requisitos do projeto. Contém a lista global de histórias de usuário pendentes de alocação em sprints, mantendo relação 1:1 com o Projeto.
+
+- **Sprint Backlog (`Sprint`)**: subconjunto iterativo e delimitado do backlog de um projeto. Agrupa histórias de usuário selecionadas para execução dentro de um ciclo específico.
+
+- **História de Usuário (`UserStory`)**: unidade fundamental de requisito funcional do sistema, estruturada no formato padrão ("Como [papel] quero [ação] para [benefício]"). Armazena estimativas (Story Points), priorizações (MoSCoW, RICE) e relacionamentos com backlogs e épicos.
+
+- **Épico (`Epic`)**: estrutura de alto nível que agrupa e categoriza histórias de usuário relacionadas por um objetivo funcional comum dentro do projeto.
+
+- **Critério de Aceitação (`AcceptanceCriteria`)**: condições específicas que validam a conclusão de uma História de Usuário, estruturadas no formato ("Dado [contexto] quando [ação] então [resultado]").
+
+- **Story Points**: conceito de estimativa de esforço atribuído às histórias de usuário, restrito aos valores discretos da sequência de Fibonacci (0, 1, 2, 3, 5, 8, 13, 21, 34, 55).
+
+- **MoSCoW**: conceito de categorização de prioridade de requisitos em quatro níveis: Must have (M), Should have (S), Could have (C) e Won't have (W).
+
+- **RICE Score**: pontuação de priorização quantitativa baseada nos parâmetros Reach (Alcance), Impact (Impacto), Confidence (Confiança) e Effort (Esforço), calculada pela fórmula (R x I x C) / E.
 
 ## 8. Arquitetura segundo perspectivas
 
-### Perspectiva funcional
+### 8.1 Perspectiva funcional
 
 O sistema será organizado em torno do gerenciamento de requisitos por meio de histórias de usuário, incluindo projetos, backlogs, histórias, épicos, critérios de aceitação e mecanismos de estimativa e priorização.
 
-### Perspectiva de interface
+### 8.2 Perspectiva de interface
 
-O sistema será disponibilizado como um site com uma interface gráfica.
+O sistema será disponibilizado como uma aplicação web, acessível por meio
+de navegadores, utilizando uma interface gráfica construída com HTML5,
+CSS3 e JavaScript.
 
-### Perspectiva de dados
+A camada de apresentação utiliza templates Jinja2 para renderização
+dinâmica das páginas HTML no servidor. Essa abordagem permite reutilizar
+estruturas visuais e componentes, mantendo a organização das diferentes
+telas do sistema.
+
+A interface está organizada em páginas de autenticação, gerenciamento
+de projetos e gerenciamento dos elementos de backlog. São utilizados
+componentes visuais como cartões, formulários, diálogos modais, abas
+de navegação e elementos de priorização.
+
+A interação com o sistema ocorre principalmente por meio de formulários
+HTML e requisições HTTP. O JavaScript complementa a experiência do
+usuário com funcionalidades locais, como alternância de abas, abertura
+e fechamento de diálogos, confirmações de operações e atualização
+dinâmica da pontuação RICE.
+
+Os estilos são organizados em arquivos CSS separados por responsabilidade,
+permitindo a manutenção da identidade visual, dos componentes reutilizáveis
+e das adaptações para diferentes tamanhos de tela.
+
+Os detalhes da implementação, incluindo a estrutura dos templates,
+organização dos arquivos CSS e JavaScript, descrição das telas e
+comportamentos da interface, estão documentados em:
+
+[Documentação da Implementação do Front-end](06-implementacao-frontend.md).
+
+### 8.3 Perspectiva de dados
 
 O sistema deverá armazenar as informações necessárias ao gerenciamento dos projetos e dos elementos relacionados às histórias de usuário.
 
@@ -185,7 +247,7 @@ classes Python (`models/`) gerenciadas pelo SQLAlchemy, utilizando o banco
 SQLite em ambiente de desenvolvimento local com suporte a migração para
 SGBD relacional (como MySQL/PostgreSQL) em produção.
 
-### Perspectiva de backend
+### 8.4 Perspectiva de backend
 
 O backend será responsável pela implementação das regras de negócio e dos serviços necessários para o funcionamento do sistema. Isso será feito por
 meio de três camadas:
@@ -194,7 +256,10 @@ meio de três camadas:
 - **Camada de Lógica de Negócios (`services/`)**: responsável por concentrar e executar as regras de negócio da aplicação (como o cálculo do RICE score, validações de formato e tratamento de exceções de domínio). Recebe os dados já extraídos da camada de apresentação, processa as operações necessárias e orquestra a persistência de dados com a camada de modelos, garantindo o isolamento da regra de negócio independente da interface.
 - **Camada de Acesso a Dados (`models/`)** responsável por fornecer classes equivalentes às entidades e domínios dos sistema, que persistem em banco de dados. Permite que a camada superior trabalhe com princípios de orientação a objetos, abstraídas as peculiaridades do banco de dados relacional configurado com o SQLAlchemy.
 
-### Perspectiva de integração
+![Diagrama da Arquitetura do Sistema](img/diagrama_arquitetura.png)
+*Figura 1: Visão geral da arquitetura em camadas e dependências do sistema Backlog Manager.*
+
+### 8.5 Perspectiva de integração
 
 Deverá existir integração entre a interface, o backend e o banco de dados para permitir o funcionamento das funcionalidades do sistema. O SQLAlchemy permite trabalhar com tabelas e registros no banco de dados como se fossem objetos, segundo a abordagem de Mapeamento Objeto-Relacional (ORM). Como exposto na perspectiva de backend, este acesso é feito na camada de lógica de negócios usando as classes providas pela camada de acesso a dados.
 
@@ -224,7 +289,7 @@ para atender a requisitos de performance.
 Além disso, a possibilidade de utilizar uma configuração específica para testes permite que o sistema utilize
 um banco de dados separado durante a execução dos testes.
 
-### Impacto geral na arquitetura
+### 9.3 Impacto geral na arquitetura
 
 A utilização dessas ferramentas estabelece inicialmente uma arquitetura de backend baseada em **Flask**, com o gerenciamento da persistência realizado por meio de **Flask-SQLAlchemy e SQLAlchemy**. A escolha dessas tecnologias também permite manter a camada de acesso aos dados relativamente independente do sistema de banco de dados utilizado, enquanto o Werkzeug fornece recursos que podem ser utilizados nas funcionalidades relacionadas à autenticação e segurança.
 

@@ -1,10 +1,25 @@
 from app.models import db
+from app.models.acceptance_criteria import AcceptanceCriteria
 from app.models.user_story import UserStory
+from app.routes.auth_routes import UserCreationException
 from app.services import project_service
 from app.services.exceptions import ProjectDomainException, UserStoryDomainException
 
 STORY_POINT_VALUES = {0, 1, 2, 3, 5, 8, 13, 21, 34, 55}
-MOSCOW_VALUES = {"must", "should", "could", "wont"}
+MOSCOW_VALUES = {"M", "S", "C", "W"}
+MOSCOW_ALIASES = {
+    "M": "M",
+    "MUST": "M",
+    "S": "S",
+    "SHOULD": "S",
+    "C": "C",
+    "COULD": "C",
+    "W": "W",
+    "WONT": "W",
+    "WON'T": "W",
+}
+RICE_IMPACT_VALUES = {0.25, 0.5, 1, 2, 3}
+RICE_CONFIDENCE_VALUES = {50, 80, 100}
 
 
 def validate_user_story_data(data: dict, require_all: bool = True) -> None:
@@ -33,23 +48,22 @@ def get_prioritization_data(data: dict) -> dict:
         raise UserStoryDomainException("Selecione um valor de Story Points permitido.")
 
     moscow = data.get("moscow")
-    moscow = str(moscow).strip().lower() if moscow else None
+    moscow = MOSCOW_ALIASES.get(str(moscow).strip().upper()) if moscow else None
+    if data.get("moscow") and moscow is None:
+        raise UserStoryDomainException("Selecione uma classificação MoSCoW válida.")
     if moscow is not None and moscow not in MOSCOW_VALUES:
         raise UserStoryDomainException("Selecione uma classificação MoSCoW válida.")
 
     reach = _optional_number(data.get("rice_reach"), "Alcance", int)
     impact = _optional_number(data.get("rice_impact"), "Impacto", float)
     confidence = _optional_number(data.get("rice_confidence"), "Confiança", int)
-    effort = _optional_number(data.get("rice_effort"), "Esforço", float)
 
     if reach is not None and reach < 0:
         raise UserStoryDomainException("O Alcance não pode ser negativo.")
-    if impact is not None and impact < 0:
-        raise UserStoryDomainException("O Impacto não pode ser negativo.")
-    if confidence is not None and not 0 <= confidence <= 100:
-        raise UserStoryDomainException("A Confiança deve estar entre 0 e 100%.")
-    if effort is not None and effort <= 0:
-        raise UserStoryDomainException("O Esforço deve ser maior que zero.")
+    if impact is not None and impact not in RICE_IMPACT_VALUES:
+        raise UserStoryDomainException("Selecione um valor de Impacto permitido.")
+    if confidence is not None and confidence not in RICE_CONFIDENCE_VALUES:
+        raise UserStoryDomainException("Selecione um valor de Confiança permitido.")
 
     return {
         "story_points": story_points,
@@ -57,8 +71,80 @@ def get_prioritization_data(data: dict) -> dict:
         "rice_reach": reach,
         "rice_impact": impact,
         "rice_confidence": confidence,
-        "rice_effort": effort,
     }
+
+
+def _form_values(data, field: str) -> list:
+    """Obtém valores repetidos tanto de um MultiDict quanto de um dict de testes."""
+    if hasattr(data, "getlist"):
+        return data.getlist(field)
+
+    value = data.get(field)
+    if value is None:
+        return []
+    return value if isinstance(value, list) else [value]
+
+
+def get_acceptance_criteria_data(data: dict) -> list[dict]:
+    """Normaliza critérios no formato Dado / Quando / Então enviados pelo formulário."""
+    ids = _form_values(data, "criteria_id")
+    titles = _form_values(data, "criteria_title")
+    givens = _form_values(data, "criteria_given")
+    whens = _form_values(data, "criteria_when")
+    thens = _form_values(data, "criteria_then")
+
+    criteria = []
+    total = max([len(ids), len(titles), len(givens), len(whens), len(thens)], default=0)
+    for index in range(total):
+        criterion_id = ids[index] if index < len(ids) else ""
+        title = titles[index].strip() if index < len(titles) and titles[index] else ""
+        given = givens[index].strip() if index < len(givens) and givens[index] else ""
+        when = whens[index].strip() if index < len(whens) and whens[index] else ""
+        then = thens[index].strip() if index < len(thens) and thens[index] else ""
+
+        if not any((title, given, when, then)):
+            continue
+        if not all((given, when, then)):
+            raise UserStoryDomainException(
+                "Preencha Dado, Quando e Então para cada critério de aceitação."
+            )
+
+        criteria.append(
+            {
+                "id": int(criterion_id) if criterion_id else None,
+                "title": title or f"Critério {len(criteria) + 1}",
+                "given": given,
+                "when": when,
+                "then": then,
+            }
+        )
+    return criteria
+
+
+def sync_acceptance_criteria(story: UserStory, data: dict) -> None:
+    """Cria, atualiza e remove critérios conforme o formulário de edição."""
+    criteria = get_acceptance_criteria_data(data)
+    existing = {criterion.id: criterion for criterion in story.acceptance_criteria}
+    kept_ids = set()
+
+    for item in criteria:
+        criterion = existing.get(item["id"]) if item["id"] else None
+        if item["id"] and not criterion:
+            raise UserStoryDomainException("Critério de aceitação não encontrado.")
+        if not criterion:
+            criterion = AcceptanceCriteria(user_story=story)
+            db.session.add(criterion)
+
+        criterion.title = item["title"]
+        criterion.given = item["given"]
+        criterion.when = item["when"]
+        criterion.then = item["then"]
+        if criterion.id:
+            kept_ids.add(criterion.id)
+
+    for criterion_id, criterion in existing.items():
+        if criterion_id not in kept_ids:
+            db.session.delete(criterion)
 
 
 def create_user_story(project_id: int, user_id: int, data: dict) -> UserStory:
@@ -97,19 +183,17 @@ def create_user_story(project_id: int, user_id: int, data: dict) -> UserStory:
     for field, value in prioritization_data.items():
         setattr(user_story, field, value)
 
+    if "criteria_present" in data:
+        sync_acceptance_criteria(user_story, data)
+
     db.session.add(user_story)
     db.session.commit()
     return user_story
 
 
-def get_user_story(story_id: int, project_id: int, user_id: int):
+def get_user_story(story_id: int, user_id: int):
     story = db.session.get(UserStory, story_id)
-    project = project_service.get_project_by_id(project_id, user_id)
-
-    if not project:
-        raise ProjectDomainException("Projeto não encontrado", status_code=404)
-
-    if not story or story.project_backlog_id != project.backlog.id:
+    if not story or story.project_backlog.project.user_id != user_id:
         raise UserStoryDomainException(
             "História de usuário não encontrada", status_code=404
         )
@@ -154,21 +238,124 @@ def update_user_story(story_id: int, user_id: int, new_data: dict) -> UserStory:
         "rice_reach",
         "rice_impact",
         "rice_confidence",
-        "rice_effort",
     }
     if any(field in new_data for field in prioritization_fields):
         prioritization_data = get_prioritization_data(new_data)
         for field, value in prioritization_data.items():
             setattr(story, field, value)
 
+    if "criteria_present" in new_data:
+        sync_acceptance_criteria(story, new_data)
+
     db.session.commit()
     return story
 
 
-def delete_user_story(story_id: int, project_id: int, user_id: int):
+def delete_user_story(story_id: int, user_id: int):
     """
     Deleta uma história de usuário se encontrar
     """
-    story = get_user_story(story_id, project_id, user_id)
+    story = get_user_story(story_id, user_id)
     db.session.delete(story)
+    db.session.commit()
+
+
+def _validate_acceptance_criteria_data(data: dict, require_all: bool = True) -> dict:
+    """
+    Sanitiza e valida os dados do formulário de Critérios de Aceitação.
+    Retorna os campos limpos se válidos ou levanta UserStoryDomainException.
+    """
+    if not data:
+        raise UserStoryDomainException(
+            "Os dados do critério de aceitação não podem estar vazios."
+        )
+
+    title = (data.get("title") or "").strip()
+    given = (data.get("given") or "").strip()
+    when = (data.get("when") or "").strip()
+    then = (data.get("then") or "").strip()
+
+    cleaned_fields = {
+        "title": title,
+        "given": given,
+        "when": when,
+        "then": then,
+    }
+
+    if require_all:
+        missing = [
+            field_name for field_name, value in cleaned_fields.items() if not value
+        ]
+        if missing:
+            raise UserStoryDomainException(
+                "Todos os campos do critério de aceitação (Título, Dado, Quando, Então) são obrigatórios."
+            )
+
+    return cleaned_fields
+
+
+def add_acceptance_criteria_to_story(
+    story_id: int, user_id: int, data: dict
+) -> AcceptanceCriteria:
+    """
+    US-014 Gerenciamento de Critérios de Aceitação
+    Cria um objeto AcceptanceCriteria a partir de data, e vincula a uma história
+    de usuário existente. Retorna o objeto criado em caso de sucesso, e levanta
+    UserStoryDomainException em caso de erro.
+    """
+
+    # Validação de permissão do usuário e dos campos de critério de aceitação
+    story = get_user_story(story_id, user_id)
+    cleaned_data = _validate_acceptance_criteria_data(data, require_all=True)
+
+    # Criando objeto e adicionando no banco de dados
+    criteria = AcceptanceCriteria()
+    criteria.user_story_id = story.id
+    criteria.title = cleaned_data["title"]
+    criteria.given = cleaned_data["given"]
+    criteria.when = cleaned_data["when"]
+    criteria.then = cleaned_data["then"]
+
+    db.session.add(criteria)
+    db.session.commit()
+
+    return criteria
+
+
+def update_acc_criteria(criteria_id: int, user_id: int, new_data: dict):
+    """
+    US-014 Gerenciamento de Critérios de Aceitação
+    Atualiza um critério de aceitação com novos dados, retornando objeto
+    atualizado em caso de sucesso ou levantando UserStoryDomainException
+    em caso de erro (critério não encontrado ou acesso negado)
+    """
+
+    criteria = db.session.get(AcceptanceCriteria, criteria_id)
+    if (not criteria
+        or criteria.user_story.project_backlog.project.user_id != user_id):
+        raise UserCreationException("Critério de aceitação não encontrado")
+
+    clean_data = _validate_acceptance_criteria_data(new_data, require_all=False)
+    criteria.title = clean_data.get("title") or criteria.title
+    criteria.given = clean_data.get("given") or criteria.given
+    criteria.when = clean_data.get("when") or criteria.when
+    criteria.then = clean_data.get("then") or criteria.then
+
+    db.session.commit()
+    return criteria
+
+def delete_acc_criteria(criteria_id: int, user_id: int):
+    """
+    US-014 Gerenciamento de Critérios de Aceitação
+    Remove um critério de aceitação caso exista, ou levanta exceção
+    UserStoryDomainException em caso de acesso negado ou critério
+    não encontrado
+    """
+
+    criteria = db.session.get(AcceptanceCriteria, criteria_id)
+    if (not criteria
+        or criteria.user_story.project_backlog.project.user_id != user_id):
+        raise UserCreationException("Critério de aceitação não encontrado")
+
+    db.session.delete(criteria)
     db.session.commit()

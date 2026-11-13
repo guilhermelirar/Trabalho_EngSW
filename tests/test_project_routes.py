@@ -69,7 +69,7 @@ def test_epic_link_and_sprint_removal_preserve_user_stories(
             "action": "criar uma conta",
             "benefit": "acessar o sistema",
             "story_points": "3",
-            "moscow": "could",
+            "moscow": "C",
             "rice_reach": "10",
             "rice_impact": "1",
             "rice_confidence": "50",
@@ -84,18 +84,19 @@ def test_epic_link_and_sprint_removal_preserve_user_stories(
         project_id = project.id
         story_id = story.id
         assert story.story_points == 3
-        assert story.moscow == "could"
-        assert story.rice_score == 2.5
+        assert story.moscow == "C"
+        assert story.rice_effort == 3
+        assert story.rice_score == 1.67
 
     edited = authenticated_client.post(
-        f"{project_url}/stories/{story_id}/edit",
+        f"/stories/{story_id}",
         data={
             "title": "Criar conta",
             "role": "usuario",
             "action": "criar uma conta",
             "benefit": "acessar o sistema",
             "story_points": "8",
-            "moscow": "must",
+            "moscow": "M",
             "rice_reach": "100",
             "rice_impact": "3",
             "rice_confidence": "80",
@@ -107,9 +108,11 @@ def test_epic_link_and_sprint_removal_preserve_user_stories(
     with app.app_context():
         story = db.session.get(UserStory, story_id)
         sprint = SprintBacklog.query.one()
+        assert story is not None
         assert story.story_points == 8
-        assert story.moscow == "must"
-        assert story.rice_score == 48
+        assert story.moscow == "M"
+        assert story.rice_effort == 8
+        assert story.rice_score == 30
         story.sprint_backlog_id = sprint.id
         db.session.commit()
         sprint_id = sprint.id

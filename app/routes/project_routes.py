@@ -82,6 +82,17 @@ def create_backlog(project_id: int):
     return redirect(url_for("projects.project_detail", project_id=project_id))
 
 
+@projects_bp.route("/<int:project_id>/backlog/delete", methods=["POST"])
+@login_required
+def remove_backlog(project_id: int):
+    try:
+        srvc.delete_product_backlog(project_id, current_user.id)
+        flash("Product Backlog removido com sucesso!", "success")
+    except ProjectDomainException as error:
+        flash(error.message, "danger")
+    return redirect(url_for("projects.project_detail", project_id=project_id))
+
+
 @projects_bp.route("/<int:project_id>/sprints", methods=["POST"])
 @login_required
 def create_sprint(project_id: int):

@@ -1,0 +1,37 @@
+{% set criteria = story.acceptance_criteria if story is defined else [] %}
+<fieldset class="acceptance-section" data-criteria-section>
+    <legend>Critérios de aceitação</legend>
+    <p class="acceptance-section__hint">Formato: <strong>Dado</strong> um contexto, <strong>quando</strong> ocorrer uma ação, <strong>então</strong> descreva o resultado esperado.</p>
+    <input type="hidden" name="criteria_present" value="1">
+
+    <div class="criteria-list" data-criteria-list>
+        {% for criterion in criteria %}
+        <article class="criterion-row" data-criterion-row>
+            <div class="criterion-row__heading">
+                <strong>Critério {{ loop.index }}</strong>
+                <button type="button" class="criterion-row__remove" data-criteria-remove aria-label="Remover critério">×</button>
+            </div>
+            <input type="hidden" name="criteria_id" value="{{ criterion.id }}">
+            <input type="hidden" name="criteria_title" value="{{ criterion.title }}">
+            <label class="field"><span>Dado</span><textarea name="criteria_given" required>{{ criterion.given }}</textarea></label>
+            <label class="field"><span>Quando</span><textarea name="criteria_when" required>{{ criterion.when }}</textarea></label>
+            <label class="field"><span>Então</span><textarea name="criteria_then" required>{{ criterion.then }}</textarea></label>
+        </article>
+        {% endfor %}
+    </div>
+
+    <template data-criterion-template>
+        <article class="criterion-row" data-criterion-row>
+            <div class="criterion-row__heading">
+                <strong>Critério</strong>
+                <button type="button" class="criterion-row__remove" data-criteria-remove aria-label="Remover critério">×</button>
+            </div>
+            <input type="hidden" name="criteria_id" value="">
+            <input type="hidden" name="criteria_title" value="">
+            <label class="field"><span>Dado</span><textarea name="criteria_given" required placeholder="contexto inicial ou estado do sistema"></textarea></label>
+            <label class="field"><span>Quando</span><textarea name="criteria_when" required placeholder="ação ou evento específico"></textarea></label>
+            <label class="field"><span>Então</span><textarea name="criteria_then" required placeholder="resultado ou consequência esperada"></textarea></label>
+        </article>
+    </template>
+    <button class="add-criterion" type="button" data-criteria-add>+ Adicionar critério</button>
+</fieldset>

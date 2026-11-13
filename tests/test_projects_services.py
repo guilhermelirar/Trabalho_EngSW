@@ -16,7 +16,7 @@ def test_project_creation_success(app: Flask):
         proj = create_project(user_id, "Project 1")
 
         assert proj is not None
-        assert proj.owner_id == user_id
+        assert proj.user_id == user_id
 
 
 def test_project_read_list_success(app: Flask):
@@ -114,10 +114,9 @@ def test_delete_backlog_success(app: Flask):
     with app.app_context():
         user_id = get_valid_user_id()
         project = create_project(user_id, "Project")
+        create_product_backlog(project.id, user_id)  # cria um backlog
 
         db.session.refresh(project)
 
         delete_product_backlog(project.id, user_id)  # não deve lançar erro
-        create_product_backlog(project.id, user_id)  # cria um backlog
-        delete_product_backlog(project.id, user_id)  # deleta
         assert project.backlog is None

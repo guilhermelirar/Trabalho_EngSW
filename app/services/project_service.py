@@ -48,7 +48,7 @@ def create_project(user_id: int, name: str | None) -> Project:
 
     project = Project()
     project.name = clean_name
-    project.owner_id = user_id
+    project.user_id = user_id
 
     db.session.add(project)
     db.session.commit()
@@ -62,20 +62,20 @@ def get_projects_by_user(user_id: int) -> Sequence[Project]:
     associados ao usuário de id 'user_id'
     """
     validate_user_id(user_id)
-    query = select(Project).where(Project.owner_id == user_id)
+    query = select(Project).where(Project.user_id == user_id)
     return db.session.scalars(query).all()
 
 
-def delete_project(project_id: int, owner_id: int):
+def delete_project(project_id: int, user_id: int):
     """
     (US005 DELETE)
     Deleta um projeto de id 'project_id' associado a um
-    dono 'owner_id'. Em caso de não encontrado, irá levantar
+    usuário de id 'user_id'. Em caso de não encontrado, irá levantar
     uma exceção ProjectDomainException
     """
     project = db.session.get(Project, project_id)
 
-    if project and project.owner_id == owner_id:
+    if project and project.user_id == user_id:
         db.session.delete(project)
         db.session.commit()
         return
@@ -83,7 +83,7 @@ def delete_project(project_id: int, owner_id: int):
     raise ProjectDomainException("Projeto não encontrado", status_code=404)
 
 
-def get_project_by_id(project_id: int, owner_id: int):
+def get_project_by_id(project_id: int, user_id: int):
     """
     (US005 READ)
     Obtém projeto com campos nome, descrição, e lista de histórias
@@ -94,7 +94,7 @@ def get_project_by_id(project_id: int, owner_id: int):
             joinedload(Project.backlog).joinedload(ProjectBacklog.user_stories),
             joinedload(Project.backlog).joinedload(ProjectBacklog.sprints),
         )
-        .filter_by(id=project_id, owner_id=owner_id)
+        .filter_by(id=project_id, user_id=user_id)
         .first()
     )
 
@@ -104,7 +104,7 @@ def get_project_by_id(project_id: int, owner_id: int):
     raise ProjectDomainException("Projeto não encontrado", status_code=404)
 
 
-def update_project(project_id: int, owner_id: int, name: str | None) -> Project:
+def update_project(project_id: int, user_id: int, name: str | None) -> Project:
     """
     (US005 Update)
     Atualiza campos do projeto (nome)
@@ -113,7 +113,7 @@ def update_project(project_id: int, owner_id: int, name: str | None) -> Project:
     project = db.session.get(Project, project_id)
 
     # Se existe e é do usuário, atualizar e retornar
-    if project and project.owner_id == owner_id:
+    if project and project.user_id == user_id:
         project.name = new_name
         db.session.commit()
         return project
@@ -137,7 +137,7 @@ def create_product_backlog(project_id: int, user_id: int):
     return project.backlog
 
 
-def delete_product_backlog(user_id: int, project_id: int):
+def delete_product_backlog(project_id: int, user_id: int):
     """
     [US-006 Gerenciar Product Backlog]
     Deleta um backlog de produto e todas suas sprints e histórias
@@ -145,9 +145,11 @@ def delete_product_backlog(user_id: int, project_id: int):
     caso o projeto não tenha um product backlog.
     """
     project: Project = get_project_by_id(project_id, user_id)
-    if project.backlog:
-        db.session.delete(project.backlog)
-        db.session.commit()
+    if not project.backlog:
+        raise ProjectDomainException("O projeto não possui um Product Backlog.")
+
+    db.session.delete(project.backlog)
+    db.session.commit()
 
 
 def create_sprint_backlog(
@@ -157,7 +159,7 @@ def create_sprint_backlog(
     [US-008 Gerenciar Sprint Backlog]
     Criação de Sprint Backlog relacionado a um backlog de projeto
     """
-    project = Project.query.filter_by(id=project_id, owner_id=user_id).first()
+    project = Project.query.filter_by(id=project_id, user_id=user_id).first()
 
     if not project:
         raise ProjectDomainException("Projeto não encontrado.")
