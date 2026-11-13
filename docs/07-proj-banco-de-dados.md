@@ -1,8 +1,8 @@
 # Projeto Físico do Banco de Dados
 
-| Sistema de Gestão de Backlog | |
+| **Sistema de Gestão de Backlog** | **Responsável**|
 | ---------------------------- | --- |
-| **Projeto Físico do Banco de Dados** | **Versão de trabalho** |
+| **Projeto Físico do Banco de Dados** | João Vitor Frabis Zago  - [231013538]|
 
 ## 1. Objetivo e escopo
 
