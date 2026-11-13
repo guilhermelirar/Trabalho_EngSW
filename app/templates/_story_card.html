@@ -31,6 +31,8 @@
         </div>
         <label class="field field--wide"><span>Para</span><input name="benefit" value="{{ story.benefit }}" required></label>
 
+        {% include "_acceptance_criteria_fields.html" %}
+
         <label class="field field--wide">
             <span>Sprint</span>
             <select name="sprint_backlog_id">

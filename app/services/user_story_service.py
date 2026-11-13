@@ -74,6 +74,79 @@ def get_prioritization_data(data: dict) -> dict:
     }
 
 
+def _form_values(data, field: str) -> list:
+    """Obtém valores repetidos tanto de um MultiDict quanto de um dict de testes."""
+    if hasattr(data, "getlist"):
+        return data.getlist(field)
+
+    value = data.get(field)
+    if value is None:
+        return []
+    return value if isinstance(value, list) else [value]
+
+
+def get_acceptance_criteria_data(data: dict) -> list[dict]:
+    """Normaliza critérios no formato Dado / Quando / Então enviados pelo formulário."""
+    ids = _form_values(data, "criteria_id")
+    titles = _form_values(data, "criteria_title")
+    givens = _form_values(data, "criteria_given")
+    whens = _form_values(data, "criteria_when")
+    thens = _form_values(data, "criteria_then")
+
+    criteria = []
+    total = max([len(ids), len(titles), len(givens), len(whens), len(thens)], default=0)
+    for index in range(total):
+        criterion_id = ids[index] if index < len(ids) else ""
+        title = titles[index].strip() if index < len(titles) and titles[index] else ""
+        given = givens[index].strip() if index < len(givens) and givens[index] else ""
+        when = whens[index].strip() if index < len(whens) and whens[index] else ""
+        then = thens[index].strip() if index < len(thens) and thens[index] else ""
+
+        if not any((title, given, when, then)):
+            continue
+        if not all((given, when, then)):
+            raise UserStoryDomainException(
+                "Preencha Dado, Quando e Então para cada critério de aceitação."
+            )
+
+        criteria.append(
+            {
+                "id": int(criterion_id) if criterion_id else None,
+                "title": title or f"Critério {len(criteria) + 1}",
+                "given": given,
+                "when": when,
+                "then": then,
+            }
+        )
+    return criteria
+
+
+def sync_acceptance_criteria(story: UserStory, data: dict) -> None:
+    """Cria, atualiza e remove critérios conforme o formulário de edição."""
+    criteria = get_acceptance_criteria_data(data)
+    existing = {criterion.id: criterion for criterion in story.acceptance_criteria}
+    kept_ids = set()
+
+    for item in criteria:
+        criterion = existing.get(item["id"]) if item["id"] else None
+        if item["id"] and not criterion:
+            raise UserStoryDomainException("Critério de aceitação não encontrado.")
+        if not criterion:
+            criterion = AcceptanceCriteria(user_story=story)
+            db.session.add(criterion)
+
+        criterion.title = item["title"]
+        criterion.given = item["given"]
+        criterion.when = item["when"]
+        criterion.then = item["then"]
+        if criterion.id:
+            kept_ids.add(criterion.id)
+
+    for criterion_id, criterion in existing.items():
+        if criterion_id not in kept_ids:
+            db.session.delete(criterion)
+
+
 def create_user_story(project_id: int, user_id: int, data: dict) -> UserStory:
     """
     Cria uma história de usuário associada a um projeto
@@ -110,6 +183,9 @@ def create_user_story(project_id: int, user_id: int, data: dict) -> UserStory:
     for field, value in prioritization_data.items():
         setattr(user_story, field, value)
 
+    if "criteria_present" in data:
+        sync_acceptance_criteria(user_story, data)
+
     db.session.add(user_story)
     db.session.commit()
     return user_story
@@ -117,7 +193,7 @@ def create_user_story(project_id: int, user_id: int, data: dict) -> UserStory:
 
 def get_user_story(story_id: int, user_id: int):
     story = db.session.get(UserStory, story_id)
-    if not story or story.project_backlog.project.owner_id != user_id:
+    if not story or story.project_backlog.project.user_id != user_id:
         raise UserStoryDomainException(
             "História de usuário não encontrada", status_code=404
         )
@@ -167,6 +243,9 @@ def update_user_story(story_id: int, user_id: int, new_data: dict) -> UserStory:
         prioritization_data = get_prioritization_data(new_data)
         for field, value in prioritization_data.items():
             setattr(story, field, value)
+
+    if "criteria_present" in new_data:
+        sync_acceptance_criteria(story, new_data)
 
     db.session.commit()
     return story
@@ -253,7 +332,7 @@ def update_acc_criteria(criteria_id: int, user_id: int, new_data: dict):
 
     criteria = db.session.get(AcceptanceCriteria, criteria_id)
     if (not criteria
-        or criteria.user_story.project_backlog.project.owner_id != user_id):
+        or criteria.user_story.project_backlog.project.user_id != user_id):
         raise UserCreationException("Critério de aceitação não encontrado")
 
     clean_data = _validate_acceptance_criteria_data(new_data, require_all=False)
@@ -275,7 +354,7 @@ def delete_acc_criteria(criteria_id: int, user_id: int):
 
     criteria = db.session.get(AcceptanceCriteria, criteria_id)
     if (not criteria
-        or criteria.user_story.project_backlog.project.owner_id != user_id):
+        or criteria.user_story.project_backlog.project.user_id != user_id):
         raise UserCreationException("Critério de aceitação não encontrado")
 
     db.session.delete(criteria)

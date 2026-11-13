@@ -511,13 +511,12 @@ css %}
                         name="title"
                         placeholder="Ex.: Realizar autenticação"
                         required
-                        autofocus
-                /></label>
+                        autofocus/>
+                </label>
                 <div class="form-grid form-grid--stack">
-                    <label class="field"
-                        ><span>Como um</span
-                        ><input name="role" placeholder="usuário" required
-                    /></label>
+                    <label class="field">
+                        <span>Como um</span>
+                        <input name="role" placeholder="usuário" required/></label>
                     <label class="field"
                         ><span>Eu quero</span
                         ><input
@@ -533,6 +532,7 @@ css %}
                         placeholder="acessar o sistema com segurança"
                         required
                 /></label>
+                {% include "_acceptance_criteria_fields.html" %}
                 <div class="story-prioritization-layout">
                     <div class="story-prioritization-fields">
                         {% include "_story_prioritization_fields.html" %}

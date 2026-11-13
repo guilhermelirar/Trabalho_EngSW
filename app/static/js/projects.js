@@ -1,4 +1,27 @@
 document.addEventListener("click", (event) => {
+    const addCriterion = event.target.closest("[data-criteria-add]");
+    if (addCriterion) {
+        const section = addCriterion.closest("[data-criteria-section]");
+        const template = section?.querySelector("[data-criterion-template]");
+        const list = section?.querySelector("[data-criteria-list]");
+        if (template && list) {
+            list.append(template.content.cloneNode(true));
+            renumberCriteria(list);
+        }
+        return;
+    }
+
+    const removeCriterion = event.target.closest("[data-criteria-remove]");
+    if (removeCriterion) {
+        const row = removeCriterion.closest("[data-criterion-row]");
+        const list = row?.parentElement;
+        row?.remove();
+        if (list) {
+            renumberCriteria(list);
+        }
+        return;
+    }
+
     const tab = event.target.closest("[data-tab-target]");
     if (tab) {
         const tabs = tab.closest(".project-tabs");
@@ -37,6 +60,15 @@ document.addEventListener("click", (event) => {
         closer.closest("dialog")?.close();
     }
 });
+
+function renumberCriteria(list) {
+    list.querySelectorAll("[data-criterion-row]").forEach((row, index) => {
+        const title = row.querySelector(".criterion-row__heading strong");
+        if (title) {
+            title.textContent = `Critério ${index + 1}`;
+        }
+    });
+}
 
 function updateRiceScore(dialog) {
     const output = dialog.querySelector("[data-rice-score]");

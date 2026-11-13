@@ -41,6 +41,33 @@ def test_create_user_story_success(app: Flask, project_with_backlog, test_user):
         assert story.project_backlog_id == project_with_backlog.backlog.id
 
 
+def test_create_user_story_with_acceptance_criteria(
+    app: Flask, project_with_backlog, test_user
+):
+    """O formulário da HU persiste critérios no formato Dado / Quando / Então."""
+    with app.app_context():
+        data = story_data() | {
+            "criteria_present": "1",
+            "criteria_id": [""],
+            "criteria_title": ["Cadastro confirmado"],
+            "criteria_given": ["que o visitante preencheu os dados válidos"],
+            "criteria_when": ["solicita o cadastro"],
+            "criteria_then": ["uma conta é criada com sucesso"],
+        }
+
+        story = user_story_service.create_user_story(
+            project_id=project_with_backlog.id,
+            user_id=test_user.id,
+            data=data,
+        )
+
+        assert len(story.acceptance_criteria) == 1
+        criterion = story.acceptance_criteria[0]
+        assert criterion.given == "que o visitante preencheu os dados válidos"
+        assert criterion.when == "solicita o cadastro"
+        assert criterion.then == "uma conta é criada com sucesso"
+
+
 def test_update_user_story_success(app: Flask, project_with_backlog, test_user):
     """
     Atualiza história de usuário para um projeto com backlog existente
