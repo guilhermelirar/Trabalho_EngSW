@@ -3,7 +3,7 @@
 | :------------------------------- | :-------------- |
 | **Gerenciamento de projeto** | Arthur Arruda Frauches — Matrícula: 241017728 |
 
-...
+
 
 
 | **Informação** | **Data** |
@@ -14,7 +14,7 @@
 | **Quarta reunião oficial** | 17/10/2026 |
 | **Quinta reunião oficial** | 25/10/2026 |
 
-...
+
 
 
 # BACKLOG MANAGER
