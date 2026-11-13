@@ -1,3 +1,7 @@
+| **Backlog Manager** | **Responsável** |
+| :------------------------------- | :-------------- |
+| **Caderno de Arquitetura**         | Guilherme Lira Ribeiro - [231013538] |
+
 # BACKLOG MANAGER
 
 # Descrição da Infraestrutura de Implantação
