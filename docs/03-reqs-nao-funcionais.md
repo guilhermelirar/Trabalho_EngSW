@@ -187,17 +187,19 @@ O sistema deverá apresentar uma interface que facilite a utilização por pesso
 
 Os campos dos formulários deverão possuir identificação adequada, permitindo que o usuário compreenda quais informações precisam ser preenchidas.
 
-Os principais elementos de navegação e interação deverão permitir utilização por teclado, e a apresentação visual deverá respeitar critérios de contraste e legibilidade.
+Os principais elementos de navegação e interação deverão permitir utilização por teclado, e a apresentação visual deverá respeitar critérios de contraste, legibilidade e visibilidade do foco.
 
-Como referência para o desenvolvimento e a avaliação da acessibilidade, deverão ser utilizadas as diretrizes WCAG 2.1, nível AA.
+Como referência para o desenvolvimento e a avaliação da acessibilidade, deverão ser utilizadas as diretrizes WCAG 2.2, nível AA.
 
 **Métricas:**
 
 - 100% dos campos de formulário deverão possuir identificação ou rótulos que permitam compreender sua finalidade.
 - Os principais elementos de navegação e interação deverão poder ser utilizados por meio do teclado.
 - Os textos comuns deverão apresentar contraste mínimo de 4,5:1 em relação ao fundo.
-- Textos grandes e elementos gráficos essenciais deverão apresentar contraste mínimo de 3:1, conforme os critérios aplicáveis da WCAG 2.1.
+- Textos grandes e elementos gráficos essenciais deverão apresentar contraste mínimo de 3:1, conforme os critérios aplicáveis da WCAG 2.2.
 - Os principais componentes interativos deverão apresentar indicação visual de foco durante a navegação por teclado.
+- Os elementos que recebem foco não deverão ficar totalmente encobertos por conteúdos criados pela própria página.
+- Os alvos de interação deverão respeitar os critérios de tamanho mínimo e espaçamento estabelecidos pela WCAG 2.2, nível AA.
 
 ---
 
@@ -302,7 +304,9 @@ A utilização da aplicação deverá respeitar os princípios relacionados à p
 
 ### 5.3. Acessibilidade
 
-A interface deverá adotar como referência as diretrizes WCAG 2.1, nível AA, para orientar aspectos relacionados ao contraste, à legibilidade, à identificação dos elementos e à navegação por teclado.
+A interface deverá adotar como referência as diretrizes WCAG 2.2, nível AA, para orientar aspectos relacionados ao contraste, à identificação dos elementos, à legibilidade, à navegação por teclado, à visibilidade do foco e às dimensões dos elementos interativos.
+
+Essas diretrizes deverão orientar o desenvolvimento e a avaliação dos componentes da interface, considerando tanto a utilização em computadores quanto em dispositivos móveis.
 
 ## 6. Restrições de Projeto (Design)
 
