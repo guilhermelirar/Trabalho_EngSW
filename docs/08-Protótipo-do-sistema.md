@@ -2,4 +2,4 @@
 
 # Link para o vídeo: https://youtu.be/IenhOeI0z4w
 
-# Link para o Repositório: [https://youtu.be/IenhOeI0z4w](https://github.com/guilhermelirar/Trabalho_EngSW.git)
+# Link para o Repositório: https://github.com/guilhermelirar/Trabalho_EngSW.git
