@@ -1,4 +1,8 @@
-## Artefato 6: Projeto de Interface com o Usuário (Critério 6)
+| **Backlog Manager** | **Responsável**|
+| ---------------------------- | --- |
+| **Projeto de interface** | Isaac Júnior Araújo Gomes  - [231025270]|
+
+# Artefato 6: Projeto de Interface com o Usuário (Critério 6)
 
 Em conformidade com as **Instruções 17 e 18** e o **Critério 6** da especificação do trabalho prático, o projeto de interface com o usuário é representado por **storyboards compostos por sequências de wireframes** (esboços simples de tela), estruturados a partir das três telas-base definidas pela equipe: **Tela de Autenticação**, **Tela de Projetos** e **Tela do Projeto**.
 
