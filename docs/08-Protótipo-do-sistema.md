@@ -1,3 +1,7 @@
+| **Backlog Manager** | **Responsável** |
+| :------------------------------- | :-------------- |
+| **Protótipo do sistema**         | Vinícius Gonçalves Duarte - [222026869] |
+
 # 08 — Protótipo do sistema
 
 # Link para o vídeo: https://youtu.be/IenhOeI0z4w
