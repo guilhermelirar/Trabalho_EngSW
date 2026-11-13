@@ -91,15 +91,21 @@ Funcionalidades adicionais, integrações externas ou recursos complementares de
 | **Usuário do sistema** | Pessoa que utilizará o Backlog Manager para gerenciar os requisitos de seus projetos. | Criar e gerenciar os elementos disponibilizados pelo sistema, conforme as funcionalidades implementadas, tendo acesso somente aos projetos vinculados à sua própria conta. |
 | **Equipe do projeto** | Integrantes responsáveis pelo desenvolvimento do sistema e pela elaboração dos artefatos acadêmicos. | Definir requisitos, projetar e desenvolver a solução, testar o sistema e manter a documentação atualizada. |
 
+
 ### 3.2. Ambiente de utilização
 
-O Backlog Manager será desenvolvido como um site, com interface gráfica acessível por meio de um navegador.
+O Backlog Manager será desenvolvido como uma aplicação web, com interface gráfica acessível por meio de navegadores modernos, sem exigir a instalação de um programa específico nos dispositivos dos usuários.
 
-O sistema contará com criação de contas e autenticação. Cada usuário terá acesso somente aos projetos vinculados à sua própria conta, não sendo permitido visualizar ou gerenciar projetos pertencentes a outros usuários.
+Os futuros usuários poderão acessar o sistema por meio de computadores, notebooks, tablets e celulares, desde que possuam um navegador compatível e conexão de rede para comunicação com o servidor da aplicação.
 
-A existência de contas individuais não implica, por si só, a existência de diferentes perfis de acesso. A diferenciação de permissões deverá seguir as decisões registradas nos requisitos do projeto.
+A interface deverá adaptar sua organização a diferentes tamanhos de tela, permitindo a utilização em dispositivos móveis e computadores. Como referências para os testes de apresentação, deverão ser consideradas as resoluções de 360 × 640 pixels, para dispositivos móveis, e 1366 × 768 pixels, para computadores.
 
-As tecnologias específicas e os detalhes do ambiente de execução serão descritos nos documentos de arquitetura e de infraestrutura.
+A aplicação deverá funcionar nos navegadores Google Chrome, Mozilla Firefox, Chromium e Microsoft Edge, conforme os requisitos de compatibilidade estabelecidos no documento de Requisitos Não Funcionais.
+
+O acesso às funcionalidades dependerá de uma conta autenticada. Cada usuário poderá visualizar e gerenciar somente os projetos vinculados à sua própria conta, sem acesso aos projetos de outros usuários.
+
+Os detalhes técnicos relativos aos navegadores suportados, à responsividade e à infraestrutura de execução serão apresentados nos documentos de Requisitos Não Funcionais e de Infraestrutura de Implantação.
+
 
 ### 3.3. Organização da equipe
 
@@ -179,33 +185,46 @@ O comportamento da exclusão de registros que possuam outros elementos associado
 
 ---
 
+
 ## 6. Requisitos gerais e atributos de qualidade
 
-O sistema deverá disponibilizar uma interface gráfica e exigir autenticação para acesso aos serviços previstos. Também deverá respeitar as regras de negócio definidas para projetos, backlogs, histórias de usuário, épicos, critérios de aceitação, estimativas e priorização.
+O Backlog Manager deverá disponibilizar uma interface gráfica de fácil compreensão, apresentada em português brasileiro e acessível por meio de navegadores modernos. A organização das páginas deverá facilitar a navegação e a utilização das funcionalidades de gerenciamento de projetos, backlogs e histórias de usuário.
 
-O acesso aos projetos deverá respeitar a separação entre as contas dos usuários, impedindo que um usuário visualize ou gerencie projetos vinculados a outra conta.
+O sistema deverá exigir autenticação para acesso às funcionalidades protegidas, garantindo que cada usuário possa visualizar e gerenciar somente os projetos vinculados à sua própria conta. As senhas deverão ser armazenadas por meio de hash criptográfico, e as informações de configuração deverão ser protegidas contra exposição indevida.
 
-Os registros excluídos deverão ser removidos permanentemente do banco de dados, sem possibilidade de recuperação por meio do sistema.
+A aplicação deverá apresentar desempenho adequado durante a execução das operações de consulta, criação, atualização e exclusão, além de manter resultados consistentes e compatíveis com as regras de negócio e os critérios de aceitação definidos.
 
-Os requisitos não funcionais detalhados, incluindo critérios mensuráveis de segurança, usabilidade, desempenho, confiabilidade, padrões e métricas, serão especificados no documento próprio de requisitos não funcionais.
+A interface deverá ser responsiva e compatível com os navegadores estabelecidos para o projeto. Também deverá considerar critérios de acessibilidade, utilizando como referência as diretrizes WCAG 2.2, nível AA.
 
-Os detalhes de arquitetura, tecnologias, estrutura do banco de dados, interface e ambiente de implantação serão documentados nos respectivos artefatos do projeto.
+O desenvolvimento deverá permitir a manutenção e a evolução do sistema por meio de uma organização estruturada dos componentes, mantendo a separação entre as responsabilidades do frontend, do backend e do banco de dados.
+
+A aplicação deverá preservar a integridade das informações armazenadas, respeitando os relacionamentos e as restrições definidos para as entidades do sistema. Os registros excluídos deverão ser removidos permanentemente do banco de dados, sem possibilidade de recuperação por meio da aplicação.
+
+Os requisitos não funcionais detalhados, incluindo critérios mensuráveis de segurança, usabilidade, desempenho, confiabilidade, manutenibilidade, compatibilidade, acessibilidade e integridade dos dados, serão especificados no documento próprio de Requisitos Não Funcionais.
 
 ---
 
+
 ## 7. Premissas e decisões técnicas
 
-O projeto considera as seguintes premissas:
+O desenvolvimento do Backlog Manager considerará as seguintes premissas e decisões técnicas:
 
-- O sistema será desenvolvido como uma aplicação web.
-- A solução contará com interface gráfica e autenticação.
-- Cada usuário terá acesso somente aos projetos vinculados à sua própria conta.
-- Não haverá compartilhamento de projetos entre diferentes usuários.
-- Os registros excluídos serão removidos permanentemente do banco de dados e não poderão ser recuperados.
-- As funcionalidades serão implementadas de acordo com os requisitos e as histórias de usuário definidos pelo grupo.
-- O desenvolvimento será acompanhado pelo processo de gerenciamento do projeto e pelo quadro Kanban.
+- **Tipo de aplicação:** o sistema será desenvolvido como uma aplicação web, acessível por meio de navegadores, sem exigir a instalação de um programa específico nos dispositivos dos usuários.
+- **Frontend:** a interface utilizará HTML5, CSS3 e JavaScript, com páginas renderizadas no servidor por meio de templates Jinja2 integrados ao Flask. A aplicação utilizará navegação baseada em páginas e formulários tradicionais, sem exigir uma arquitetura Single Page Application (SPA).
+- **Backend:** a aplicação será desenvolvida em Python, utilizando o framework Flask para disponibilizar as rotas e controlar o processamento das operações.
+- **Arquitetura:** o backend seguirá uma organização em três camadas: rotas (routes), serviços (services) e modelos (models). As regras de negócio, validações e cálculos deverão permanecer concentrados na camada de serviços.
+- **Banco de dados:** será utilizado um banco de dados relacional, com SQLite no ambiente de desenvolvimento e no protótipo acadêmico. A integração e a persistência dos dados serão realizadas por meio do SQLAlchemy e do Flask-SQLAlchemy.
+- **Autenticação:** o gerenciamento das sessões dos usuários será realizado pelo Flask-Login. O armazenamento das senhas deverá utilizar os recursos de hash criptográfico disponibilizados pelo Werkzeug.
+- **Testes:** os testes automatizados deverão utilizar o Pytest, com uma configuração de banco de dados separada daquela utilizada na execução normal do protótipo.
+- **Organização da interface:** a aplicação deverá utilizar CSS responsivo para permitir sua utilização em computadores, tablets e celulares.
+- **Infraestrutura:** durante o desenvolvimento e a demonstração acadêmica, será utilizado o servidor de desenvolvimento do Flask. Uma eventual implantação pública deverá utilizar uma infraestrutura apropriada para produção, conforme definido no documento de Infraestrutura de Implantação.
 
-As tecnologias específicas de front-end, back-end e banco de dados deverão ser registradas nos documentos técnicos correspondentes após sua definição pela equipe.
+A implementação utilizará Python 3.10 ou superior, Flask 3.1.3, Flask-SQLAlchemy 3.1.1 e SQLAlchemy 2.0.54, além das demais dependências registradas no arquivo `requirements.txt`.
+
+A arquitetura deverá permitir a utilização de outros SGBDs relacionais, como PostgreSQL ou MySQL, mediante as configurações necessárias de conexão, mantendo a utilização do ORM.
+
+Os detalhes completos das tecnologias, versões, componentes, responsabilidades arquiteturais e procedimentos de execução serão apresentados no Caderno de Arquitetura e nos documentos técnicos correspondentes.
+
 
 ---
 
