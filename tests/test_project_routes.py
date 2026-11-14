@@ -54,6 +54,34 @@ def test_project_detail_renders_backlog_and_story_actions(
     assert b"Product Backlog" in board.data
 
 
+def test_delete_story_route_redirects_to_its_project(
+    authenticated_client: FlaskClient, app
+):
+    """Excluir uma HU preserva o id do projeto necessário ao redirecionamento."""
+    created = authenticated_client.post("/projects", data={"name": "Projeto 1"})
+    authenticated_client.post(f"{created.location}/backlog")
+    authenticated_client.post(
+        f"{created.location}/stories",
+        data={
+            "title": "História temporária",
+            "role": "usuario",
+            "action": "excluir uma história",
+            "benefit": "validar o fluxo",
+        },
+    )
+
+    with app.app_context():
+        story_id = UserStory.query.one().id
+        project_id = Project.query.one().id
+
+    response = authenticated_client.post(f"/stories/{story_id}/delete")
+
+    assert response.status_code == 302
+    assert response.location.endswith(f"/projects/{project_id}")
+    with app.app_context():
+        assert db.session.get(UserStory, story_id) is None
+
+
 def test_epic_link_and_sprint_removal_preserve_user_stories(
     authenticated_client: FlaskClient, app
 ):

@@ -253,11 +253,13 @@ def update_user_story(story_id: int, user_id: int, new_data: dict) -> UserStory:
 
 def delete_user_story(story_id: int, user_id: int):
     """
-    Deleta uma história de usuário se encontrar
+    Deleta uma história de usuário e retorna o projeto para redirecionamento.
     """
     story = get_user_story(story_id, user_id)
+    project_id = story.project_backlog.project_id
     db.session.delete(story)
     db.session.commit()
+    return project_id
 
 
 def _validate_acceptance_criteria_data(data: dict, require_all: bool = True) -> dict:
